@@ -11,6 +11,4 @@ endif
 
 all:
 	g++ -std=c++11 -shared tf-uc-ops/ops/ops.cc -o tf-uc-ops/ops/ops.so -fPIC $(TF_CFLAGS) $(TF_LFLAGS) -O2 $(OS_FLAGS) $(ICU_FLAGS)
-	hash python 2>/dev/null && echo "Test with default Python" && python -m tf-uc-ops.test
-	hash python2 2>/dev/null && echo "Test with Python v2" && python2 -m tf-uc-ops.test
-	hash python3 2>/dev/null && echo "Test with Python v3" && python3 -m tf-uc-ops.test
+	python -m tf-uc-ops.test
