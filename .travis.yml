@@ -6,5 +6,5 @@ before_install:
   - sudo apt-get -qq update
   - sudo apt-get install -y g++ icu-devtools
 install:
-  - pip install .
+  - pip install -e .
 script: make

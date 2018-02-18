@@ -103,4 +103,4 @@ ENV/
 # this package
 .DS_Store
 .idea/
-tf-uc-ops/lib/uc_ops.so
+tf-uc-ops/ops/ops.so

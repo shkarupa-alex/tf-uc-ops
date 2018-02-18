@@ -4,7 +4,7 @@ from __future__ import division
 from __future__ import print_function
 
 import tensorflow as tf
-from ..lib import normalize_unicode
+from ..ops import normalize_unicode
 
 
 class NormalizeUnicodeTest(tf.test.TestCase):
