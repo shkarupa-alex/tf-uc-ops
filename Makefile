@@ -9,7 +9,7 @@ ifeq ($(UNAME_S),Darwin)
 	OS_FLAGS := -undefined dynamic_lookup
 endif
 
-test: build
+test:
 	env python -m tests
 
 build: clean
