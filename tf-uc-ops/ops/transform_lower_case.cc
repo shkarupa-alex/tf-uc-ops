@@ -5,7 +5,6 @@
 
 REGISTER_OP("LowercaseUnicode")
   .Input("source: string")
-  .Attr("form: string")
   .Output("result: string")
   .SetShapeFn([](shape_inference::InferenceContext* c) {
     c->set_output(0, c->input(0));
@@ -20,8 +19,8 @@ class LowercaseUnicodeOp : public TransformBaseOp {
   explicit LowercaseUnicodeOp(OpKernelConstruction* ctx) : TransformBaseOp(ctx) {}
 
  protected:
-  void transform(UnicodeString &target, UErrorCode &error) {
-    target.toLower();
+  void transform(UnicodeString &item, UErrorCode &error) {
+    item.toLower();
   }
 };
 

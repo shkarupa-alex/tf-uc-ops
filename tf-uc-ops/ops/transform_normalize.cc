@@ -46,8 +46,8 @@ class NormalizeUnicodeOp : public TransformBaseOp {
     const Normalizer2 *normalizerInstance GUARDED_BY(normalizerMutex);
 
  protected:
-  void transform(UnicodeString &target, UErrorCode &error) {
-    target = normalizerInstance->normalize(target, error);
+  void transform(UnicodeString &item, UErrorCode &error) {
+    item = normalizerInstance->normalize(item, error);
   }
 };
 

@@ -41,7 +41,7 @@ class TransformBaseOp : public OpKernel {
     }
   }
  protected:
-  virtual void transform(UnicodeString &target, UErrorCode &error) = 0;
+  virtual void transform(UnicodeString &item, UErrorCode &error) = 0;
 };
 
 #endif

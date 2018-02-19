@@ -9,7 +9,7 @@ import tensorflow as tf
 _ops_lib = tf.load_op_library(path.join(path.dirname(path.abspath(__file__)), 'ops.so'))
 
 
-def normalize_unicode(source, form):
+def transform_normalize_unicode(source, form):
     """Normalize unicode strings tensor.
 
     Args:
@@ -29,7 +29,7 @@ def normalize_unicode(source, form):
 ops.NotDifferentiable("NormalizeUnicode")
 
 
-def lowercase_unicode(source):
+def transform_lower_case(source):
     """Lowercase strings tensor.
 
     Args:
@@ -47,21 +47,21 @@ def lowercase_unicode(source):
 ops.NotDifferentiable("LowercaseUnicode")
 
 
-# def split_words(source, default_value=''):
-#     """Split unicode strings into words.
-#     Result tokens could be simply joined with empty separator to obtain original strings.
-#
-#     Args:
-#         source: `Tensor` of any shape, strings to split
-#         default_value: Scalar value for padding.  Defaults to empty string.
-#     Returns:
-#         `Tensor` with an additional dimension of size 1 added.
-#     """
-#
-#     source = tf.convert_to_tensor(source, dtype=tf.string)
-#     result = _ops_lib.split_words(source, default_value)
-#
-#     return result
-#
-#
-# ops.NotDifferentiable("SplitWords")
+def expand_split_words(source, default_value=''):
+    """Split unicode strings into words.
+    Result tokens could be simply joined with empty separator to obtain original strings.
+
+    Args:
+        source: `Tensor` of any shape, strings to split
+        default_value: Scalar value for padding.  Defaults to empty string.
+    Returns:
+        `Tensor` with an additional dimension of size 1 added.
+    """
+
+    source = tf.convert_to_tensor(source, dtype=tf.string)
+    result = _ops_lib.split_words(source, default_value)
+
+    return result
+
+
+ops.NotDifferentiable("SplitWords")
