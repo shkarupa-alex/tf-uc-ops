@@ -3,7 +3,9 @@ matrix:
     - sudo: required
       services:
         - docker
-      env: DOCKER_IMAGE=quay.io/pypa/manylinux1_x86_64
+      env:
+        - DOCKER_IMAGE=quay.io/pypa/manylinux1_x86_64
+        - OS_NAME=linux
 
 install:
   - docker pull $DOCKER_IMAGE
