@@ -3,6 +3,7 @@ set -e -x
 
 
 # Install a system package required by ours
+echo "$TRAVIS_OS_NAME"
 if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
     sudo apt-get -qq update
     sudo apt-get install -y g++ icu-devtools
