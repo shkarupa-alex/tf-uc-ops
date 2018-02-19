@@ -1,7 +1,32 @@
 language: python
+
 python:
-  - "2.7"
-  - "3.6"
+  - 2.7
+
+os:
+  - linux
+
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -qq update ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y g++ icu-devtools ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install icu4c ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH" ; fi
+
 install:
-  - pip install -r requirements.txt
-script: make
+  - env python setup.py install_egg_info
+  - env pip install -r tfucops.egg-info/requires.txt
+  - make build
+  - env python setup.py bdist_wheel
+  - for P in dist/*.whl; do env pip install ${P}; done;
+
+script: make test
+
+deploy:
+  provider: pypi
+  distributions: bdist_wheel
+  user: shkarupa.alex
+  password:
+    secure: AH6IdSDHTa+tE/w/4zWP+S4lDpRgQt2SjGGzLk4/doV6xvLTIsFpd57zjW+RX/aWcixphKT3qAKCpJBEKg6m3lHEFJZP8X4rN+OZ4D0i86iuJXgwObB0gzhpbWroNYwOP4fY3rnEMB67/Gae4GUFijA1BcxSFZ4FM2SnQCM7mzq1/fLeNmdme0vZ+/00vAUWwJ2uiUPLIDM2GqA56YEKrtAY/5Twaec3dK43ODbnLIoFGWvGtaPKmtyo+DudTXt2+e28RzDO5RQud9WaH+9sFVxN1Iayh0jjKjognICCJPgT8YmPkn2BJWn5YOETrCPmxD9Nvag/Qw94fFOXIOwoFzC8+ckyWc7y2PB1VcZFcyT0GO2UuzVBr8p+SSed3hTxf1NF4U3qXZXtYzobWXnaGeZhaQIr5JFblZb4gzkjfKfHVA1bmK2zm7JGstYRWMApO6WgpkIg2BfCehpothfg94LnD9hSHcE+OH/kHgWT0PNd22ovX2TB3WN88kiIKznagvHsniX/Sj43xu4CLI5tYz6dfsSpgU8VEAJ6/WZJ98Wqzr3uIGb/imJEJyYSHA7n6/lEjwPIaFUZv0cCexaRNOIdaM9V7eFovLIuff9PibsBDuhzSs+gH6gZSCroidI4BfKL1R//Tm5Uaak7vvVTZPkadeQ4esw9e0jMYF73QT4=
+  on:
+    branch: master
