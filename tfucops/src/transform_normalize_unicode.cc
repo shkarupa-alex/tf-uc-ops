@@ -1,6 +1,7 @@
 #ifndef TF_UC_OPS_NORMALIZE_UNICODE
 #define TF_UC_OPS_NORMALIZE_UNICODE
 
+#include "tensorflow/core/framework/common_shape_fns.h"
 #include "transform_base.cc"
 #include <unicode/normalizer2.h>
 
@@ -8,11 +9,7 @@ REGISTER_OP("NormalizeUnicode")
   .Input("source: string")
   .Attr("form: string")
   .Output("result: string")
-  .SetShapeFn([](shape_inference::InferenceContext* c) {
-    c->set_output(0, c->input(0));
-
-    return Status::OK();
-  })
+  .SetShapeFn(shape_inference::UnchangedShape)
   .SetIsStateful();
 
 

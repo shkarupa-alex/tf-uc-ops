@@ -4,24 +4,24 @@ from __future__ import division
 from __future__ import print_function
 
 import tensorflow as tf
-from ..ops import transform_normalize_unicode
+from tfucops import transform_normalize_unicode
 
 
 class NormalizeUnicodeTest(tf.test.TestCase):
     def test0D(self):
         with self.test_session():
             result = transform_normalize_unicode('', 'NFD').eval()
-            self.assertAllEqual('', result)
+            self.assertAllEqual(b'', result)
 
     def test1D(self):
         with self.test_session():
             result = transform_normalize_unicode([''], 'NFD').eval()
-            self.assertAllEqual([''], result)
+            self.assertAllEqual([b''], result)
 
     def test2D(self):
         with self.test_session():
             result = transform_normalize_unicode([['']], 'NFD').eval()
-            self.assertAllEqual([['']], result)
+            self.assertAllEqual([[b'']], result)
 
     def testNFD(self):
         expected = u'\u0041\u030A'.encode('utf-8')

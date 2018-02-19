@@ -1,16 +1,13 @@
 #ifndef TF_UC_OPS_LOWERCASE_UNICODE
 #define TF_UC_OPS_LOWERCASE_UNICODE
 
+#include "tensorflow/core/framework/common_shape_fns.h"
 #include "transform_base.cc"
 
 REGISTER_OP("LowercaseUnicode")
   .Input("source: string")
   .Output("result: string")
-  .SetShapeFn([](shape_inference::InferenceContext* c) {
-    c->set_output(0, c->input(0));
-
-    return Status::OK();
-  })
+  .SetShapeFn(shape_inference::UnchangedShape)
   .SetIsStateful();
 
 
