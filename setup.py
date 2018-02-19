@@ -11,7 +11,7 @@ class BinaryDistribution(Distribution):
 
 setup(
     name='tfucops',
-    version='0.1',
+    version='1.0.0',
     description='Unicode string OPs for TensorFlow',
     url='https://github.com/shkarupa-alex/tfucops',
     author='Shkarupa Alex',
