@@ -21,6 +21,7 @@ _ops_lib = None # global variable to cache loaded library
 
 def _ops_lib_on_demand():
     global _ops_lib
+    print(_ops_lib)
     if _ops_lib is not None:
         return _ops_lib
 
@@ -70,7 +71,6 @@ def _ops_lib_on_demand():
         # build shared OPs library
         build_cmd = ['g++', '-std=c++11', '-shared', '-o', build_target, '-fPIC'] \
                     + tf_cflags + tf_lflags + os_flags + icu_flags + ['-O2', build_source]
-        print(build_cmd)
         tf.logging.debug(u'running {}'.format(u' '.join(build_cmd)))
         gnu_compiller = subprocess.Popen(build_cmd)
         out, err = gnu_compiller.communicate()
@@ -79,6 +79,6 @@ def _ops_lib_on_demand():
         if gnu_compiller.returncode != 0:
             raise Exception('g++ command failed with code {}'.format(gnu_compiller.returncode))
 
-        _ops_lib = tf.load_op_library(build_target)
+    _ops_lib = tf.load_op_library(build_target)
 
     return _ops_lib

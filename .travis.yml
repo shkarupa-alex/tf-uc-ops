@@ -13,7 +13,11 @@ matrix:
       install:
         - python3 setup.py sdist
         - sudo pip3 install tfucops -f dist/
-      script: (cd /; python3 -m tfucops.tests)
+      script:
+        - $PWD=`pwd`
+        - cd /
+        - for TEST in tests/*.py; do python3 "$PWD/$TEST"; done
+        - cd $PWD
     - os: osx
       before_install:
         - brew update
@@ -24,7 +28,7 @@ matrix:
       install:
         - python2 setup.py sdist
         - sudo pip2 install tfucops -f dist/
-      script: (cd /; python2 -m tfucops.tests)
+      script: for TEST in tests/*.py; do python2 $TEST; done
 
 deploy:
   provider: pypi

@@ -14,6 +14,7 @@ setup(
     license='MIT',
     keywords='tensorflow unicode string op',
     packages=['tfucops'],
+    include_package_data=True,
     package_data={
         '': ['*.h', '*.cc'],
     },

@@ -1,4 +1,3 @@
 include LICENSE.txt
 recursive-include tfucops *.h
 recursive-include tfucops *.cc
-recursive-include tfucops *.py
