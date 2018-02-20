@@ -13,17 +13,13 @@ matrix:
       install:
         - python3 setup.py sdist
         - sudo pip3 install tfucops -f dist/
-      script:
-        - $PWD=`pwd`
-        - cd /
-        - for TEST in tests/*.py; do python3 "$PWD/$TEST"; done
-        - cd $PWD
+      script: for TEST in tests/*.py; do python3 $TEST; done
     - os: osx
       before_install:
         - brew update
         - brew install python icu4c || true
         - brew upgrade python icu4c || true
-        - export PATH="/usr/local/opt/python/libexec/bin:$PATH"
+        - export PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH"
         - sudo pip2 install --upgrade pip setuptools
       install:
         - python2 setup.py sdist
