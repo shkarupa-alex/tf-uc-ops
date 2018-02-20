@@ -9,21 +9,21 @@ matrix:
         - sudo apt-get -qq update
         - sudo apt-get install -y g++ icu-devtools
         - sudo apt-get install -y python3-setuptools python3-pip
-        - sudo pip3 --no-cache-dir install --upgrade pip setuptools
+        - sudo pip3 install --upgrade pip setuptools
       install:
         - python3 setup.py sdist
-        - pip3 --verbose --no-cache-dir install tfucops --user --no-index -f dist/
-      script: (cd /; python -m tfucops.tests)
+        - pip3 --verbose install tfucops -f dist/
+      script: (cd /; python3 -m tfucops.tests)
     - os: osx
       before_install:
         - brew update
         - brew install python icu4c || true
         - brew upgrade python icu4c || true
         - export PATH="/usr/local/opt/python/libexec/bin:$PATH"
-        - sudo pip2 --no-cache-dir install --upgrade pip setuptools
+        - sudo pip2 install --upgrade pip setuptools
       install:
         - python2 setup.py sdist
-        - pip2 --verbose --no-cache-dir install tfucops --no-index -f dist/
+        - pip2 --verbose install tfucops -f dist/
       script: (cd /; python2 -m tfucops.tests)
 
 deploy:
