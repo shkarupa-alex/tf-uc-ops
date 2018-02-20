@@ -18,7 +18,7 @@ matrix:
         - PIP_BIN=pip2
       before_install:
         - brew update
-        - brew upgrade python g++ icu4c
+        - brew upgrade python gcc icu4c
         - export PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH"
 
 script: make

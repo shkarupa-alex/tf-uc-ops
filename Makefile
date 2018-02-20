@@ -32,7 +32,7 @@ clean:
 
 deps: clean
 	$(PYTHON) setup.py egg_info
-	$(PIP) install --no-cache-dir -U -r tfucops.egg-info/requires.txt
+	$(PIP) install -U -r tfucops.egg-info/requires.txt
 
 build: deps
 	$(eval TF_CFLAGS := $(shell $(PYTHON) -c 'import tensorflow as tf; print(" ".join(tf.sysconfig.get_compile_flags()))'))
