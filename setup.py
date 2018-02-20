@@ -3,15 +3,10 @@ from __future__ import division
 from __future__ import print_function
 
 from setuptools import setup
-from setuptools.dist import Distribution
-
-class BinaryDistribution(Distribution):
-    def has_ext_modules(foo):
-        return True
 
 setup(
     name='tfucops',
-    version='1.0.2',
+    version='1.0.6',
     description='Unicode string OPs for TensorFlow',
     url='https://github.com/shkarupa-alex/tfucops',
     author='Shkarupa Alex',
@@ -22,8 +17,4 @@ setup(
     install_requires=[
         'tensorflow>=1.5.0'
     ],
-    package_data={
-        '': ['*.so'],
-    },
-    distclass=BinaryDistribution,
 )

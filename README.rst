@@ -1,8 +1,10 @@
-Build Status .. image:: https://travis-ci.org/shkarupa-alex/tf-uc-ops.svg?branch=master
+.. image:: https://travis-ci.org/shkarupa-alex/tf-uc-ops.svg?branch=master
+
 
 tf-uc-ops
 =========
-Package provide few custom OPs for TensorFlow to deal with unicode strings:
+Package provides few custom OPs for TensorFlow to deal with unicode strings:
+
 * transform_normalize_unicode
 * transform_lower_case
 * expand_split_words
@@ -12,11 +14,18 @@ See test dir for usage examples.
 
 Installation
 ------------
-Package requires ICU c++ library to be installed.
+1. Install GNU C++ Compiler and C++ ICU library. This step is OS-specific.
 
-For Linux distribution run
-``sudo apt-get install -y g++ icu-devtools``
+Debian-based linux
+    ``sudo apt-get install -y g++ icu-devtools``
 
-For MacOS X distribution run
-``brew install icu4c``
-and setup PKG_CONFIG_PATH as pointed in notice (e.g. export ``PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH"``)
+RedHat-based linux
+    ``sudo yum install gcc-c++ libicu-devel``
+
+MacOS X
+    ``brew install icu4c``
+    
+    setup PKG_CONFIG_PATH as pointed in notice (e.g. export ``PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH"``)
+
+2. Install package as ususal
+    ``pip install -U tfucops``

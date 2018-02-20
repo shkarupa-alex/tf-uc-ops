@@ -1,18 +1,24 @@
-matrix:
-  include:
-    - sudo: required
-      services:
-        - docker
-      env:
-        - DOCKER_IMAGE=quay.io/pypa/manylinux1_x86_64
-        - OS_NAME=linux
+language: python
+
+python:
+  - 2.7
+  - 3.6
+
+os:
+  - linux
+  - osx
+
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -qq update                                                     ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y g++ icu-devtools                                    ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update                                                                   ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install icu4c                                                            ; fi
 
 install:
-  - docker pull $DOCKER_IMAGE
+  - python setup.py sdist
+  - pip install tfucops --no-index -f dist/
 
-script:
-  - docker run --rm -v `pwd`:/io $DOCKER_IMAGE /io/build-wheels.sh
-  - ls dist/
+script: python -m tfucops.tests
 
 deploy:
   provider: pypi

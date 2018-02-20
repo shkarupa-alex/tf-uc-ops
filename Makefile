@@ -10,10 +10,10 @@ ifeq ($(UNAME_S),Darwin)
 endif
 
 test:
-	env python -m tests
+	env python -m tfucops.tests
 
 build: clean
-	g++ -std=c++11 -shared tfucops/src/tf_uc_ops.cc -o tfucops/tf_uc_ops.so -fPIC $(TF_CFLAGS) $(TF_LFLAGS) -O2 $(OS_FLAGS) $(ICU_FLAGS)
+	g++ -std=c++11 -shared tfucops/src/tf_uc_ops.cc -o tfucops/tfucops.so -fPIC $(TF_CFLAGS) $(TF_LFLAGS) -O2 $(OS_FLAGS) $(ICU_FLAGS)
 
 clean:
-	rm -f tf-uc-ops/ops.so
+	rm -f tfucops/tfucops.so
