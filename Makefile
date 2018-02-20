@@ -30,8 +30,8 @@ ICU_FLAGS := $(shell pkg-config --libs --cflags icu-uc)
 
 all:
   # cleanup
-	$(PIP) uninstall -y tfucops
-	rm -f build dist tfucops.egg-info tfucops/tfucops.so
+	$(PIP) uninstall -y tfucops || true
+	rm -rf build dist tfucops.egg-info tfucops/tfucops.so
 
 	# install dependencies
 	$(PYTHON) setup.py egg_info
