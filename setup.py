@@ -14,6 +14,9 @@ setup(
     license='MIT',
     keywords='tensorflow unicode string op',
     packages=['tfucops'],
+    package_data={
+        '': ['*.h', '*.cc'],
+    },
     install_requires=[
         'tensorflow>=1.5.0'
     ],
