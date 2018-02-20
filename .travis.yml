@@ -12,7 +12,7 @@ matrix:
         - sudo pip3 install --upgrade pip setuptools
       install:
         - python3 setup.py sdist
-        - sudo pip3 install tfucops -f dist/
+        - pip3 install --user tfucops -f dist/
       script: for TEST in tests/*.py; do python3 $TEST; done
     - os: osx
       before_install:
@@ -23,7 +23,7 @@ matrix:
         - sudo pip2 install --upgrade pip setuptools
       install:
         - python2 setup.py sdist
-        - sudo pip2 install tfucops -f dist/
+        - pip2 install --user tfucops -f dist/
       script: for TEST in tests/*.py; do python2 $TEST; done
 
 deploy:
