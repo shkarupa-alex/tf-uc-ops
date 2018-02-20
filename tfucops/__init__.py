@@ -2,9 +2,13 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+from os import path
 from tensorflow.python.framework import ops
-from .ops_lib import _ops_lib_on_demand
 import tensorflow as tf
+
+
+# Compiled kernels
+_ops_lib = tf.load_op_library(path.join(path.dirname(path.abspath(__file__)), 'tfucops.so'))
 
 
 def transform_normalize_unicode(source, form):
@@ -19,7 +23,7 @@ def transform_normalize_unicode(source, form):
     """
 
     source = tf.convert_to_tensor(source, dtype=tf.string)
-    result = _ops_lib_on_demand().normalize_unicode(source, form)
+    result = _ops_lib.normalize_unicode(source, form)
 
     return result
 
@@ -37,7 +41,7 @@ def transform_lower_case(source):
     """
 
     source = tf.convert_to_tensor(source, dtype=tf.string)
-    result = _ops_lib_on_demand().lowercase_unicode(source)
+    result = _ops_lib.lowercase_unicode(source)
 
     return result
 
@@ -57,7 +61,7 @@ def expand_split_words(source, default_value=''):
     """
 
     source = tf.convert_to_tensor(source, dtype=tf.string)
-    result = _ops_lib_on_demand().split_words(source, default_value)
+    result = _ops_lib.split_words(source, default_value)
 
     return result
 

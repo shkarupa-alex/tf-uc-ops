@@ -16,7 +16,7 @@ setup(
     packages=['tfucops'],
     include_package_data=True,
     package_data={
-        '': ['*.h', '*.cc'],
+        '': ['*.so'],
     },
     install_requires=[
         'tensorflow>=1.5.0'
