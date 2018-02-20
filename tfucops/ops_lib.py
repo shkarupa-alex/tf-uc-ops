@@ -21,7 +21,6 @@ _ops_lib = None # global variable to cache loaded library
 
 def _ops_lib_on_demand():
     global _ops_lib
-    print(_ops_lib)
     if _ops_lib is not None:
         return _ops_lib
 
@@ -56,7 +55,11 @@ def _ops_lib_on_demand():
         icu_flags = out.decode('utf-8').split()
 
         # evaluate OS specific flags
-        os_flags = ['-undefined', 'dynamic_lookup'] if 'Darwin' == platform.system() else []
+        os_flags = []
+        if 'Darwin' == platform.system():
+            os_flags.append(['-undefined', 'dynamic_lookup'])
+        if 'Linux' == platform.system():
+            os_flags.append('-D_GLIBCXX_USE_CXX11_ABI=0')
 
         # get absolute paths to source
         build_source = os.path.join(base_dir, 'src', 'tfucops.cc')
