@@ -9,14 +9,15 @@ matrix:
         - sudo apt-get -qq update
         - sudo apt-get install -y g++ icu-devtools
     - os: osx
+      language: generic
       before_install:
         - brew update
-        - brew install icu4c
+        - brew install python || brew upgrade python
+        - brew install icu4c || brew upgrade icu4c
 
 install:
-  - pip install --upgrade pip
   - python setup.py sdist
-  - pip install tfucops --no-index -f dist/
+  - pip install tfucops --user --no-index -f dist/
 
 script: (cd /; python -m tfucops.tests)
 
