@@ -1,25 +1,29 @@
 sudo: required
 
+language: generic
+
 matrix:
   include:
     - os: linux
-      language: python
-      python: 3.6
       before_install:
         - sudo apt-get -qq update
         - sudo apt-get install -y g++ icu-devtools
+      install:
+        - pip3 install --upgrade pip setuptools
+        - python3 setup.py sdist
+        - pip3 install tfucops --user --no-index -f dist/
+      script: (cd /; python -m tfucops.tests)
     - os: osx
-      language: generic
       before_install:
         - brew update
-        - brew install python || brew upgrade python
-        - brew install icu4c || brew upgrade icu4c
-
-install:
-  - python setup.py sdist
-  - pip install tfucops --user --no-index -f dist/
-
-script: (cd /; python -m tfucops.tests)
+        - brew install python icu4c
+        - brew upgrade python icu4c
+      install:
+        - export PATH="/usr/local/opt/python/libexec/bin:$PATH"
+        - pip2 install --upgrade pip setuptools
+        - python2 setup.py sdist
+        - pip2 install tfucops --no-index -f dist/
+      script: (cd /; python2 -m tfucops.tests)
 
 deploy:
   provider: pypi
