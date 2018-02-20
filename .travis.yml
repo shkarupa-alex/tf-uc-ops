@@ -9,15 +9,14 @@ matrix:
         - sudo apt-get -qq update
         - sudo apt-get install -y g++ icu-devtools
       install:
-        - pip3 install --upgrade pip setuptools
         - python3 setup.py sdist
         - pip3 install tfucops --user --no-index -f dist/
       script: (cd /; python -m tfucops.tests)
     - os: osx
       before_install:
         - brew update
-        - brew install python icu4c
-        - brew upgrade python icu4c
+        - brew install python icu4c || true
+        - brew upgrade python icu4c || true
       install:
         - export PATH="/usr/local/opt/python/libexec/bin:$PATH"
         - pip2 install --upgrade pip setuptools
