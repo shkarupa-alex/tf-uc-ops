@@ -36,14 +36,13 @@ class SplitWordsOp : public ExpandBaseOp {
   BreakIterator *_wordIterator GUARDED_BY(wordMutex);
 
   void expand(const UnicodeString &source, std::vector<UnicodeString> &target, UErrorCode &error) {
-    BreakIterator *wordIterator = _wordIterator->clone();
-
     if (0 == source.length()) {
       target.push_back(UnicodeString());
       return;
     }
 
     // Split words by Unicode rules
+    BreakIterator *wordIterator = _wordIterator->clone();
     wordIterator->setText(source);
     int32_t prev = wordIterator->first();
     for (int32_t pos = wordIterator->first(); pos != BreakIterator::DONE; pos = wordIterator->next()) {
