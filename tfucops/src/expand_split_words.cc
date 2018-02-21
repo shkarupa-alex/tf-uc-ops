@@ -27,15 +27,17 @@ class SplitWordsOp : public ExpandBaseOp {
   explicit SplitWordsOp(OpKernelConstruction* ctx) : ExpandBaseOp(ctx) {
     // Create word-level BreakIterator instance
     UErrorCode wordError = U_ZERO_ERROR;
-    wordIterator = BreakIterator::createWordInstance(Locale::getRoot(), wordError);
+    _wordIterator = BreakIterator::createWordInstance(Locale::getRoot(), wordError);
     OP_REQUIRES(ctx, U_SUCCESS(wordError), errors::InvalidArgument("BreakIterator instantiation failed"));
   }
 
  private:
   mutex wordMutex;
-  BreakIterator *wordIterator GUARDED_BY(wordMutex);
+  BreakIterator *_wordIterator GUARDED_BY(wordMutex);
 
   void expand(const UnicodeString &source, std::vector<UnicodeString> &target, UErrorCode &error) {
+    BreakIterator *wordIterator = _wordIterator->clone();
+
     if (0 == source.length()) {
       target.push_back(UnicodeString());
       return;

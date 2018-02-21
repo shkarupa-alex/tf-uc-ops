@@ -18,14 +18,22 @@ Installation
 
 Debian-based linux
     ``sudo apt-get install -y g++ icu-devtools``
+    ``sudo apt-get install -y pkg-config python3 python3-setuptools python3-pip g++ wget``
+    ``wget -qO- http://download.icu-project.org/files/icu4c/60.2/icu4c-60_2-src.tgz | tar xvz``
+    ``wget -qO- http://download.icu-project.org/files/icu4c/60.2/icu4c-60_2-src.tgz | tar xvz``
+    ``cd icu/source && ./configure && make && sudo make install``
 
-RedHat-based linux
-    ``sudo yum install gcc-c++ libicu-devel``
+    setup LD_LIBRARY_PATH to point installed ICU shared library (e.g. ``export LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"``)
 
 MacOS X
-    ``brew install icu4c``
-    
-    setup PKG_CONFIG_PATH as pointed in notice (e.g. export ``PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH"``)
+    ``brew update``
+    ``brew install pkg-config python gcc icu4c``
+    ``brew upgrade pkg-config python gcc icu4c``
 
-2. Install package as ususal
-    ``pip install -U tfucops``
+    setup PKG_CONFIG_PATH as pointed in notice (e.g. ``PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH"``)
+
+2. Clone this package
+    ``git clone https://github.com/shkarupa-alex/tfucops.git && cd tfucops``
+
+3. Setup python/pip (any version supported by tensorflow), make & install
+    ``PYTHON_BIN=python3 PIP_BIN=pip3 make``
