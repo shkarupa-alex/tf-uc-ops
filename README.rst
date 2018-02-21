@@ -38,4 +38,4 @@ MacOS X
 
 3. Clone this package, make & install
     ``git clone https://github.com/shkarupa-alex/tfucops.git && cd tfucops``
-    [sudo] ``make``
+    [sudo env LD_LIBRARY_PATH=$LD_LIBRARY_PATH PYTHON_BIN=$PYTHON_BIN PIP_BIN=$PIP_BIN] ``make``
