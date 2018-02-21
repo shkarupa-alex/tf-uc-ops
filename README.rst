@@ -32,8 +32,10 @@ MacOS X
 
     setup PKG_CONFIG_PATH as pointed in notice (e.g. ``PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH"``)
 
-2. Clone this package
-    ``git clone https://github.com/shkarupa-alex/tfucops.git && cd tfucops``
+2. Setup python/pip, update pip/setuptools(any version supported by tensorflow)
+    ``export PYTHON_BIN=python3``
+    ``export PIP_BIN=pip3``
+    [sudo] ``$PIP install -U pip setuptools``
 
-3. Setup python/pip (any version supported by tensorflow), make & install
-    ``PYTHON_BIN=python3 PIP_BIN=pip3 make``
+3. Clone this package, make & install
+    ``git clone https://github.com/shkarupa-alex/tfucops.git && cd tfucops && make``
