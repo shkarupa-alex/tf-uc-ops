@@ -6,7 +6,9 @@ from os import path
 from tensorflow.python.framework import ops
 import tensorflow as tf
 
-_ops_lib = tf.load_op_library(path.join(path.dirname(path.abspath(__file__)), 'tf_uc_ops.so'))
+
+# Compiled kernels
+_ops_lib = tf.load_op_library(path.join(path.dirname(path.abspath(__file__)), 'tfucops.so'))
 
 
 def transform_normalize_unicode(source, form):

@@ -1,8 +1,8 @@
 #ifndef TF_UC_OPS_SPLIT_WORDS
 #define TF_UC_OPS_SPLIT_WORDS
 
-#include <unicode/brkiter.h>
 #include "expand_base.cc"
+#include <unicode/brkiter.h>
 
 REGISTER_OP("SplitWords")
   .Input("source: string")
@@ -27,13 +27,13 @@ class SplitWordsOp : public ExpandBaseOp {
   explicit SplitWordsOp(OpKernelConstruction* ctx) : ExpandBaseOp(ctx) {
     // Create word-level BreakIterator instance
     UErrorCode wordError = U_ZERO_ERROR;
-    wordIterator = BreakIterator::createWordInstance(Locale::getRoot(), wordError);
+    _wordIterator = BreakIterator::createWordInstance(Locale::getRoot(), wordError);
     OP_REQUIRES(ctx, U_SUCCESS(wordError), errors::InvalidArgument("BreakIterator instantiation failed"));
   }
 
  private:
   mutex wordMutex;
-  BreakIterator *wordIterator GUARDED_BY(wordMutex);
+  BreakIterator *_wordIterator GUARDED_BY(wordMutex);
 
   void expand(const UnicodeString &source, std::vector<UnicodeString> &target, UErrorCode &error) {
     if (0 == source.length()) {
@@ -42,6 +42,7 @@ class SplitWordsOp : public ExpandBaseOp {
     }
 
     // Split words by Unicode rules
+    BreakIterator *wordIterator = _wordIterator->clone();
     wordIterator->setText(source);
     int32_t prev = wordIterator->first();
     for (int32_t pos = wordIterator->first(); pos != BreakIterator::DONE; pos = wordIterator->next()) {
