@@ -29,10 +29,11 @@ class LowercaseUnicodeTest(tf.test.TestCase):
             self.assertAllEqual(b'test', result)
 
     def testCyrillic(self):
-        expected = u'тест'.encode('utf-8')
+        expected = u'тест'
 
         with self.test_session():
             result = transform_lower_case(u'ТеСт').eval()
+            expected = tf.convert_to_tensor(expected, dtype=tf.string).eval()
             self.assertAllEqual(expected, result)
 
 

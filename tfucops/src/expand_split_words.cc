@@ -37,7 +37,7 @@ class SplitWordsOp : public ExpandBaseOp {
 
   void expand(const UnicodeString &source, std::vector<UnicodeString> &target, UErrorCode &error) {
     if (0 == source.length()) {
-      target.push_back(UnicodeString());
+      target.push_back(source);
       return;
     }
 
