@@ -31,6 +31,7 @@ clean:
 	rm -rf build dist tfucops.egg-info tfucops/tfucops.so
 
 deps: clean
+	$(PIP) install -U pip setuptools
 	$(PYTHON) setup.py egg_info
 	$(PIP) install -U -r tfucops.egg-info/requires.txt
 

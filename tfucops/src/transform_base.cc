@@ -5,6 +5,7 @@
 #include "tensorflow/core/framework/op_kernel.h"
 #include "tensorflow/core/framework/shape_inference.h"
 #include <unicode/unistr.h>
+#include <unicode/bytestream.h>
 
 using namespace tensorflow;
 

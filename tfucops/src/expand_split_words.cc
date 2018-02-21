@@ -1,8 +1,8 @@
 #ifndef TF_UC_OPS_SPLIT_WORDS
 #define TF_UC_OPS_SPLIT_WORDS
 
-#include <unicode/brkiter.h>
 #include "expand_base.cc"
+#include <unicode/brkiter.h>
 
 REGISTER_OP("SplitWords")
   .Input("source: string")
