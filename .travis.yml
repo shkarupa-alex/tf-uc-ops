@@ -14,7 +14,7 @@ matrix:
         - wget -qO- http://download.icu-project.org/files/icu4c/60.2/icu4c-60_2-src.tgz | tar xvz
         - (cd icu/source && ./configure && make && sudo make install)
         - export LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
-        - sudo $PIP_BIN install -U pip setuptools
+      script: sudo make
     - os: osx
       env:
         - PYTHON_BIN=python2
@@ -23,6 +23,4 @@ matrix:
         - brew update
         - brew upgrade pkg-config python gcc icu4c
         - export PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH"
-        - $PIP_BIN install -U pip setuptools
-
-script: make
+      script: make

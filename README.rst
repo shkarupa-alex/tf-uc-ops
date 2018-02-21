@@ -35,7 +35,7 @@ MacOS X
 2. Setup python/pip, update pip/setuptools(any version supported by tensorflow)
     ``export PYTHON_BIN=python3``
     ``export PIP_BIN=pip3``
-    [sudo] ``$PIP install -U pip setuptools``
 
 3. Clone this package, make & install
-    ``git clone https://github.com/shkarupa-alex/tfucops.git && cd tfucops && make``
+    ``git clone https://github.com/shkarupa-alex/tfucops.git && cd tfucops``
+    [sudo] ``make``
