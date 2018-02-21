@@ -55,3 +55,7 @@ class NormalizeUnicodeTest(tf.test.TestCase):
         with self.test_session():
             with self.assertRaisesOpError('unknown normalization form'):
                 transform_normalize_unicode(u'', 'ABCD').eval()
+
+
+if __name__ == "__main__":
+    tf.test.main()

@@ -34,3 +34,7 @@ class LowercaseUnicodeTest(tf.test.TestCase):
         with self.test_session():
             result = transform_lower_case(u'ТеСт').eval()
             self.assertAllEqual(expected, result)
+
+
+if __name__ == "__main__":
+    tf.test.main()
