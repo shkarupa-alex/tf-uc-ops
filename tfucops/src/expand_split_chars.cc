@@ -1,10 +1,10 @@
-#ifndef TF_UC_OPS_SPLIT_CHARS
-#define TF_UC_OPS_SPLIT_CHARS
+#ifndef TF_UC_OPS_EXPAND_SPLIT_CHARS
+#define TF_UC_OPS_EXPAND_SPLIT_CHARS
 
 #include "expand_base.cc"
 #include <unicode/brkiter.h>
 
-REGISTER_OP("SplitChars")
+REGISTER_OP("ExpandSplitChars")
   .Input("source: string")
   .Attr("default_value: string")
   .Output("result: string")
@@ -22,9 +22,9 @@ REGISTER_OP("SplitChars")
   .SetIsStateful();
 
 
-class SplitCharsOp : public ExpandBaseOp {
+class ExpandSplitCharsOp : public ExpandBaseOp {
  public:
-  explicit SplitCharsOp(OpKernelConstruction* ctx) : ExpandBaseOp(ctx) {}
+  explicit ExpandSplitCharsOp(OpKernelConstruction* ctx) : ExpandBaseOp(ctx) {}
 
  private:
   void expand(const UnicodeString &source, std::vector<UnicodeString> &target, UErrorCode &error) {
@@ -43,6 +43,6 @@ class SplitCharsOp : public ExpandBaseOp {
   }
 };
 
-REGISTER_KERNEL_BUILDER(Name("SplitChars").Device(DEVICE_CPU), SplitCharsOp);
+REGISTER_KERNEL_BUILDER(Name("ExpandSplitChars").Device(DEVICE_CPU), ExpandSplitCharsOp);
 
 #endif

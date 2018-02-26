@@ -1,19 +1,19 @@
-#ifndef TF_UC_OPS_LOWERCASE_UNICODE
-#define TF_UC_OPS_LOWERCASE_UNICODE
+#ifndef TF_UC_OPS_TRANSFORM_LOWER_CASE
+#define TF_UC_OPS_TRANSFORM_LOWER_CASE
 
 #include "tensorflow/core/framework/common_shape_fns.h"
 #include "transform_base.cc"
 
-REGISTER_OP("LowercaseUnicode")
+REGISTER_OP("TransformLowerCase")
   .Input("source: string")
   .Output("result: string")
   .SetShapeFn(shape_inference::UnchangedShape)
   .SetIsStateful();
 
 
-class LowercaseUnicodeOp : public TransformBaseOp {
+class TransformLowerCaseOp : public TransformBaseOp {
  public:
-  explicit LowercaseUnicodeOp(OpKernelConstruction* ctx) : TransformBaseOp(ctx) {}
+  explicit TransformLowerCaseOp(OpKernelConstruction* ctx) : TransformBaseOp(ctx) {}
 
  protected:
   void transform(UnicodeString &item, UErrorCode &error) {
@@ -21,6 +21,6 @@ class LowercaseUnicodeOp : public TransformBaseOp {
   }
 };
 
-REGISTER_KERNEL_BUILDER(Name("LowercaseUnicode").Device(DEVICE_CPU), LowercaseUnicodeOp);
+REGISTER_KERNEL_BUILDER(Name("TransformLowerCase").Device(DEVICE_CPU), TransformLowerCaseOp);
 
 #endif

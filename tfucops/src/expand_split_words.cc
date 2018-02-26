@@ -1,10 +1,10 @@
-#ifndef TF_UC_OPS_SPLIT_WORDS
-#define TF_UC_OPS_SPLIT_WORDS
+#ifndef TF_UC_OPS_EXPAND_SPLIT_WORDS
+#define TF_UC_OPS_EXPAND_SPLIT_WORDS
 
 #include "expand_base.cc"
 #include <unicode/brkiter.h>
 
-REGISTER_OP("SplitWords")
+REGISTER_OP("ExpandSplitWords")
   .Input("source: string")
   .Attr("default_value: string")
   .Output("result: string")
@@ -22,9 +22,9 @@ REGISTER_OP("SplitWords")
   .SetIsStateful();
 
 
-class SplitWordsOp : public ExpandBaseOp {
+class ExpandSplitWordsOp : public ExpandBaseOp {
  public:
-  explicit SplitWordsOp(OpKernelConstruction* ctx) : ExpandBaseOp(ctx) {
+  explicit ExpandSplitWordsOp(OpKernelConstruction* ctx) : ExpandBaseOp(ctx) {
     // Create word-level BreakIterator instance
     UErrorCode wordError = U_ZERO_ERROR;
     _wordIterator = BreakIterator::createWordInstance(Locale::getRoot(), wordError);
@@ -58,6 +58,6 @@ class SplitWordsOp : public ExpandBaseOp {
   }
 };
 
-REGISTER_KERNEL_BUILDER(Name("SplitWords").Device(DEVICE_CPU), SplitWordsOp);
+REGISTER_KERNEL_BUILDER(Name("ExpandSplitWords").Device(DEVICE_CPU), ExpandSplitWordsOp);
 
 #endif

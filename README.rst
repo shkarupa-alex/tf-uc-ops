@@ -5,10 +5,11 @@ tf-uc-ops
 =========
 Package provides few custom OPs for TensorFlow to deal with unicode strings:
 
-* transform_normalize_unicode
-* transform_lower_case
 * expand_split_words
 * expand_split_chars
+* transform_normalize_unicode
+* transform_lower_case
+* transform_zero_digits
 
 See test dir for usage examples.
 

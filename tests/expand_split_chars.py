@@ -7,7 +7,7 @@ import tensorflow as tf
 from tfucops import expand_split_chars
 
 
-class SplitCharsTest(tf.test.TestCase):
+class ExpandSplitCharsTest(tf.test.TestCase):
     def testShape(self):
         with self.test_session():
             result = tf.shape(expand_split_chars([

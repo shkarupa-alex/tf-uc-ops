@@ -7,7 +7,7 @@ import tensorflow as tf
 from tfucops import transform_normalize_unicode
 
 
-class NormalizeUnicodeTest(tf.test.TestCase):
+class TransformNormalizeUnicodeTest(tf.test.TestCase):
     def test0D(self):
         with self.test_session():
             result = transform_normalize_unicode('', 'NFD').eval()

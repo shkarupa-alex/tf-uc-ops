@@ -1,11 +1,11 @@
-#ifndef TF_UC_OPS_NORMALIZE_UNICODE
-#define TF_UC_OPS_NORMALIZE_UNICODE
+#ifndef TF_UC_OPS_TRANSFORM_NORMALIZE_UNICODE
+#define TF_UC_OPS_TRANSFORM_NORMALIZE_UNICODE
 
 #include "tensorflow/core/framework/common_shape_fns.h"
 #include "transform_base.cc"
 #include <unicode/normalizer2.h>
 
-REGISTER_OP("NormalizeUnicode")
+REGISTER_OP("TransformNormalizeUnicode")
   .Input("source: string")
   .Attr("form: string")
   .Output("result: string")
@@ -13,9 +13,9 @@ REGISTER_OP("NormalizeUnicode")
   .SetIsStateful();
 
 
-class NormalizeUnicodeOp : public TransformBaseOp {
+class TransformNormalizeUnicodeOp : public TransformBaseOp {
  public:
-  explicit NormalizeUnicodeOp(OpKernelConstruction* ctx) : TransformBaseOp(ctx) {
+  explicit TransformNormalizeUnicodeOp(OpKernelConstruction* ctx) : TransformBaseOp(ctx) {
     // Prepare attr
     string form_value;
     OP_REQUIRES_OK(ctx, ctx->GetAttr("form", &form_value));
@@ -48,6 +48,6 @@ class NormalizeUnicodeOp : public TransformBaseOp {
   }
 };
 
-REGISTER_KERNEL_BUILDER(Name("NormalizeUnicode").Device(DEVICE_CPU), NormalizeUnicodeOp);
+REGISTER_KERNEL_BUILDER(Name("TransformNormalizeUnicode").Device(DEVICE_CPU), TransformNormalizeUnicodeOp);
 
 #endif

@@ -7,7 +7,7 @@ import tensorflow as tf
 from tfucops import expand_split_words
 
 
-class SplitWordsTest(tf.test.TestCase):
+class ExpandSplitWordsTest(tf.test.TestCase):
     def testShape(self):
         with self.test_session():
             result = tf.shape(expand_split_words([

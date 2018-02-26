@@ -7,7 +7,7 @@ import tensorflow as tf
 from tfucops import transform_lower_case
 
 
-class LowercaseUnicodeTest(tf.test.TestCase):
+class TransformLowercaseUnicodeTest(tf.test.TestCase):
     def test0D(self):
         with self.test_session():
             result = transform_lower_case('X').eval()
