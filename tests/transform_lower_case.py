@@ -7,7 +7,7 @@ import tensorflow as tf
 from tfucops import transform_lower_case
 
 
-class LowercaseUnicodeTest(tf.test.TestCase):
+class TransformLowercaseUnicodeTest(tf.test.TestCase):
     def test0D(self):
         with self.test_session():
             result = transform_lower_case('X').eval()
@@ -29,8 +29,13 @@ class LowercaseUnicodeTest(tf.test.TestCase):
             self.assertAllEqual(b'test', result)
 
     def testCyrillic(self):
-        expected = u'тест'.encode('utf-8')
+        expected = u'тест'
 
         with self.test_session():
             result = transform_lower_case(u'ТеСт').eval()
+            expected = tf.convert_to_tensor(expected, dtype=tf.string).eval()
             self.assertAllEqual(expected, result)
+
+
+if __name__ == "__main__":
+    tf.test.main()

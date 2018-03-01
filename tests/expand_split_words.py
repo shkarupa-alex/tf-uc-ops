@@ -7,7 +7,7 @@ import tensorflow as tf
 from tfucops import expand_split_words
 
 
-class SplitWordsTest(tf.test.TestCase):
+class ExpandSplitWordsTest(tf.test.TestCase):
     def testShape(self):
         with self.test_session():
             result = tf.shape(expand_split_words([
@@ -40,15 +40,16 @@ class SplitWordsTest(tf.test.TestCase):
             result = expand_split_words('').eval()
             self.assertAllEqual(expected, result)
 
-    # def testRestore(self):
-    #     source = 'Hey\n\tthere\t«word», !!!'
-    #
-    #     result_op = expand_split_words(source)
-    #     result_op = tf.reduce_join(result_op, 0)
-    #
-    #     with self.test_session():
-    #         result = result_op.eval()
-    #         self.assertAllEqual(source.encode('utf-8'), result)
+    def testRestore(self):
+        source = u'Hey\n\tthere\t«word», !!!'
+
+        result_op = expand_split_words(source)
+        result_op = tf.reduce_join(result_op)
+
+        with self.test_session():
+            result = result_op.eval()
+            expected = tf.convert_to_tensor(source, dtype=tf.string).eval()
+            self.assertAllEqual(expected, result)
 
     def testWrapped(self):
         result_op = expand_split_words([
@@ -69,10 +70,10 @@ class SplitWordsTest(tf.test.TestCase):
             [' ', '[', 'word', ']', ' '],
             [' ', '<', 'word', '>', ' '],
         ]
-        expected = [[__.encode('utf-8') for __ in _] for _ in expected]
 
         with self.test_session():
             result = result_op.eval()
+            expected = tf.convert_to_tensor(expected, dtype=tf.string).eval()
             self.assertAllEqual(expected, result)
 
     def testWordPunkt(self):
@@ -104,10 +105,10 @@ class SplitWordsTest(tf.test.TestCase):
             [' ', 'word', '%', ' ', '', ''],
             [' ', '$', 'word', ' ', '', ''],
         ]
-        expected = [[__.encode('utf-8') for __ in _] for _ in expected]
 
         with self.test_session():
             result = result_op.eval()
+            expected = tf.convert_to_tensor(expected, dtype=tf.string).eval()
             self.assertAllEqual(expected, result)
 
     def testComplexWord(self):
@@ -125,8 +126,12 @@ class SplitWordsTest(tf.test.TestCase):
             [' ', 'word', '+', 'word', '-', 'word', ' ', '', ''],
             [' ', 'word', '\\', 'word', '/', 'word', '#', 'word', ' '],
         ]
-        expected = [[__.encode('utf-8') for __ in _] for _ in expected]
 
         with self.test_session():
             result = result_op.eval()
+            expected = tf.convert_to_tensor(expected, dtype=tf.string).eval()
             self.assertAllEqual(expected, result)
+
+
+if __name__ == "__main__":
+    tf.test.main()

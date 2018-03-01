@@ -23,12 +23,12 @@ def transform_normalize_unicode(source, form):
     """
 
     source = tf.convert_to_tensor(source, dtype=tf.string)
-    result = _ops_lib.normalize_unicode(source, form)
+    result = _ops_lib.transform_normalize_unicode(source, form)
 
     return result
 
 
-ops.NotDifferentiable("NormalizeUnicode")
+ops.NotDifferentiable("TransformNormalizeUnicode")
 
 
 def transform_lower_case(source):
@@ -41,12 +41,30 @@ def transform_lower_case(source):
     """
 
     source = tf.convert_to_tensor(source, dtype=tf.string)
-    result = _ops_lib.lowercase_unicode(source)
+    result = _ops_lib.transform_lower_case(source)
 
     return result
 
 
-ops.NotDifferentiable("LowercaseUnicode")
+ops.NotDifferentiable("TransformLowerCase")
+
+
+def transform_zero_digits(source):
+    """Replace each digit with 0.
+
+    Args:
+        source: `Tensor` of any shape, strings to replace digits.
+    Returns:
+        `Tensor` of same shape and size as input.
+    """
+
+    source = tf.convert_to_tensor(source, dtype=tf.string)
+    result = _ops_lib.transform_zero_digits(source)
+
+    return result
+
+
+ops.NotDifferentiable("TransformZeroDigits")
 
 
 def expand_split_words(source, default_value=''):
@@ -61,9 +79,29 @@ def expand_split_words(source, default_value=''):
     """
 
     source = tf.convert_to_tensor(source, dtype=tf.string)
-    result = _ops_lib.split_words(source, default_value)
+    result = _ops_lib.expand_split_words(source, default_value)
 
     return result
 
 
-ops.NotDifferentiable("SplitWords")
+ops.NotDifferentiable("ExpandSplitWords")
+
+
+def expand_split_chars(source, default_value=''):
+    """Split unicode strings into characters.
+    Result tokens could be simply joined with empty separator to obtain original strings.
+
+    Args:
+        source: `Tensor` of any shape, strings to split
+        default_value: Scalar value for padding.  Defaults to empty string.
+    Returns:
+        `Tensor` with an additional dimension of size 1 added.
+    """
+
+    source = tf.convert_to_tensor(source, dtype=tf.string)
+    result = _ops_lib.expand_split_chars(source, default_value)
+
+    return result
+
+
+ops.NotDifferentiable("ExpandSplitChars")
