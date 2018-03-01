@@ -6,11 +6,6 @@ ifeq ($(PYTHON),)
 	PYTHON := python
 endif
 
-PIP = $(PIP_BIN)
-ifeq ($(PIP),)
-	PIP := pip
-endif
-
 
 # TF OS-specific flags
 UNAME_S := $(shell uname -s)
@@ -28,16 +23,15 @@ prod: clean deps compile install_prod test
 dev: uninstall compile install_dev test
 
 uninstall:
-	$(PIP) uninstall -y tfucops || true
+	$(PYTHON) -m pip uninstall -y tfucops || true
 
 clean: uninstall
-	$(PIP) uninstall -y tensorflow || true
 	rm -rf compile dist tfucops.egg-info tfucops/tfucops.so
 
 deps:
-	$(PIP) install -U pip setuptools
+	$(PYTHON) -m pip install -U pip setuptools
 	$(PYTHON) setup.py egg_info
-	$(PIP) install -U -r tfucops.egg-info/requires.txt
+	$(PYTHON) -m pip install -U -r tfucops.egg-info/requires.txt
 
 compile:
 	$(eval TF_CFLAGS := $(shell $(PYTHON) -c 'import tensorflow as tf; print(" ".join(tf.sysconfig.get_compile_flags()))'))
@@ -48,7 +42,7 @@ install_prod:
 	$(PYTHON) setup.py install --force
 
 install_dev:
-	$(PIP) install -e .
+	$(PYTHON) -m pip install -e .
 
 test:
 	$(PYTHON) tests/all_tests_run.py

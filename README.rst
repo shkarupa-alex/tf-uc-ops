@@ -18,9 +18,7 @@ Installation
 1. Install GNU C++ Compiler and C++ ICU library. This step is OS-specific.
 
 Debian-based linux
-    ``sudo apt-get install -y g++ icu-devtools``
     ``sudo apt-get install -y pkg-config python3 python3-setuptools python3-pip g++ wget``
-    ``wget -qO- http://download.icu-project.org/files/icu4c/60.2/icu4c-60_2-src.tgz | tar xvz``
     ``wget -qO- http://download.icu-project.org/files/icu4c/60.2/icu4c-60_2-src.tgz | tar xvz``
     ``cd icu/source && ./configure && make && sudo make install``
 
@@ -33,9 +31,8 @@ MacOS X
 
     setup PKG_CONFIG_PATH as pointed in notice (e.g. ``PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH"``)
 
-2. Setup python/pip, update pip/setuptools(any version supported by tensorflow)
+2. Setup python, update pip & setuptools(any version supported by tensorflow)
     ``export PYTHON_BIN=python3``
-    ``export PIP_BIN=pip3``
 
 3. Clone this package, make & install
     ``git clone https://github.com/shkarupa-alex/tfucops.git && cd tfucops``
