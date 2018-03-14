@@ -1,7 +1,7 @@
 #ifndef TF_UC_OPS_EXPAND_SPLIT_WORDS
 #define TF_UC_OPS_EXPAND_SPLIT_WORDS
 
-#include "expand_base.cc"
+#include "expand_base.cpp"
 #include <unicode/brkiter.h>
 
 REGISTER_OP("ExpandSplitWords")

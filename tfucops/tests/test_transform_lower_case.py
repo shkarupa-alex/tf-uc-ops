@@ -4,7 +4,7 @@ from __future__ import division
 from __future__ import print_function
 
 import tensorflow as tf
-from tfucops import transform_lower_case
+from .. import transform_lower_case
 
 
 class TransformLowercaseUnicodeTest(tf.test.TestCase):
@@ -36,6 +36,3 @@ class TransformLowercaseUnicodeTest(tf.test.TestCase):
             expected = tf.convert_to_tensor(expected, dtype=tf.string).eval()
             self.assertAllEqual(expected, result)
 
-
-if __name__ == "__main__":
-    tf.test.main()

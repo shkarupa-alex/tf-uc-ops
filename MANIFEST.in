@@ -1,2 +1,2 @@
 include LICENSE.txt
-recursive-include tfucops *.so
+recursive-include source *.cpp

@@ -4,7 +4,7 @@ from __future__ import division
 from __future__ import print_function
 
 import tensorflow as tf
-from tfucops import transform_normalize_unicode
+from .. import transform_normalize_unicode
 
 
 class TransformNormalizeUnicodeTest(tf.test.TestCase):
@@ -60,6 +60,3 @@ class TransformNormalizeUnicodeTest(tf.test.TestCase):
             with self.assertRaisesOpError('unknown normalization form'):
                 transform_normalize_unicode(u'', 'ABCD').eval()
 
-
-if __name__ == "__main__":
-    tf.test.main()
