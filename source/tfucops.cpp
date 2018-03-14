@@ -1,9 +1,9 @@
+#include <unicode/uversion.h>
 
-// TODO:
-//    #include <unicode/uversion.h>
-//    UVersionInfo release;
-//    u_getVersion(release);
-//    std::cout << std::to_string(release[0]) << std::endl; // >=60
+#if U_ICU_VERSION_MAJOR_NUM < 60
+#error Required ICU version >= 60.0
+#endif
+
 
 
 #include "transform_normalize_unicode.cpp"

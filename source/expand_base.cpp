@@ -21,15 +21,15 @@ class ExpandBaseOp : public OpKernel {
     const Tensor* source_tensor;
     OP_REQUIRES_OK(ctx, ctx->input("source", &source_tensor));
     const auto source_values = source_tensor->flat<string>();
-    const int64 num_elements = source_tensor->shape().num_elements();
+    const uint64 num_elements = source_tensor->shape().num_elements();
 
 
     std::vector<std::vector<string>> result_strings;
     result_strings.reserve(num_elements);
-    int64 max_size = 0;
+    uint64 max_size = 0;
 
     // Expand and store in temporary array (better speed, worse memory consumption)
-    for (int64 i = 0; i < num_elements; i++) {
+    for (uint64 i = 0; i < num_elements; i++) {
       string binary_string = source_values(i);
       UnicodeString unicode_string = UnicodeString::fromUTF8(binary_string);
 
@@ -61,11 +61,11 @@ class ExpandBaseOp : public OpKernel {
     OP_REQUIRES_OK(ctx, ctx->allocate_output(0, TensorShape({result_shape}), &result_tensor));
     auto result_values = result_tensor->flat<string>();
 
-    for (int64 i = 0; i < result_strings.size(); i++) {
-      for (int64 j = 0; j < result_strings[i].size(); j++) {
+    for (uint64 i = 0; i < result_strings.size(); i++) {
+      for (uint64 j = 0; j < result_strings[i].size(); j++) {
         result_values(i * max_size + j) = result_strings[i][j];
       }
-      for (int64 k = 0; k < max_size - result_strings[i].size(); k++) {
+      for (uint64 k = 0; k < max_size - result_strings[i].size(); k++) {
         result_values(i * max_size + result_strings[i].size() + k) = default_value;
       }
     }

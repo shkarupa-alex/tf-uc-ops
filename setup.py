@@ -19,9 +19,6 @@ def pkg_config(*packages):
 
 
 def tf_config():
-    cpp_flags = ['-std=c++11', '-shared', '-fPIC', '-O2']
-    os_flags = ['-undefined dynamic_lookup'] if platform.system() == 'Darwin' else []
-
     return tf.sysconfig.get_compile_flags() + tf.sysconfig.get_link_flags()
 
 

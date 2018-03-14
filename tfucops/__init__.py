@@ -4,16 +4,25 @@ from __future__ import print_function
 
 import hashlib
 import tensorflow as tf
+import sysconfig
 from os import path
 from tensorflow.python.framework import ops
 
-__tf_flags = tf.sysconfig.get_compile_flags() + tf.sysconfig.get_link_flags()
-__flags_key = hashlib.md5('/'.join(__tf_flags).encode('utf-8')).hexdigest()
-__curr_dir = path.dirname(path.abspath(__file__))
-__lib_path = path.join(__curr_dir, '..', 'tfucops_{}.so'.format(__flags_key))
-if not path.exists(__lib_path):
-    raise Exception('OPs library for your TF installation not found. Try to reinstall "tfucops" package')
-_lib = tf.load_op_library(__lib_path)
+
+def __load_lib():
+    tf_flags = tf.sysconfig.get_compile_flags() + tf.sysconfig.get_link_flags()
+    flags_key = hashlib.md5('/'.join(tf_flags).encode('utf-8')).hexdigest()
+    curr_dir = path.dirname(path.abspath(__file__))
+    lib_file = 'tfucops_{}{}'.format(flags_key, sysconfig.get_config_var('SO'))
+    lib_path = path.join(curr_dir, '..', lib_file)
+    if not path.exists(lib_path):
+        raise Exception(
+            'OP library ({}) for your TF installation not found. Reinstall "tfucops" package'.format(lib_file))
+
+    return tf.load_op_library(lib_path)
+
+
+_lib = __load_lib()
 
 
 def transform_normalize_unicode(source, form):
