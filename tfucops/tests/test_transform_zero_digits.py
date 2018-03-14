@@ -4,7 +4,7 @@ from __future__ import division
 from __future__ import print_function
 
 import tensorflow as tf
-from tfucops import transform_zero_digits
+from .. import transform_zero_digits
 
 
 class TransformZeroDigitsTest(tf.test.TestCase):
@@ -34,6 +34,3 @@ class TransformZeroDigitsTest(tf.test.TestCase):
             expected = tf.convert_to_tensor(u'P.0, АБ0, ЯК00x', dtype=tf.string).eval()
             self.assertAllEqual(expected, result)
 
-
-if __name__ == "__main__":
-    tf.test.main()

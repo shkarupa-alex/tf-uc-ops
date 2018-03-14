@@ -1,7 +1,7 @@
 #ifndef TF_UC_OPS_EXPAND_SPLIT_CHARS
 #define TF_UC_OPS_EXPAND_SPLIT_CHARS
 
-#include "expand_base.cc"
+#include "expand_base.cpp"
 #include <unicode/brkiter.h>
 
 REGISTER_OP("ExpandSplitChars")
@@ -35,7 +35,6 @@ class ExpandSplitCharsOp : public ExpandBaseOp {
 
     // Split chars
     for (int32_t pos = 0; pos < source.length(); pos++) {
-      UChar unit = source.charAt(pos);
       UnicodeString word = UnicodeString(source, pos, 1);
 
       target.push_back(word);

@@ -103,4 +103,4 @@ ENV/
 # this package
 .DS_Store
 .idea/
-*.so.*
+*.so

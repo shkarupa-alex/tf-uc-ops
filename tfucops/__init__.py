@@ -2,13 +2,18 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import hashlib
+import tensorflow as tf
 from os import path
 from tensorflow.python.framework import ops
-import tensorflow as tf
 
-
-# Compiled kernels
-_ops_lib = tf.load_op_library(path.join(path.dirname(path.abspath(__file__)), 'tfucops.so'))
+__tf_flags = tf.sysconfig.get_compile_flags() + tf.sysconfig.get_link_flags()
+__flags_key = hashlib.md5('/'.join(__tf_flags).encode('utf-8')).hexdigest()
+__curr_dir = path.dirname(path.abspath(__file__))
+__lib_path = path.join(__curr_dir, '..', 'tfucops_{}.so'.format(__flags_key))
+if not path.exists(__lib_path):
+    raise Exception('OPs library for your TF installation not found. Try to reinstall "tfucops" package')
+_lib = tf.load_op_library(__lib_path)
 
 
 def transform_normalize_unicode(source, form):
@@ -23,7 +28,7 @@ def transform_normalize_unicode(source, form):
     """
 
     source = tf.convert_to_tensor(source, dtype=tf.string)
-    result = _ops_lib.transform_normalize_unicode(source, form)
+    result = _lib.transform_normalize_unicode(source, form)
 
     return result
 
@@ -41,7 +46,7 @@ def transform_lower_case(source):
     """
 
     source = tf.convert_to_tensor(source, dtype=tf.string)
-    result = _ops_lib.transform_lower_case(source)
+    result = _lib.transform_lower_case(source)
 
     return result
 
@@ -59,7 +64,7 @@ def transform_zero_digits(source):
     """
 
     source = tf.convert_to_tensor(source, dtype=tf.string)
-    result = _ops_lib.transform_zero_digits(source)
+    result = _lib.transform_zero_digits(source)
 
     return result
 
@@ -79,7 +84,7 @@ def expand_split_words(source, default_value=''):
     """
 
     source = tf.convert_to_tensor(source, dtype=tf.string)
-    result = _ops_lib.expand_split_words(source, default_value)
+    result = _lib.expand_split_words(source, default_value)
 
     return result
 
@@ -99,7 +104,7 @@ def expand_split_chars(source, default_value=''):
     """
 
     source = tf.convert_to_tensor(source, dtype=tf.string)
-    result = _ops_lib.expand_split_chars(source, default_value)
+    result = _lib.expand_split_chars(source, default_value)
 
     return result
 
