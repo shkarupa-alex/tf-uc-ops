@@ -57,7 +57,7 @@ def flags_hash(flags):
 
 setup(
     name='tfucops',
-    version='1.1.1',
+    version='1.1.2',
     description='Unicode string OPs for TensorFlow',
     url='https://github.com/shkarupa-alex/tfucops',
     author='Shkarupa Alex',
