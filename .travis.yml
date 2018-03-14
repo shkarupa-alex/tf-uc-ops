@@ -13,15 +13,14 @@ matrix:
         - wget -qO- http://download.icu-project.org/files/icu4c/60.2/icu4c-60_2-src.tgz | tar xvz
         - (cd icu/source && ./configure && make && sudo make install)
         - export LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
-        - python3 -m pip install -U pip setuptools
-        - python3 -m pip install -U tensorflow
-      script: sudo env LD_LIBRARY_PATH=$LD_LIBRARY_PATH PYTHON_BIN=$PYTHON_BIN PIP_BIN=$PIP_BIN make
+        - $PYTHON_BIN -m pip install -U pip setuptools
+        - $PYTHON_BIN -m pip install -U tensorflow
     - os: osx
       env:
         - PYTHON_BIN=python2
-        - PIP_BIN=pip2
       before_install:
         - brew update
         - brew upgrade pkg-config python gcc icu4c
         - export PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH"
-      script: make
+
+script: $PYTHON_BIN setup.py test
