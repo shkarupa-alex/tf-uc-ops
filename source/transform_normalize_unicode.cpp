@@ -2,7 +2,7 @@
 #define TF_UC_OPS_TRANSFORM_NORMALIZE_UNICODE
 
 #include "tensorflow/core/framework/common_shape_fns.h"
-#include "transform_base.cc"
+#include "transform_base.cpp"
 #include <unicode/normalizer2.h>
 
 REGISTER_OP("TransformNormalizeUnicode")

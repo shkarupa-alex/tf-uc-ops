@@ -4,7 +4,7 @@ from __future__ import division
 from __future__ import print_function
 
 import tensorflow as tf
-from tfucops import expand_split_chars
+from .. import expand_split_chars
 
 
 class ExpandSplitCharsTest(tf.test.TestCase):
@@ -50,7 +50,3 @@ class ExpandSplitCharsTest(tf.test.TestCase):
             expected = tf.convert_to_tensor(source, dtype=tf.string).eval()
             result = result_op.eval()
             self.assertAllEqual(expected, result)
-
-
-if __name__ == "__main__":
-    tf.test.main()
