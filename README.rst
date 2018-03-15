@@ -13,27 +13,27 @@ Package provides few custom OPs for TensorFlow to deal with unicode strings:
 
 See test dir for usage examples.
 
-Installation
+Requirements
 ------------
-1. Install GNU C++ Compiler and C++ ICU library. This step is OS-specific.
+Package depends on ICU C++ library. Installation is OS-specific.
 
 Debian-based linux
-    ``sudo apt-get install -y pkg-config python3 python3-setuptools python3-pip g++ wget``
+    ``sudo apt-get install -y pkg-config g++ wget``
     ``wget -qO- http://download.icu-project.org/files/icu4c/60.2/icu4c-60_2-src.tgz | tar xvz``
-    ``cd icu/source && ./configure && make && sudo make install``
+    ``(cd icu/source && ./configure && make && sudo make install)``
 
-    setup LD_LIBRARY_PATH to point installed ICU shared library (e.g. ``export LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"``)
+    Then setup LD_LIBRARY_PATH to point installed ICU shared library (e.g. ``export LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"`` in ~/.profile)
 
 MacOS X
-    ``brew update``
-    ``brew install pkg-config python gcc icu4c``
-    ``brew upgrade pkg-config python gcc icu4c``
+    ``brew upgrade pkg-config icu4c``
 
-    setup PKG_CONFIG_PATH as pointed in notice (e.g. ``PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH"``)
+    Then setup PKG_CONFIG_PATH as pointed in notice (e.g. ``PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH"`` in ~/.profile)
 
-2. Setup python, update pip & setuptools(any version supported by tensorflow)
-    ``export PYTHON_BIN=python3``
+Installation
+------------
+Install package as usual
+    ``[sudo] pip install -U tfucops``
 
-3. Clone this package, make & install
+or clone this package & install manualy
     ``git clone https://github.com/shkarupa-alex/tfucops.git && cd tfucops``
-    [sudo env LD_LIBRARY_PATH=$LD_LIBRARY_PATH PYTHON_BIN=$PYTHON_BIN PIP_BIN=$PIP_BIN] ``make``
+    ``python setup.py install``
