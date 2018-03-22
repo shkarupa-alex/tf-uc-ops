@@ -9,5 +9,7 @@
 #include "transform_normalize_unicode.cpp"
 #include "transform_lower_case.cpp"
 #include "transform_zero_digits.cpp"
+#include "transform_add_borders.cpp"
 #include "expand_split_words.cpp"
 #include "expand_split_chars.cpp"
+#include "expand_char_ngrams.cpp"

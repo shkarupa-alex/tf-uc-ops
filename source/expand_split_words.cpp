@@ -36,7 +36,7 @@ class ExpandSplitWordsOp : public ExpandBaseOp {
   BreakIterator *_wordIterator GUARDED_BY(wordMutex);
 
   void expand(const UnicodeString &source, std::vector<UnicodeString> &target, UErrorCode &error) {
-    if (0 == source.length()) {
+    if (source.length() < 2) {
       target.push_back(source);
       return;
     }

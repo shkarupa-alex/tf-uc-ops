@@ -2,7 +2,6 @@
 #define TF_UC_OPS_EXPAND_SPLIT_CHARS
 
 #include "expand_base.cpp"
-#include <unicode/brkiter.h>
 
 REGISTER_OP("ExpandSplitChars")
   .Input("source: string")
@@ -28,7 +27,7 @@ class ExpandSplitCharsOp : public ExpandBaseOp {
 
  private:
   void expand(const UnicodeString &source, std::vector<UnicodeString> &target, UErrorCode &error) {
-    if (2 > source.length()) {
+    if (source.length() < 2) {
       target.push_back(source);
       return;
     }

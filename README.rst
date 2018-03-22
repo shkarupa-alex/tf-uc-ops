@@ -7,9 +7,11 @@ Package provides few custom OPs for TensorFlow to deal with unicode strings:
 
 * expand_split_words
 * expand_split_chars
+* expand_char_ngrams
 * transform_normalize_unicode
 * transform_lower_case
 * transform_zero_digits
+* transform_add_borders
 
 See test dir for usage examples.
 
