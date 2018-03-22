@@ -81,6 +81,26 @@ def transform_zero_digits(source):
 ops.NotDifferentiable("TransformZeroDigits")
 
 
+def transform_add_borders(source, left, right):
+    """Wrap source strings with "left" and "right" borders
+
+    Args:
+        source: `Tensor` of any shape, strings to replace digits.
+        left: Scalar string to add in the beginning
+        right: Scalar string to add in the ending
+    Returns:
+        `Tensor` of same shape and size as input.
+    """
+
+    source = tf.convert_to_tensor(source, dtype=tf.string)
+    result = _lib.transform_add_borders(source, left, right)
+
+    return result
+
+
+ops.NotDifferentiable("TransformAddBorders")
+
+
 def expand_split_words(source, default_value=''):
     """Split unicode strings into words.
     Result tokens could be simply joined with empty separator to obtain original strings.
@@ -119,3 +139,25 @@ def expand_split_chars(source, default_value=''):
 
 
 ops.NotDifferentiable("ExpandSplitChars")
+
+
+def expand_char_ngrams(source, minn, maxn, default_value=''):
+    """Split unicode strings into char ngrams.
+    Ngrams size configures with minn and max
+
+    Args:
+        source: `Tensor` of any shape, strings to split
+        minn: Minimum length of char ngram
+        minn: Maximum length of char ngram
+        default_value: Scalar value for padding.  Defaults to empty string.
+    Returns:
+        `Tensor` with an additional dimension of size 1 added.
+    """
+
+    source = tf.convert_to_tensor(source, dtype=tf.string)
+    result = _lib.expand_char_ngrams(source, minn, maxn, default_value)
+
+    return result
+
+
+ops.NotDifferentiable("ExpandCharNgrams")

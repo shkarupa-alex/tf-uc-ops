@@ -7,32 +7,23 @@ matrix:
     - os: linux
       env:
         - PYTHON_BIN=python3
+        - LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
       before_install:
         - sudo apt-get -qq update
         - sudo apt-get install -y pkg-config python3 python3-setuptools python3-pip g++ wget
         - wget -qO- http://download.icu-project.org/files/icu4c/60.2/icu4c-60_2-src.tgz | tar xvz
         - (cd icu/source && ./configure && make && sudo make install)
-        - export LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
         - sudo $PYTHON_BIN -m pip install -U pip setuptools
         - sudo $PYTHON_BIN -m pip install -U tensorflow
     - os: osx
       env:
         - PYTHON_BIN=python
+        - PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH"
+        - PATH="/usr/local/opt/python/libexec/bin:$PATH"
       before_install:
         - brew update
         - brew upgrade pkg-config python gcc icu4c
-        - export PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH"
-        - export PATH="/usr/local/opt/python/libexec/bin:$PATH"
         - $PYTHON_BIN -m pip install -U pip setuptools
         - $PYTHON_BIN -m pip install -U tensorflow
 
 script: $PYTHON_BIN setup.py test
-
-deploy:
-  provider: pypi
-  user: "shkarupa.alex"
-  password:
-    secure: AH6IdSDHTa+tE/w/4zWP+S4lDpRgQt2SjGGzLk4/doV6xvLTIsFpd57zjW+RX/aWcixphKT3qAKCpJBEKg6m3lHEFJZP8X4rN+OZ4D0i86iuJXgwObB0gzhpbWroNYwOP4fY3rnEMB67/Gae4GUFijA1BcxSFZ4FM2SnQCM7mzq1/fLeNmdme0vZ+/00vAUWwJ2uiUPLIDM2GqA56YEKrtAY/5Twaec3dK43ODbnLIoFGWvGtaPKmtyo+DudTXt2+e28RzDO5RQud9WaH+9sFVxN1Iayh0jjKjognICCJPgT8YmPkn2BJWn5YOETrCPmxD9Nvag/Qw94fFOXIOwoFzC8+ckyWc7y2PB1VcZFcyT0GO2UuzVBr8p+SSed3hTxf1NF4U3qXZXtYzobWXnaGeZhaQIr5JFblZb4gzkjfKfHVA1bmK2zm7JGstYRWMApO6WgpkIg2BfCehpothfg94LnD9hSHcE+OH/kHgWT0PNd22ovX2TB3WN88kiIKznagvHsniX/Sj43xu4CLI5tYz6dfsSpgU8VEAJ6/WZJ98Wqzr3uIGb/imJEJyYSHA7n6/lEjwPIaFUZv0cCexaRNOIdaM9V7eFovLIuff9PibsBDuhzSs+gH6gZSCroidI4BfKL1R//Tm5Uaak7vvVTZPkadeQ4esw9e0jMYF73QT4=
-  on:
-    tags: true
-  distributions: "sdist"

@@ -12,7 +12,7 @@ using namespace tensorflow;
 class ExpandBaseOp : public OpKernel {
  public:
   explicit ExpandBaseOp(OpKernelConstruction* ctx) : OpKernel(ctx) {
-      // Prepare attr
+    // Prepare attr
     OP_REQUIRES_OK(ctx, ctx->GetAttr("default_value", &default_value));
   }
 
@@ -70,10 +70,8 @@ class ExpandBaseOp : public OpKernel {
       }
     }
   }
- private:
-  string default_value;
-
  protected:
+  string default_value;
   virtual void expand(const UnicodeString &source, std::vector<UnicodeString> &target, UErrorCode &error) = 0;
 };
 
