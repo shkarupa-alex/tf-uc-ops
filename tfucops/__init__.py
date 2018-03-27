@@ -68,6 +68,24 @@ def transform_lower_case(source):
 ops.NotDifferentiable("TransformLowerCase")
 
 
+def transform_upper_case(source):
+    """Uppercase strings tensor.
+
+    Args:
+        source: `Tensor` of any shape, strings to make upper.
+    Returns:
+        `Tensor` of same shape and size as input.
+    """
+
+    source = tf.convert_to_tensor(source, dtype=tf.string)
+    result = _lib.transform_upper_case(source)
+
+    return result
+
+
+ops.NotDifferentiable("TransformUpperCase")
+
+
 def transform_zero_digits(source):
     """Replace each digit with 0.
 
