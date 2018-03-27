@@ -29,11 +29,11 @@ class TransformNormalizeUnicodeOp : public TransformBaseOp {
     } else if ("NFD" == form_value) {
       normalizerInstance = Normalizer2::getNFDInstance(instanceError);
     } else if ("NFKC" == form_value) {
-        normalizerInstance = Normalizer2::getNFKCInstance(instanceError);
+      normalizerInstance = Normalizer2::getNFKCInstance(instanceError);
     } else if ("NFKD" == form_value) {
-        normalizerInstance = Normalizer2::getNFKDInstance(instanceError);
+      normalizerInstance = Normalizer2::getNFKDInstance(instanceError);
     } else {
-        OP_REQUIRES(ctx, false, errors::InvalidArgument("unknown normalization form"));
+      OP_REQUIRES(ctx, false, errors::InvalidArgument("unknown normalization form"));
     }
     OP_REQUIRES(ctx, U_SUCCESS(instanceError), errors::InvalidArgument("Normalizer2 instantiation failed"));
   }

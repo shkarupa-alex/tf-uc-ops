@@ -13,7 +13,7 @@ class ExpandBaseOp : public OpKernel {
  public:
   explicit ExpandBaseOp(OpKernelConstruction* ctx) : OpKernel(ctx) {
     // Prepare attr
-    OP_REQUIRES_OK(ctx, ctx->GetAttr("default_value", &default_value));
+    OP_REQUIRES_OK(ctx, ctx->GetAttr("default", &default_value));
   }
 
   void Compute(OpKernelContext* ctx) override {

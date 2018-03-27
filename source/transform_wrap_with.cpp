@@ -1,10 +1,10 @@
-#ifndef TF_UC_OPS_TRANSFORM_ADD_BORDERS
-#define TF_UC_OPS_TRANSFORM_ADD_BORDERS
+#ifndef TF_UC_OPS_TRANSFORM_WRAP_WITH
+#define TF_UC_OPS_TRANSFORM_WRAP_WITH
 
 #include "tensorflow/core/framework/common_shape_fns.h"
 #include "transform_base.cpp"
 
-REGISTER_OP("TransformAddBorders")
+REGISTER_OP("TransformWrapWith")
   .Input("source: string")
   .Attr("left: string")
   .Attr("right: string")
@@ -13,9 +13,9 @@ REGISTER_OP("TransformAddBorders")
   .SetIsStateful();
 
 
-class TransformAddBordersOp : public TransformBaseOp {
+class TransformWrapWithOp : public TransformBaseOp {
  public:
-  explicit TransformAddBordersOp(OpKernelConstruction* ctx) : TransformBaseOp(ctx) {
+  explicit TransformWrapWithOp(OpKernelConstruction* ctx) : TransformBaseOp(ctx) {
     // Prepare attrs
     string _left;
     OP_REQUIRES_OK(ctx, ctx->GetAttr("left", &_left));
@@ -36,6 +36,6 @@ class TransformAddBordersOp : public TransformBaseOp {
   }
 };
 
-REGISTER_KERNEL_BUILDER(Name("TransformAddBorders").Device(DEVICE_CPU), TransformAddBordersOp);
+REGISTER_KERNEL_BUILDER(Name("TransformWrapWith").Device(DEVICE_CPU), TransformWrapWithOp);
 
 #endif

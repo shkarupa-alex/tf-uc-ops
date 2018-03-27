@@ -12,12 +12,17 @@ from tensorflow.python.framework import ops
 def __load_lib():
     tf_flags = tf.sysconfig.get_compile_flags() + tf.sysconfig.get_link_flags()
     flags_key = hashlib.md5('/'.join(tf_flags).encode('utf-8')).hexdigest()
+
     curr_dir = path.dirname(path.abspath(__file__))
-    lib_file = 'tfucops_{}{}'.format(flags_key, sysconfig.get_config_var('SO'))
+    ext_suffix = sysconfig.get_config_var('EXT_SUFFIX')
+    if ext_suffix is None:
+        ext_suffix = sysconfig.get_config_var('SO')
+
+    lib_file = 'tfucops_{}{}'.format(flags_key, ext_suffix)
     lib_path = path.join(curr_dir, '..', lib_file)
     if not path.exists(lib_path):
-        raise Exception(
-            'OP library ({}) for your TF installation not found. Reinstall "tfucops" package'.format(lib_file))
+        raise Exception('OP library ({}) for your TF installation not found. '.format(lib_path) +
+                        'Remove and install with "tfucops" package with --no-cache-dir option')
 
     return tf.load_op_library(lib_path)
 
@@ -81,8 +86,8 @@ def transform_zero_digits(source):
 ops.NotDifferentiable("TransformZeroDigits")
 
 
-def transform_add_borders(source, left, right):
-    """Wrap source strings with "left" and "right" borders
+def transform_wrap_with(source, left, right):
+    """Wrap source strings with "left" and "right" strings
 
     Args:
         source: `Tensor` of any shape, strings to replace digits.
@@ -93,27 +98,27 @@ def transform_add_borders(source, left, right):
     """
 
     source = tf.convert_to_tensor(source, dtype=tf.string)
-    result = _lib.transform_add_borders(source, left, right)
+    result = _lib.transform_wrap_with(source, left, right)
 
     return result
 
 
-ops.NotDifferentiable("TransformAddBorders")
+ops.NotDifferentiable("TransformWrapWith")
 
 
-def expand_split_words(source, default_value=''):
+def expand_split_words(source, default=''):
     """Split unicode strings into words.
     Result tokens could be simply joined with empty separator to obtain original strings.
 
     Args:
         source: `Tensor` of any shape, strings to split
-        default_value: Scalar value for padding.  Defaults to empty string.
+        default: Scalar value for padding.  Defaults to empty string.
     Returns:
         `Tensor` with an additional dimension of size 1 added.
     """
 
     source = tf.convert_to_tensor(source, dtype=tf.string)
-    result = _lib.expand_split_words(source, default_value)
+    result = _lib.expand_split_words(source, default)
 
     return result
 
@@ -121,19 +126,19 @@ def expand_split_words(source, default_value=''):
 ops.NotDifferentiable("ExpandSplitWords")
 
 
-def expand_split_chars(source, default_value=''):
+def expand_split_chars(source, default=''):
     """Split unicode strings into characters.
     Result tokens could be simply joined with empty separator to obtain original strings.
 
     Args:
         source: `Tensor` of any shape, strings to split
-        default_value: Scalar value for padding.  Defaults to empty string.
+        default: Scalar value for padding.  Defaults to empty string.
     Returns:
         `Tensor` with an additional dimension of size 1 added.
     """
 
     source = tf.convert_to_tensor(source, dtype=tf.string)
-    result = _lib.expand_split_chars(source, default_value)
+    result = _lib.expand_split_chars(source, default)
 
     return result
 
@@ -141,7 +146,7 @@ def expand_split_chars(source, default_value=''):
 ops.NotDifferentiable("ExpandSplitChars")
 
 
-def expand_char_ngrams(source, minn, maxn, default_value=''):
+def expand_char_ngrams(source, minn, maxn, default='', itself='ASIS'):
     """Split unicode strings into char ngrams.
     Ngrams size configures with minn and max
 
@@ -149,13 +154,15 @@ def expand_char_ngrams(source, minn, maxn, default_value=''):
         source: `Tensor` of any shape, strings to split
         minn: Minimum length of char ngram
         minn: Maximum length of char ngram
-        default_value: Scalar value for padding.  Defaults to empty string.
+        default: Scalar value for padding.  Defaults to empty string.
+        itself: Scalar value, strategy for source word preserving.
+            One of `"ASIS"`, `"NEVER"`, `"ALWAYS"`.
     Returns:
         `Tensor` with an additional dimension of size 1 added.
     """
 
     source = tf.convert_to_tensor(source, dtype=tf.string)
-    result = _lib.expand_char_ngrams(source, minn, maxn, default_value)
+    result = _lib.expand_char_ngrams(source, minn, maxn, default, itself)
 
     return result
 
