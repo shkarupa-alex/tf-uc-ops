@@ -10,6 +10,7 @@ Package provides few custom OPs for TensorFlow to deal with unicode strings:
 * expand_char_ngrams
 * transform_normalize_unicode
 * transform_lower_case
+* transform_upper_case
 * transform_zero_digits
 * transform_wrap_with
 

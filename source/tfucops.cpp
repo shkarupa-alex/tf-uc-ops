@@ -8,6 +8,7 @@
 
 #include "transform_normalize_unicode.cpp"
 #include "transform_lower_case.cpp"
+#include "transform_upper_case.cpp"
 #include "transform_zero_digits.cpp"
 #include "transform_wrap_with.cpp"
 #include "expand_split_words.cpp"
