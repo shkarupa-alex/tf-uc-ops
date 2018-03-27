@@ -6,7 +6,7 @@
 
 REGISTER_OP("ExpandSplitWords")
   .Input("source: string")
-  .Attr("default_value: string")
+  .Attr("default: string")
   .Output("result: string")
   .SetShapeFn([](shape_inference::InferenceContext* c) {
     shape_inference::ShapeHandle input = c->input(0);
