@@ -1,8 +1,9 @@
 #ifndef TF_UC_OPS_TRANSFORM_NORMALIZE_UNICODE
 #define TF_UC_OPS_TRANSFORM_NORMALIZE_UNICODE
 
-#include "transform_base.cpp"
+#include <unicode/unistr.h>
 #include <unicode/normalizer2.h>
+#include "transform_base.cpp"
 
 
 REGISTER_OP("TransformNormalizeUnicode")

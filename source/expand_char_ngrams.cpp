@@ -1,6 +1,7 @@
 #ifndef TF_UC_OPS_EXPAND_CHAR_NGRAMS
 #define TF_UC_OPS_EXPAND_CHAR_NGRAMS
 
+#include <unicode/unistr.h>
 #include "expand_base.cpp"
 
 REGISTER_OP("ExpandCharNgrams")

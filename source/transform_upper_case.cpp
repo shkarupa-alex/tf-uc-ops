@@ -1,6 +1,7 @@
 #ifndef TF_UC_OPS_TRANSFORM_UPPER_CASE
 #define TF_UC_OPS_TRANSFORM_UPPER_CASE
 
+#include <unicode/unistr.h>
 #include "transform_base.cpp"
 
 

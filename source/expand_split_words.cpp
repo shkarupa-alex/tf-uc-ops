@@ -1,8 +1,9 @@
 #ifndef TF_UC_OPS_EXPAND_SPLIT_WORDS
 #define TF_UC_OPS_EXPAND_SPLIT_WORDS
 
-#include "expand_base.cpp"
+#include <unicode/unistr.h>
 #include <unicode/brkiter.h>
+#include "expand_base.cpp"
 
 
 REGISTER_OP("ExpandSplitWords")

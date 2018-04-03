@@ -1,6 +1,7 @@
 #ifndef TF_UC_OPS_EXPAND_SPLIT_CHARS
 #define TF_UC_OPS_EXPAND_SPLIT_CHARS
 
+#include <unicode/unistr.h>
 #include "expand_base.cpp"
 
 

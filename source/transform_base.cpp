@@ -1,10 +1,9 @@
 #ifndef TF_UC_OPS_TRANSFORM_BASE
 #define TF_UC_OPS_TRANSFORM_BASE
 
+#include <unicode/unistr.h>
 #include "tensorflow/core/framework/op.h"
 #include "tensorflow/core/framework/op_kernel.h"
-#include <unicode/unistr.h>
-#include <unicode/bytestream.h>
 #include "transform_shape.cpp"
 
 
