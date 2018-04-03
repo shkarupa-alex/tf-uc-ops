@@ -7,20 +7,23 @@ import tensorflow as tf
 import sysconfig
 from os import path
 from tensorflow.python.framework import ops
-from .utils import convert_to_sparse_tensor
+
+__VERSION__ = '1.4.0'
 
 
 def __load_lib():
-    tf_flags = tf.sysconfig.get_compile_flags() + tf.sysconfig.get_link_flags()
-    flags_key = hashlib.md5('/'.join(tf_flags).encode('utf-8')).hexdigest()
+    uniq_flags = tf.sysconfig.get_compile_flags() + tf.sysconfig.get_link_flags() + [__VERSION__]
+    uniq_flags = '/'.join(uniq_flags).encode('utf-8')
+    flags_key = hashlib.md5(uniq_flags).hexdigest()
 
-    curr_dir = path.dirname(path.abspath(__file__))
     ext_suffix = sysconfig.get_config_var('EXT_SUFFIX')
     if ext_suffix is None:
         ext_suffix = sysconfig.get_config_var('SO')
 
     lib_file = 'tfucops_{}{}'.format(flags_key, ext_suffix)
+    curr_dir = path.dirname(path.abspath(__file__))
     lib_path = path.join(curr_dir, '..', lib_file)
+
     if not path.exists(lib_path):
         raise Exception('OP library ({}) for your TF installation not found. '.format(lib_path) +
                         'Remove and install with "tfucops" package with --no-cache-dir option')
