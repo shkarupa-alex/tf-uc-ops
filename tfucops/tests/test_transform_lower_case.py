@@ -8,31 +8,59 @@ from .. import transform_lower_case
 
 
 class TransformLowercaseUnicodeTest(tf.test.TestCase):
-    def test0D(self):
+    def testInferenceShape(self):
+        source = [
+            ['1', '2', '3'],
+            ['4', '5', '6'],
+        ]
+        result = transform_lower_case(source)
+
+        self.assertEqual([2, 3], result.shape.as_list())
+
+    def testActualShape(self):
+        source = [
+            ['1', '2', '3'],
+            ['4', '5', '6'],
+        ]
+        result = transform_lower_case(source)
+        result = tf.shape(result)
+
         with self.test_session():
-            result = transform_lower_case('X').eval()
+            result = result.eval()
+            self.assertEqual([2, 3], result.tolist())
+
+    def testEmpty(self):
+        result = transform_lower_case('')
+
+        with self.test_session():
+            result = result.eval()
+            self.assertAllEqual(b'', result)
+
+    def test0D(self):
+        result = transform_lower_case('X')
+
+        with self.test_session():
+            result = result.eval()
             self.assertAllEqual(b'x', result)
 
     def test1D(self):
+        result = transform_lower_case(['X'])
+
         with self.test_session():
-            result = transform_lower_case(['X']).eval()
+            result = result.eval()
             self.assertAllEqual([b'x'], result)
 
     def test2D(self):
+        result = transform_lower_case([['X']])
+
         with self.test_session():
-            result = transform_lower_case([['X']]).eval()
+            result = result.eval()
             self.assertAllEqual([[b'x']], result)
 
-    def testLatin(self):
-        with self.test_session():
-            result = transform_lower_case('TeSt').eval()
-            self.assertAllEqual(b'test', result)
-
-    def testCyrillic(self):
-        expected = u'тест'
+    def testUnicode(self):
+        expected = tf.convert_to_tensor(u'тест', dtype=tf.string)
+        result = transform_lower_case(u'ТеСт')
 
         with self.test_session():
-            result = transform_lower_case(u'ТеСт').eval()
-            expected = tf.convert_to_tensor(expected, dtype=tf.string).eval()
+            expected, result = expected.eval(), result.eval()
             self.assertAllEqual(expected, result)
-

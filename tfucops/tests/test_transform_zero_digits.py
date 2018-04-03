@@ -8,29 +8,59 @@ from .. import transform_zero_digits
 
 
 class TransformZeroDigitsTest(tf.test.TestCase):
-    def test0D(self):
+    def testInferenceShape(self):
+        source = [
+            ['1', '2', '3'],
+            ['4', '5', '6'],
+        ]
+        result = transform_zero_digits(source)
+
+        self.assertEqual([2, 3], result.shape.as_list())
+
+    def testActualShape(self):
+        source = [
+            ['1', '2', '3'],
+            ['4', '5', '6'],
+        ]
+        result = transform_zero_digits(source)
+        result = tf.shape(result)
+
         with self.test_session():
-            result = transform_zero_digits('7').eval()
-            self.assertAllEqual(b'0', result)
+            result = result.eval()
+            self.assertEqual([2, 3], result.tolist())
+
+    def testEmpty(self):
+        result = transform_zero_digits('')
+
+        with self.test_session():
+            result = result.eval()
+            self.assertEqual(b'', result)
+
+    def test0D(self):
+        result = transform_zero_digits('7')
+
+        with self.test_session():
+            result = result.eval()
+            self.assertEqual(b'0', result)
 
     def test1D(self):
+        result = transform_zero_digits(['7'])
+
         with self.test_session():
-            result = transform_zero_digits(['7']).eval()
-            self.assertAllEqual([b'0'], result)
+            result = result.eval()
+            self.assertEqual([b'0'], result)
 
     def test2D(self):
-        with self.test_session():
-            result = transform_zero_digits([['7']]).eval()
-            self.assertAllEqual([[b'0']], result)
+        result = transform_zero_digits([['7']])
 
-    def testPlain(self):
         with self.test_session():
-            result = transform_zero_digits('123456789').eval()
-            self.assertAllEqual(b'000000000', result)
+            result = result.eval()
+            self.assertEqual([[b'0']], result)
 
-    def testMixed(self):
+    def testMixedUnicode(self):
+        result = transform_zero_digits(u'P.1, АБ1, ЯК12x')
+        expected = tf.convert_to_tensor(u'P.0, АБ0, ЯК00x', dtype=tf.string)
+
         with self.test_session():
-            result = transform_zero_digits(u'P.1, АБ1, ЯК12x').eval()
-            expected = tf.convert_to_tensor(u'P.0, АБ0, ЯК00x', dtype=tf.string).eval()
-            self.assertAllEqual(expected, result)
-
+            expected, result = expected.eval(), result.eval()
+            self.assertEqual(expected, result)

@@ -1,13 +1,13 @@
 #ifndef TF_UC_OPS_TRANSFORM_UPPER_CASE
 #define TF_UC_OPS_TRANSFORM_UPPER_CASE
 
-#include "tensorflow/core/framework/common_shape_fns.h"
 #include "transform_base.cpp"
+
 
 REGISTER_OP("TransformUpperCase")
   .Input("source: string")
   .Output("result: string")
-  .SetShapeFn(shape_inference::UnchangedShape)
+  .SetShapeFn(TransformBaseShape)
   .SetIsStateful();
 
 

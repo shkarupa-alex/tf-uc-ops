@@ -1,15 +1,15 @@
 #ifndef TF_UC_OPS_TRANSFORM_WRAP_WITH
 #define TF_UC_OPS_TRANSFORM_WRAP_WITH
 
-#include "tensorflow/core/framework/common_shape_fns.h"
 #include "transform_base.cpp"
+
 
 REGISTER_OP("TransformWrapWith")
   .Input("source: string")
   .Attr("left: string")
   .Attr("right: string")
   .Output("result: string")
-  .SetShapeFn(shape_inference::UnchangedShape)
+  .SetShapeFn(TransformBaseShape)
   .SetIsStateful();
 
 

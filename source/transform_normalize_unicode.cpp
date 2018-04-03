@@ -1,15 +1,15 @@
 #ifndef TF_UC_OPS_TRANSFORM_NORMALIZE_UNICODE
 #define TF_UC_OPS_TRANSFORM_NORMALIZE_UNICODE
 
-#include "tensorflow/core/framework/common_shape_fns.h"
 #include "transform_base.cpp"
 #include <unicode/normalizer2.h>
 
+
 REGISTER_OP("TransformNormalizeUnicode")
   .Input("source: string")
-  .Attr("form: string")
+  .Attr("form: {'NFC', 'NFD', 'NFKC', 'NFKD'}")
   .Output("result: string")
-  .SetShapeFn(shape_inference::UnchangedShape)
+  .SetShapeFn(TransformBaseShape)
   .SetIsStateful();
 
 
@@ -35,7 +35,7 @@ class TransformNormalizeUnicodeOp : public TransformBaseOp {
     } else {
       OP_REQUIRES(ctx, false, errors::InvalidArgument("unknown normalization form"));
     }
-    OP_REQUIRES(ctx, U_SUCCESS(instanceError), errors::InvalidArgument("Normalizer2 instantiation failed"));
+    OP_REQUIRES(ctx, U_SUCCESS(instanceError), errors::Internal("Normalizer2 instantiation failed"));
   }
 
  private:

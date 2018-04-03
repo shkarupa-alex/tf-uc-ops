@@ -8,55 +8,88 @@ from .. import transform_normalize_unicode
 
 
 class TransformNormalizeUnicodeTest(tf.test.TestCase):
-    def test0D(self):
+    def testInferenceShape(self):
+        source = [
+            ['1', '2', '3'],
+            ['4', '5', '6'],
+        ]
+        result = transform_normalize_unicode(source, 'NFD')
+
+        self.assertEqual([2, 3], result.shape.as_list())
+
+    def testActualShape(self):
+        source = [
+            ['1', '2', '3'],
+            ['4', '5', '6'],
+        ]
+        result = transform_normalize_unicode(source, 'NFD')
+        result = tf.shape(result)
+
         with self.test_session():
-            result = transform_normalize_unicode('', 'NFD').eval()
+            result = result.eval()
+            self.assertEqual([2, 3], result.tolist())
+
+    def testEmpty(self):
+        result = transform_normalize_unicode('', 'NFD')
+
+        with self.test_session():
+            result = result.eval()
+            self.assertAllEqual(b'', result)
+
+    def test0D(self):
+        result = transform_normalize_unicode('', 'NFD')
+
+        with self.test_session():
+            result = result.eval()
             self.assertAllEqual(b'', result)
 
     def test1D(self):
+        result = transform_normalize_unicode([''], 'NFD')
+
         with self.test_session():
-            result = transform_normalize_unicode([''], 'NFD').eval()
+            result = result.eval()
             self.assertAllEqual([b''], result)
 
     def test2D(self):
+        result = transform_normalize_unicode([['']], 'NFD')
+
         with self.test_session():
-            result = transform_normalize_unicode([['']], 'NFD').eval()
+            result = result.eval()
             self.assertAllEqual([[b'']], result)
 
     def testNFD(self):
-        expected = u'\u0041\u030A'
+        expected = tf.convert_to_tensor(u'\u0041\u030A', dtype=tf.string)
+        result = transform_normalize_unicode(u'\u00C5', 'NFD')
 
         with self.test_session():
-            result = transform_normalize_unicode(u'\u00C5', 'NFD').eval()
-            expected = tf.convert_to_tensor(expected, dtype=tf.string).eval()
+            expected, result = expected.eval(), result.eval()
             self.assertAllEqual(expected, result)
 
     def testNFC(self):
-        expected = u'\u00C5'
+        expected = tf.convert_to_tensor(u'\u00C5', dtype=tf.string)
+        result = transform_normalize_unicode(u'\u0041\u030A', 'NFC')
 
         with self.test_session():
-            result = transform_normalize_unicode(u'\u0041\u030A', 'NFC').eval()
-            expected = tf.convert_to_tensor(expected, dtype=tf.string).eval()
+            expected, result = expected.eval(), result.eval()
             self.assertAllEqual(expected, result)
 
     def testNFKD(self):
-        expected = u'\u0031'
+        expected = tf.convert_to_tensor(u'\u0031', dtype=tf.string)
+        result = transform_normalize_unicode(u'\u2460', 'NFKD')
 
         with self.test_session():
-            result = transform_normalize_unicode(u'\u2460', 'NFKD').eval()
-            expected = tf.convert_to_tensor(expected, dtype=tf.string).eval()
+            expected, result = expected.eval(), result.eval()
             self.assertAllEqual(expected, result)
 
     def testNFKC(self):
-        expected = u'\u00E7'
+        expected = tf.convert_to_tensor(u'\u00E7', dtype=tf.string)
+        result = transform_normalize_unicode(u'\u00E7', 'NFKC')
 
         with self.test_session():
-            result = transform_normalize_unicode(u'\u00E7', 'NFKC').eval()
-            expected = tf.convert_to_tensor(expected, dtype=tf.string).eval()
+            expected, result = expected.eval(), result.eval()
             self.assertAllEqual(expected, result)
 
     def testWrongAlg(self):
         with self.test_session():
-            with self.assertRaisesOpError('unknown normalization form'):
+            with self.assertRaisesRegexp(ValueError, 'string \'ABCD\' not in'):
                 transform_normalize_unicode(u'', 'ABCD').eval()
-
