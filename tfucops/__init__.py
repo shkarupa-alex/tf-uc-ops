@@ -7,6 +7,7 @@ import tensorflow as tf
 import sysconfig
 from os import path
 from tensorflow.python.framework import ops
+from .utils import convert_to_sparse_tensor
 
 
 def __load_lib():
@@ -36,7 +37,7 @@ def transform_normalize_unicode(source, form):
     Args:
         source: `Tensor` of any shape, strings to normalize.
         form: Scalar value, name of normalization algorithm.
-            One of `"NFD"`, `"NFC"`, `"NFKD"`, `"NFKC"` (case-insensitive).
+            One of `"NFD"`, `"NFC"`, `"NFKD"`, `"NFKC"`.
     Returns:
         `Tensor` of same shape and size as input.
     """
@@ -124,47 +125,45 @@ def transform_wrap_with(source, left, right):
 ops.NotDifferentiable("TransformWrapWith")
 
 
-def expand_split_words(source, default=''):
+def expand_split_words(source):
     """Split unicode strings into words.
     Result tokens could be simply joined with empty separator to obtain original strings.
 
     Args:
         source: `Tensor` of any shape, strings to split
-        default: Scalar value for padding.  Defaults to empty string.
     Returns:
-        `Tensor` with an additional dimension of size 1 added.
+        `SparseTensor` with an additional dimension of size 1 added.
     """
 
     source = tf.convert_to_tensor(source, dtype=tf.string)
-    result = _lib.expand_split_words(source, default)
+    indices, values, shape = _lib.expand_split_words(source)
 
-    return result
+    return tf.SparseTensor(indices=indices, values=values, dense_shape=shape)
 
 
 ops.NotDifferentiable("ExpandSplitWords")
 
 
-def expand_split_chars(source, default=''):
+def expand_split_chars(source):
     """Split unicode strings into characters.
     Result tokens could be simply joined with empty separator to obtain original strings.
 
     Args:
         source: `Tensor` of any shape, strings to split
-        default: Scalar value for padding.  Defaults to empty string.
     Returns:
-        `Tensor` with an additional dimension of size 1 added.
+        `SparseTensor` with an additional dimension of size 1 added.
     """
 
     source = tf.convert_to_tensor(source, dtype=tf.string)
-    result = _lib.expand_split_chars(source, default)
+    indices, values, shape = _lib.expand_split_chars(source)
 
-    return result
+    return tf.SparseTensor(indices=indices, values=values, dense_shape=shape)
 
 
 ops.NotDifferentiable("ExpandSplitChars")
 
 
-def expand_char_ngrams(source, minn, maxn, default='', itself='ASIS'):
+def expand_char_ngrams(source, minn, maxn, itself='ASIS'):
     """Split unicode strings into char ngrams.
     Ngrams size configures with minn and max
 
@@ -172,17 +171,16 @@ def expand_char_ngrams(source, minn, maxn, default='', itself='ASIS'):
         source: `Tensor` of any shape, strings to split
         minn: Minimum length of char ngram
         minn: Maximum length of char ngram
-        default: Scalar value for padding.  Defaults to empty string.
         itself: Scalar value, strategy for source word preserving.
             One of `"ASIS"`, `"NEVER"`, `"ALWAYS"`.
     Returns:
-        `Tensor` with an additional dimension of size 1 added.
+        `SparseTensor` with an additional dimension of size 1 added.
     """
 
     source = tf.convert_to_tensor(source, dtype=tf.string)
-    result = _lib.expand_char_ngrams(source, minn, maxn, default, itself)
+    indices, values, shape = _lib.expand_char_ngrams(source, minn, maxn, itself)
 
-    return result
+    return tf.SparseTensor(indices=indices, values=values, dense_shape=shape)
 
 
 ops.NotDifferentiable("ExpandCharNgrams")

@@ -8,45 +8,80 @@ from .. import expand_split_chars
 
 
 class ExpandSplitCharsTest(tf.test.TestCase):
-    def testShape(self):
+    def testInferenceShape(self):
+        source = [
+            ['1', '2', '3'],
+            ['4', '5', '6'],
+        ]
+        result = expand_split_chars(source)
+
+        self.assertEqual([None, 3], result.indices.shape.as_list())
+        self.assertEqual([None], result.values.shape.as_list())
+        self.assertEqual([3], result.dense_shape.shape.as_list())
+
+    def testActualShape(self):
+        source = [
+            ['1', '2', '3'],
+            ['4', '5', '6'],
+        ]
+        result = expand_split_chars(source)
+
         with self.test_session():
-            result = tf.shape(expand_split_chars([
-                ['1', '2', '3'],
-                ['4', '5', '6'],
-            ])).eval()
-            self.assertAllEqual([2, 3, 1], result)
+            result = result.eval()
+            self.assertAllEqual([2, 3, 1], result.dense_shape)
+
+    def testEmpty(self):
+        expected = tf.convert_to_tensor([], dtype=tf.string)
+        result = expand_split_chars('')
+        result = tf.sparse_tensor_to_dense(result, default_value='')
+
+        with self.test_session():
+            expected, result = expected.eval(), result.eval()
+            self.assertAllEqual(expected, result)
 
     def test0D(self):
+        expected = tf.convert_to_tensor(['x', 'y'], dtype=tf.string)
+        result = expand_split_chars('xy')
+        result = tf.sparse_tensor_to_dense(result, default_value='')
+
         with self.test_session():
-            expected = tf.convert_to_tensor(['x', 'y'], dtype=tf.string).eval()
-            result = expand_split_chars('xy').eval()
+            expected, result = expected.eval(), result.eval()
             self.assertAllEqual(expected, result)
 
     def test1D(self):
+        expected = tf.convert_to_tensor([['x', 'y']], dtype=tf.string)
+        result = expand_split_chars(['xy'])
+        result = tf.sparse_tensor_to_dense(result, default_value='')
+
         with self.test_session():
-            expected = tf.convert_to_tensor([['x', 'y']], dtype=tf.string).eval()
-            result = expand_split_chars(['xy']).eval()
+            expected, result = expected.eval(), result.eval()
             self.assertAllEqual(expected, result)
 
     def test2D(self):
+        expected = tf.convert_to_tensor([[['x', 'y']]], dtype=tf.string)
+        result = expand_split_chars([['xy']])
+        result = tf.sparse_tensor_to_dense(result, default_value='')
+
         with self.test_session():
-            expected = tf.convert_to_tensor([[['x', 'y']]], dtype=tf.string).eval()
-            result = expand_split_chars([['xy']]).eval()
+            expected, result = expected.eval(), result.eval()
             self.assertAllEqual(expected, result)
 
-    def testEmpty(self):
+    def testUnicode(self):
+        expected = tf.convert_to_tensor([u'ё', u' ', u'е', u'̈', u'2', u'⁵'], dtype=tf.string)
+        result = expand_split_chars(u'ё ё2⁵')
+        result = tf.sparse_tensor_to_dense(result, default_value='')
+
         with self.test_session():
-            expected = tf.convert_to_tensor([''], dtype=tf.string).eval()
-            result = expand_split_chars('').eval()
+            expected, result = expected.eval(), result.eval()
             self.assertAllEqual(expected, result)
 
     def testRestore(self):
         source = 'Hey\n\tthere\t«word», !!!'
-
-        result_op = expand_split_chars(source)
-        result_op = tf.reduce_join(result_op)
+        expected = tf.convert_to_tensor(source, dtype=tf.string)
+        result = expand_split_chars(source)
+        result = tf.sparse_tensor_to_dense(result, default_value='')
+        result = tf.reduce_join(result)
 
         with self.test_session():
-            expected = tf.convert_to_tensor(source, dtype=tf.string).eval()
-            result = result_op.eval()
+            expected, result = expected.eval(), result.eval()
             self.assertAllEqual(expected, result)

@@ -3,11 +3,10 @@
 
 #include "tensorflow/core/framework/op.h"
 #include "tensorflow/core/framework/op_kernel.h"
-#include "tensorflow/core/framework/shape_inference.h"
 #include <unicode/unistr.h>
 #include <unicode/bytestream.h>
+#include "transform_shape.cpp"
 
-using namespace tensorflow;
 
 class TransformBaseOp : public OpKernel {
  public:
@@ -18,7 +17,7 @@ class TransformBaseOp : public OpKernel {
     const Tensor* source_tensor;
     OP_REQUIRES_OK(ctx, ctx->input("source", &source_tensor));
     const auto source_values = source_tensor->flat<string>();
-    const int64 num_elements = source_tensor->shape().num_elements();
+    const uint64 num_elements = source_tensor->shape().num_elements();
 
 
     // Allocate result
@@ -28,7 +27,7 @@ class TransformBaseOp : public OpKernel {
 
 
     // Transform and write to output
-    for (int64 i = 0; i < num_elements; i++) {
+    for (uint64 i = 0; i < num_elements; i++) {
       string binary_string = source_values(i);
       UnicodeString unicode_string = UnicodeString::fromUTF8(binary_string);
 

@@ -3,21 +3,13 @@
 
 #include "expand_base.cpp"
 
+
 REGISTER_OP("ExpandSplitChars")
   .Input("source: string")
-  .Attr("default: string")
-  .Output("result: string")
-  .SetShapeFn([](shape_inference::InferenceContext* c) {
-    shape_inference::ShapeHandle input = c->input(0);
-    shape_inference::ShapeHandle append = c->Vector(shape_inference::InferenceContext::kUnknownDim);
-
-    shape_inference::ShapeHandle output;
-    TF_RETURN_IF_ERROR(c->Concatenate(input, append, &output));
-
-    c->set_output(0, output);
-
-    return Status::OK();
-  })
+  .Output("indices: int64")
+  .Output("values: string")
+  .Output("shape: int64")
+  .SetShapeFn(ExpandBaseShape)
   .SetIsStateful();
 
 
@@ -27,7 +19,11 @@ class ExpandSplitCharsOp : public ExpandBaseOp {
 
  private:
   void expand(const UnicodeString &source, std::vector<UnicodeString> &target, UErrorCode &error) {
-    if (source.length() < 2) {
+    if (source.length() == 0) {
+      return;
+    }
+
+    if (source.length() == 1) {
       target.push_back(source);
       return;
     }

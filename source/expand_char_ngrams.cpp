@@ -7,20 +7,11 @@ REGISTER_OP("ExpandCharNgrams")
   .Input("source: string")
   .Attr("minn: int")
   .Attr("maxn: int")
-  .Attr("default: string")
-  .Attr("itself: string")
-  .Output("result: string")
-  .SetShapeFn([](shape_inference::InferenceContext* c) {
-    shape_inference::ShapeHandle input = c->input(0);
-    shape_inference::ShapeHandle append = c->Vector(shape_inference::InferenceContext::kUnknownDim);
-
-    shape_inference::ShapeHandle output;
-    TF_RETURN_IF_ERROR(c->Concatenate(input, append, &output));
-
-    c->set_output(0, output);
-
-    return Status::OK();
-  })
+  .Attr("itself: {'ASIS', 'NEVER', 'ALWAYS'}")
+  .Output("indices: int64")
+  .Output("values: string")
+  .Output("shape: int64")
+  .SetShapeFn(ExpandBaseShape)
   .SetIsStateful();
 
 
@@ -68,10 +59,6 @@ class ExpandCharNgramsOp : public ExpandBaseOp {
 
     if (1 == itself && (source.length() < minn || source.length() > maxn)) {
       target.push_back(source);
-    }
-
-    if (target.size() == 0) {
-      target.push_back(UnicodeString::fromUTF8(default_value));
     }
   }
 };
