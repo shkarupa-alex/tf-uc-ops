@@ -1,6 +1,7 @@
 #ifndef TF_UC_OPS_TRANSFORM_ZERO_DIGITS
 #define TF_UC_OPS_TRANSFORM_ZERO_DIGITS
 
+#include <unicode/unistr.h>
 #include "transform_base.cpp"
 
 

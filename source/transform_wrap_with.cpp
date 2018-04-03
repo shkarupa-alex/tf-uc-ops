@@ -1,6 +1,7 @@
 #ifndef TF_UC_OPS_TRANSFORM_WRAP_WITH
 #define TF_UC_OPS_TRANSFORM_WRAP_WITH
 
+#include <unicode/unistr.h>
 #include "transform_base.cpp"
 
 
