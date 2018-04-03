@@ -8,6 +8,8 @@ import subprocess
 import tensorflow as tf
 from setuptools import setup, Extension
 
+__VERSION__ = '1.4.0'  # update version in __init__.py too
+
 
 def pkg_config(*packages):
     return subprocess.check_output([
@@ -57,7 +59,7 @@ def flags_hash(flags):
 
 setup(
     name='tfucops',
-    version='1.3.0',
+    version=__VERSION__,
     description='Unicode string OPs for TensorFlow',
     url='https://github.com/shkarupa-alex/tfucops',
     author='Shkarupa Alex',
@@ -71,7 +73,7 @@ setup(
     ],
     ext_modules=[
         Extension(
-            'tfucops_{}'.format(flags_hash(tf_config())),  # bind ext to particular TF instance
+            'tfucops_{}'.format(flags_hash(tf_config() + [__VERSION__])),  # bind ext to particular TF instance
             sources=['source/tfucops.cpp'],
             **parse_args(ops_config() + tf_config() + pkg_config('icu-uc'))
         )
