@@ -8,7 +8,7 @@ import sysconfig
 from os import path
 from tensorflow.python.framework import ops
 
-__VERSION__ = '1.4.1'
+__VERSION__ = '1.4.2'
 
 
 def __load_lib():

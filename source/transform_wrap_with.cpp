@@ -2,7 +2,10 @@
 #define TF_UC_OPS_TRANSFORM_WRAP_WITH
 
 #include <unicode/unistr.h>
+#include "tensorflow/core/framework/op.h"
 #include "transform_base.cpp"
+
+using icu::UnicodeString;
 
 
 REGISTER_OP("TransformWrapWith")

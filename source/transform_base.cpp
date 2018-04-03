@@ -2,9 +2,10 @@
 #define TF_UC_OPS_TRANSFORM_BASE
 
 #include <unicode/unistr.h>
-#include "tensorflow/core/framework/op.h"
 #include "tensorflow/core/framework/op_kernel.h"
 #include "transform_shape.cpp"
+
+using icu::UnicodeString;
 
 
 class TransformBaseOp : public OpKernel {

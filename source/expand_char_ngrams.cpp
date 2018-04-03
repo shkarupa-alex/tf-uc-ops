@@ -2,7 +2,11 @@
 #define TF_UC_OPS_EXPAND_CHAR_NGRAMS
 
 #include <unicode/unistr.h>
+#include "tensorflow/core/framework/op.h"
 #include "expand_base.cpp"
+
+using icu::UnicodeString;
+
 
 REGISTER_OP("ExpandCharNgrams")
   .Input("source: string")
