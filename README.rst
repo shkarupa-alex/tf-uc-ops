@@ -22,7 +22,7 @@ Package depends on ICU C++ library. Installation is OS-specific.
 
 Debian-based linux
     ``sudo apt-get install -y pkg-config g++ wget``
-    ``wget -qO- http://download.icu-project.org/files/icu4c/60.2/icu4c-60_2-src.tgz | tar xvz``
+    ``wget -qO- http://download.icu-project.org/files/icu4c/61.1/icu4c-61_1-src.tgz | tar xvz``
     ``(cd icu/source && ./configure && make && sudo make install)``
 
     Then setup LD_LIBRARY_PATH to point installed ICU shared library (e.g. ``export LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"`` in ~/.profile)

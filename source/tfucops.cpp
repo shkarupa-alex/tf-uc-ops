@@ -5,7 +5,6 @@
 #endif
 
 
-
 #include "transform_normalize_unicode.cpp"
 #include "transform_lower_case.cpp"
 #include "transform_upper_case.cpp"

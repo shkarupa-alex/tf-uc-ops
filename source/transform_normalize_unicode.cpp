@@ -3,7 +3,11 @@
 
 #include <unicode/unistr.h>
 #include <unicode/normalizer2.h>
+#include "tensorflow/core/framework/op.h"
 #include "transform_base.cpp"
+
+using icu::Normalizer2;
+using icu::UnicodeString;
 
 
 REGISTER_OP("TransformNormalizeUnicode")

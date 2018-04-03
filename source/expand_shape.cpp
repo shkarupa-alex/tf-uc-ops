@@ -16,5 +16,4 @@ Status ExpandBaseShape(shape_inference::InferenceContext* c) {
     return Status::OK();
 }
 
-
 #endif

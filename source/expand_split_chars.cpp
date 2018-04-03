@@ -2,7 +2,10 @@
 #define TF_UC_OPS_EXPAND_SPLIT_CHARS
 
 #include <unicode/unistr.h>
+#include "tensorflow/core/framework/op.h"
 #include "expand_base.cpp"
+
+using icu::UnicodeString;
 
 
 REGISTER_OP("ExpandSplitChars")
