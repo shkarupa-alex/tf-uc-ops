@@ -253,15 +253,14 @@ def combine_sparse_successor(parent_indices, parent_shape, child_indices, child_
         `SparseTensor` with an additional dimension of size 1 added.
     """
 
-    indices, values, shape = _lib.cobine_sparse_successor(
+    indices, shape = _lib.cobine_sparse_successor(
         parent_indices,
         parent_shape,
         child_indices,
-        child_values,
         child_shape
     )
 
-    return tf.SparseTensor(indices=indices, values=values, dense_shape=shape)
+    return tf.SparseTensor(indices=indices, values=child_values, dense_shape=shape)
 
 
 ops.NotDifferentiable("CobineSparseSuccessor")
