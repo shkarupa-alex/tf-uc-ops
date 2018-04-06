@@ -66,6 +66,27 @@ class ExpandSplitCharsTest(tf.test.TestCase):
             expected, result = expected.eval(), result.eval()
             self.assertAllEqual(expected, result)
 
+    def testSparse(self):
+        source = tf.string_split(['ab|c d|e', 'f|'], delimiter='|')
+        result = expand_split_chars(source)
+        result = tf.sparse_tensor_to_dense(result, default_value='')
+        expected = tf.convert_to_tensor([
+            [
+                ['a', 'b', ''],
+                ['c', ' ', 'd'],
+                ['e', '', '']
+            ],
+            [
+                ['f', '', ''],
+                ['', '', ''],
+                ['', '', ''],
+            ]
+        ], dtype=tf.string)
+
+        with self.test_session():
+            expected, result = expected.eval(), result.eval()
+            self.assertAllEqual(expected.tolist(), result.tolist())
+
     def testUnicode(self):
         expected = tf.convert_to_tensor([u'ё', u' ', u'е', u'̈', u'2', u'⁵'], dtype=tf.string)
         result = expand_split_chars(u'ё ё2⁵')

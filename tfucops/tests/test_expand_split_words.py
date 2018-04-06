@@ -66,6 +66,27 @@ class ExpandSplitWordsTest(tf.test.TestCase):
             expected, result = expected.eval(), result.eval()
             self.assertAllEqual(expected, result)
 
+    def testSparse(self):
+        source = tf.string_split(['ab|c d|e', 'f|'], delimiter='|')
+        result = expand_split_words(source)
+        result = tf.sparse_tensor_to_dense(result, default_value='')
+        expected = tf.convert_to_tensor([
+            [
+                ['ab', '', ''],
+                ['c', ' ', 'd'],
+                ['e', '', '']
+            ],
+            [
+                ['f', '', ''],
+                ['', '', ''],
+                ['', '', ''],
+            ]
+        ], dtype=tf.string)
+
+        with self.test_session():
+            expected, result = expected.eval(), result.eval()
+            self.assertAllEqual(expected.tolist(), result.tolist())
+
     def testRestore(self):
         source = u'Hey\n\tthere\t«word», !!!'
         expected = tf.convert_to_tensor(source, dtype=tf.string)

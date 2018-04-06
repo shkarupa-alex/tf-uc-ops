@@ -58,7 +58,7 @@ class ExpandBaseOp : public OpKernel {
     }
 
 
-    // Prepare result
+    // Allocate result
     Tensor* result_indices_tensor;
     OP_REQUIRES_OK(
       ctx,
