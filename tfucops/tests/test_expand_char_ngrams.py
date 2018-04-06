@@ -69,6 +69,27 @@ class ExpandCharNgramsTest(tf.test.TestCase):
             expected, result = expected.eval(), result.eval()
             self.assertAllEqual(expected, result)
 
+    def testSparse(self):
+        source = tf.string_split(['ab|c d|e', 'f|'], delimiter='|')
+        result = expand_char_ngrams(source, 1, 2)
+        result = tf.sparse_tensor_to_dense(result, default_value='')
+        expected = tf.convert_to_tensor([
+            [
+                ['a', 'b', 'ab', '', ''],
+                ['c', ' ', 'd', 'c ', ' d'],
+                ['e', '', '', '', '']
+            ],
+            [
+                ['f', '', '', '', ''],
+                ['', '', '', '', ''],
+                ['', '', '', '', ''],
+            ]
+        ], dtype=tf.string)
+
+        with self.test_session():
+            expected, result = expected.eval(), result.eval()
+            self.assertAllEqual(expected.tolist(), result.tolist())
+
     def testNone(self):
         result = expand_char_ngrams('123', 4, 5)
         result = tf.sparse_tensor_to_dense(result, default_value='')

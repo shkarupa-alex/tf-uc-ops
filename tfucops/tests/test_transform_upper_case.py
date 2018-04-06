@@ -57,6 +57,17 @@ class TransformUppercaseUnicodeTest(tf.test.TestCase):
             result = result.eval()
             self.assertAllEqual([[b'X']], result)
 
+    def testSparse(self):
+        expected = tf.SparseTensor(indices=[[0, 0]], values=[b'X'], dense_shape=[1, 1])
+        source = tf.SparseTensor(indices=[[0, 0]], values=[b'x'], dense_shape=[1, 1])
+        result = transform_upper_case(source)
+
+        with self.test_session():
+            expected, result = expected.eval(), result.eval()
+            self.assertAllEqual(expected.indices.tolist(), result.indices.tolist())
+            self.assertAllEqual(expected.values.tolist(), result.values.tolist())
+            self.assertAllEqual(expected.dense_shape.tolist(), result.dense_shape.tolist())
+
     def testLatin(self):
         result = transform_upper_case('TeSt')
 

@@ -57,6 +57,17 @@ class TransformZeroDigitsTest(tf.test.TestCase):
             result = result.eval()
             self.assertEqual([[b'0']], result)
 
+    def testSparse(self):
+        expected = tf.SparseTensor(indices=[[0, 0]], values=[b'0'], dense_shape=[1, 1])
+        source = tf.SparseTensor(indices=[[0, 0]], values=[b'7'], dense_shape=[1, 1])
+        result = transform_zero_digits(source)
+
+        with self.test_session():
+            expected, result = expected.eval(), result.eval()
+            self.assertAllEqual(expected.indices.tolist(), result.indices.tolist())
+            self.assertAllEqual(expected.values.tolist(), result.values.tolist())
+            self.assertAllEqual(expected.dense_shape.tolist(), result.dense_shape.tolist())
+
     def testMixedUnicode(self):
         result = transform_zero_digits(u'P.1, АБ1, ЯК12x')
         expected = tf.convert_to_tensor(u'P.0, АБ0, ЯК00x', dtype=tf.string)

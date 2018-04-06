@@ -13,3 +13,4 @@
 #include "expand_split_words.cpp"
 #include "expand_split_chars.cpp"
 #include "expand_char_ngrams.cpp"
+#include "combine_sparse_successor.cpp"

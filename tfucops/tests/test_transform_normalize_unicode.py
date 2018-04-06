@@ -57,6 +57,17 @@ class TransformNormalizeUnicodeTest(tf.test.TestCase):
             result = result.eval()
             self.assertAllEqual([[b'']], result)
 
+    def testSparse(self):
+        expected = tf.SparseTensor(indices=[[0, 0]], values=[u'\u0041\u030A'], dense_shape=[1, 1])
+        source = tf.SparseTensor(indices=[[0, 0]], values=[u'\u00C5'], dense_shape=[1, 1])
+        result = transform_normalize_unicode(source, 'NFD')
+
+        with self.test_session():
+            expected, result = expected.eval(), result.eval()
+            self.assertAllEqual(expected.indices.tolist(), result.indices.tolist())
+            self.assertAllEqual(expected.values.tolist(), result.values.tolist())
+            self.assertAllEqual(expected.dense_shape.tolist(), result.dense_shape.tolist())
+
     def testNFD(self):
         expected = tf.convert_to_tensor(u'\u0041\u030A', dtype=tf.string)
         result = transform_normalize_unicode(u'\u00C5', 'NFD')
