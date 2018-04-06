@@ -8,7 +8,7 @@ import subprocess
 import tensorflow as tf
 from setuptools import setup, Extension
 
-__VERSION__ = '1.4.2'  # update version in __init__.py too
+__VERSION__ = '1.4.3'  # update version in __init__.py too
 
 
 def pkg_config(*packages):
