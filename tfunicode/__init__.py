@@ -20,13 +20,13 @@ def __load_lib():
     if ext_suffix is None:
         ext_suffix = sysconfig.get_config_var('SO')
 
-    lib_file = 'tfucops_{}{}'.format(flags_key, ext_suffix)
+    lib_file = 'tfunicode_{}{}'.format(flags_key, ext_suffix)
     curr_dir = path.dirname(path.abspath(__file__))
     lib_path = path.join(curr_dir, '..', lib_file)
 
     if not path.exists(lib_path):
         raise Exception('OP library ({}) for your TF installation not found. '.format(lib_path) +
-                        'Remove and install with "tfucops" package with --no-cache-dir option')
+                        'Remove and install "tfunicode" package with --no-cache-dir option')
 
     return tf.load_op_library(lib_path)
 
