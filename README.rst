@@ -1,4 +1,4 @@
-.. image:: https://travis-ci.org/shkarupa-alex/tf-uc-ops.svg?branch=master
+.. image:: https://travis-ci.org/shkarupa-alex/tfunicode.svg?branch=master
 
 
 tf-uc-ops
@@ -35,8 +35,8 @@ MacOS X
 Installation
 ------------
 Install package as usual
-    ``[sudo] pip install -U tfucops``
+    ``[sudo] pip install -U tfunicode``
 
 or clone this package & install manualy
-    ``git clone https://github.com/shkarupa-alex/tfucops.git && cd tfucops``
+    ``git clone https://github.com/shkarupa-alex/tfunicode.git && cd tfunicode``
     ``python setup.py install``
