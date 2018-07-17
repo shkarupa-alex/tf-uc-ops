@@ -1,7 +1,7 @@
 .. image:: https://travis-ci.org/shkarupa-alex/tfunicode.svg?branch=master
 
 
-tf-uc-ops
+tfunicode
 =========
 Package provides few custom OPs for TensorFlow to deal with unicode strings:
 
