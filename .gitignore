@@ -103,4 +103,10 @@ ENV/
 # this package
 .DS_Store
 .idea/
-*.so
+/bazel-*
+/bazel_pip
+/pip_test
+/_python_build
+*.pyc
+*.swp
+.vscode/

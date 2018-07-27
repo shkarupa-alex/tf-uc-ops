@@ -1,0 +1,56 @@
+package(default_visibility=['//visibility:public'])
+
+
+cc_library(
+    name = "unilib",
+    deps = [
+        ":unicode",
+        ":uninorms",
+        ":unistrip",
+        ":utf16",
+        ":utf8",
+        ":version",
+    ],
+)
+
+
+cc_library(
+    name = "unicode",
+    srcs = ["unicode.cc"],
+    hdrs = ["unicode.h"],
+)
+
+
+cc_library(
+    name = "uninorms",
+    srcs = ["uninorms.cc"],
+    hdrs = ["uninorms.h"],
+)
+
+
+cc_library(
+    name = "unistrip",
+    srcs = ["unistrip.cc"],
+    hdrs = ["unistrip.h"],
+)
+
+
+cc_library(
+    name = "utf16",
+    srcs = ["utf16.cc"],
+    hdrs = ["utf16.h"],
+)
+
+
+cc_library(
+    name = "utf8",
+    srcs = ["utf8.cc"],
+    hdrs = ["utf8.h"],
+)
+
+
+cc_library(
+    name = "version",
+    srcs = ["version.cc"],
+    hdrs = ["version.h"],
+)
