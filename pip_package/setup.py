@@ -16,7 +16,7 @@ class BinaryDistribution(Distribution):
 
 
 print('tfunicode will fail when building from a source distribution (sdist). Please follow instructions in '
-      '(https://github.com/shkarupa-alex/zero/README.md) to build this from the source.')
+      '(https://github.com/shkarupa-alex/tfunicode/README.md) to build this from the source.')
 
 setup(
     name='tfunicode',

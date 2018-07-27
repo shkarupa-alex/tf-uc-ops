@@ -32,7 +32,6 @@ function main() {
   # So we extract those to ${TMPDIR}.
   cp -LR bazel-bin/pip_package/pip_package.runfiles/tfunicode/tfunicode ${TMPDIR}
   find ${TMPDIR}/tfunicode/cc/ -name '__init__.py'  -type f -delete
-  cp pip_package/__init__.py ${TMPDIR}
   cp pip_package/LICENSE ${TMPDIR}
   cp pip_package/MANIFEST.in ${TMPDIR}
   cp pip_package/README.md ${TMPDIR}
@@ -41,7 +40,8 @@ function main() {
   pushd ${TMPDIR}
 
   echo $(date) : "=== Building wheel"
-  python setup.py bdist_wheel
+  PY_BIN=${PYTHON_BIN:-python}
+  $PY_BIN setup.py bdist_wheel
   cp dist/* ${DEST}
 
   popd
