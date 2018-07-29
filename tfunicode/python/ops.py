@@ -11,15 +11,15 @@ import tensorflow as tf
 _ops_lib = load_library.load_op_library(resource_loader.get_path_to_datafile(
     os.path.join('..', 'cc', 'ops', '_tfunicode.so')))
 
+ops.NotDifferentiable("CobineSparseSuccessor")
+ops.NotDifferentiable("ExpandCharNgrams")
+ops.NotDifferentiable("ExpandSplitChars")
+ops.NotDifferentiable("ExpandSplitWords")
 ops.NotDifferentiable("TransformNormalizeUnicode")
 ops.NotDifferentiable("TransformLowerCase")
 ops.NotDifferentiable("TransformUpperCase")
-ops.NotDifferentiable("TransformZeroDigits")
 ops.NotDifferentiable("TransformWrapWith")
-ops.NotDifferentiable("ExpandSplitWords")
-ops.NotDifferentiable("ExpandSplitChars")
-ops.NotDifferentiable("ExpandCharNgrams")
-ops.NotDifferentiable("CobineSparseSuccessor")
+ops.NotDifferentiable("TransformZeroDigits")
 
 
 def transform_normalize_unicode(source, form):

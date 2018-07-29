@@ -1,8 +1,8 @@
-#include "tensorflow/core/framework/op.h"
 #include "tfunicode/cc/lib/transform_base.h"
-#include <unicode/unistr.h>
+#include "unilib/utf8.h"
 
-using icu::UnicodeString;
+using namespace ufal::unilib;
+using namespace std;
 
 
 class TransformWrapWithOp : public TransformBaseOp {
@@ -11,19 +11,19 @@ class TransformWrapWithOp : public TransformBaseOp {
     // Prepare attrs
     string _left;
     OP_REQUIRES_OK(ctx, ctx->GetAttr("left", &_left));
-    left = UnicodeString::fromUTF8(_left);
+    utf8::decode(_left, left);
 
     string _right;
     OP_REQUIRES_OK(ctx, ctx->GetAttr("right", &_right));
-    right = UnicodeString::fromUTF8(_right);
+    utf8::decode(_right, right);
   }
 
  private:
-  UnicodeString left;
-  UnicodeString right;
+  u32string left;
+  u32string right;
 
  protected:
-  void transform(UnicodeString &item, UErrorCode &error) {
+  void transform(u32string &item) {
     item = left + item + right;
   }
 };

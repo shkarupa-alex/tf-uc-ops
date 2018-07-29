@@ -20,9 +20,8 @@ tf_custom_op_py_library(
     kernels = ["//tfunicode/cc/kernels"],
     srcs_version = "PY2AND3",
     deps = [
-        ":ops_py_wrapper",
         "@org_tensorflow//tensorflow:tensorflow_py",
-        "@org_tensorflow//tensorflow/python:framework_for_generated_wrappers",
+        ":ops_py_wrapper",
     ],
 )
 
@@ -30,7 +29,5 @@ tf_custom_op_py_library(
 tf_gen_op_wrapper_py(
     name = "ops_py_wrapper",
     out = "ops_gen.py",
-    deps = [
-        "//tfunicode/cc",
-    ],
+    deps = ["//tfunicode/cc"],
 )

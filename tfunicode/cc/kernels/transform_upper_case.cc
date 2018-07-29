@@ -1,8 +1,8 @@
-#include "tensorflow/core/framework/op.h"
 #include "tfunicode/cc/lib/transform_base.h"
-#include <unicode/unistr.h>
+#include "unilib/unicode.h"
 
-using icu::UnicodeString;
+using namespace ufal::unilib;
+using namespace std;
 
 
 class TransformUpperCaseOp : public TransformBaseOp {
@@ -10,8 +10,10 @@ class TransformUpperCaseOp : public TransformBaseOp {
   explicit TransformUpperCaseOp(OpKernelConstruction* ctx) : TransformBaseOp(ctx) {}
 
  protected:
-  void transform(UnicodeString &item, UErrorCode &error) {
-    item.toUpper();
+  void transform(u32string &item) {
+    for(char32_t& c : item) {
+      c = unicode::uppercase(c);
+    }
   }
 };
 

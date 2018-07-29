@@ -1,8 +1,8 @@
-#include "tensorflow/core/framework/op.h"
 #include "tfunicode/cc/lib/transform_base.h"
-#include <unicode/unistr.h>
+#include "unilib/unicode.h"
 
-using icu::UnicodeString;
+using namespace ufal::unilib;
+using namespace std;
 
 
 class TransformLowerCaseOp : public TransformBaseOp {
@@ -10,8 +10,10 @@ class TransformLowerCaseOp : public TransformBaseOp {
   explicit TransformLowerCaseOp(OpKernelConstruction* ctx) : TransformBaseOp(ctx) {}
 
  protected:
-  void transform(UnicodeString &item, UErrorCode &error) {
-    item.toLower();
+  void transform(u32string &item) {
+    for(char32_t& c : item) {
+      c = unicode::lowercase(c);
+    }
   }
 };
 

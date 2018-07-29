@@ -1,22 +1,22 @@
-#include "tensorflow/core/framework/op.h"
 #include "tfunicode/cc/lib/transform_base.h"
-#include <unicode/unistr.h>
-#include <unicode/uchar.h>
+#include "unilib/unicode.h"
 
-using icu::UnicodeString;
+using namespace ufal::unilib;
+using namespace std;
 
 
 class TransformZeroDigitsOp : public TransformBaseOp {
  public:
   explicit TransformZeroDigitsOp(OpKernelConstruction* ctx) : TransformBaseOp(ctx) {}
 
- protected:
-  const UChar zero = 48; // Unicode 0
+ private:
+  const char32_t zero = 48; // Unicode 0
 
-  void transform(UnicodeString &item, UErrorCode &error) {
-    for (int32_t pos = 0; pos < item.length(); pos++) {
-      if (u_isdigit(item.charAt(pos))) {
-        item.replace(pos, 1, zero);
+ protected:
+  void transform(u32string &item) {
+    for(char32_t& c : item) {
+      if (unicode::category(c) & unicode::N) {
+        c = zero;
       }
     }
   }

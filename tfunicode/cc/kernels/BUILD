@@ -3,9 +3,8 @@ package(default_visibility = ["//visibility:public"])
 load("@org_tensorflow//tensorflow:tensorflow.bzl", "tf_kernel_library")
 
 
-tf_kernel_library(
+cc_library(
     name = "kernels",
-    srcs = [],
     deps = [
         ":combine_sparse_successor",
         ":expand_char_ngrams",
@@ -25,7 +24,7 @@ tf_kernel_library(
     srcs = ["combine_sparse_successor.cc"],
     deps = [
         "@org_tensorflow//tensorflow/core:framework_headers_lib",
-        "@org_tensorflow//tensorflow/core:framework_lite",
+        "@org_tensorflow//third_party/eigen3",
         "@protobuf_archive//:protobuf",
     ],
 )
@@ -36,9 +35,8 @@ tf_kernel_library(
     srcs = ["expand_char_ngrams.cc"],
     deps = [
         "@org_tensorflow//tensorflow/core:framework_headers_lib",
-        "@org_tensorflow//tensorflow/core:framework_lite",
+        "@org_tensorflow//third_party/eigen3",
         "@protobuf_archive//:protobuf",
-        "@icu//:icu",
         "//tfunicode/cc/lib:expand_base",
     ],
 )
@@ -49,9 +47,8 @@ tf_kernel_library(
     srcs = ["expand_split_chars.cc"],
     deps = [
         "@org_tensorflow//tensorflow/core:framework_headers_lib",
-        "@org_tensorflow//tensorflow/core:framework_lite",
+        "@org_tensorflow//third_party/eigen3",
         "@protobuf_archive//:protobuf",
-        "@icu//:icu",
         "//tfunicode/cc/lib:expand_base",
     ],
 )
@@ -62,9 +59,8 @@ tf_kernel_library(
     srcs = ["expand_split_words.cc"],
     deps = [
         "@org_tensorflow//tensorflow/core:framework_headers_lib",
-        "@org_tensorflow//tensorflow/core:framework_lite",
+        "@org_tensorflow//third_party/eigen3",
         "@protobuf_archive//:protobuf",
-        "@icu//:icu",
         "//tfunicode/cc/lib:expand_base",
     ],
 )
@@ -75,10 +71,10 @@ tf_kernel_library(
     srcs = ["transform_lower_case.cc"],
     deps = [
         "@org_tensorflow//tensorflow/core:framework_headers_lib",
-        "@org_tensorflow//tensorflow/core:framework_lite",
+        "@org_tensorflow//third_party/eigen3",
         "@protobuf_archive//:protobuf",
-        "@icu//:icu",
-         "//tfunicode/cc/lib:transform_base",
+        "@unilib//:unicode",
+        "//tfunicode/cc/lib:transform_base",
    ],
 )
 
@@ -88,10 +84,10 @@ tf_kernel_library(
     srcs = ["transform_normalize_unicode.cc"],
     deps = [
         "@org_tensorflow//tensorflow/core:framework_headers_lib",
-        "@org_tensorflow//tensorflow/core:framework_lite",
+        "@org_tensorflow//third_party/eigen3",
         "@protobuf_archive//:protobuf",
-        "@icu//:icu",
-         "//tfunicode/cc/lib:transform_base",
+        "@unilib//:uninorms",
+        "//tfunicode/cc/lib:transform_base",
     ],
 )
 
@@ -101,10 +97,10 @@ tf_kernel_library(
     srcs = ["transform_upper_case.cc"],
     deps = [
         "@org_tensorflow//tensorflow/core:framework_headers_lib",
-        "@org_tensorflow//tensorflow/core:framework_lite",
+        "@org_tensorflow//third_party/eigen3",
         "@protobuf_archive//:protobuf",
-        "@icu//:icu",
-         "//tfunicode/cc/lib:transform_base",
+        "@unilib//:unicode",
+        "//tfunicode/cc/lib:transform_base",
     ],
 )
 
@@ -114,9 +110,8 @@ tf_kernel_library(
     srcs = ["transform_wrap_with.cc"],
     deps = [
         "@org_tensorflow//tensorflow/core:framework_headers_lib",
-        "@org_tensorflow//tensorflow/core:framework_lite",
+        "@org_tensorflow//third_party/eigen3",
         "@protobuf_archive//:protobuf",
-        "@icu//:icu",
          "//tfunicode/cc/lib:transform_base",
     ],
 )
@@ -127,9 +122,9 @@ tf_kernel_library(
     srcs = ["transform_zero_digits.cc"],
     deps = [
         "@org_tensorflow//tensorflow/core:framework_headers_lib",
-        "@org_tensorflow//tensorflow/core:framework_lite",
+        "@org_tensorflow//third_party/eigen3",
         "@protobuf_archive//:protobuf",
-        "@icu//:icu",
+        "@unilib//:unicode",
          "//tfunicode/cc/lib:transform_base",
     ],
 )

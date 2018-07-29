@@ -16,41 +16,41 @@ cc_library(
 
 cc_library(
     name = "unicode",
-    srcs = ["unicode.cc"],
-    hdrs = ["unicode.h"],
+    srcs = ["unilib/unicode.cpp"],
+    hdrs = ["unilib/unicode.h"],
 )
 
 
 cc_library(
     name = "uninorms",
-    srcs = ["uninorms.cc"],
-    hdrs = ["uninorms.h"],
+    srcs = ["unilib/uninorms.cpp"],
+    hdrs = ["unilib/uninorms.h"],
 )
 
 
 cc_library(
     name = "unistrip",
-    srcs = ["unistrip.cc"],
-    hdrs = ["unistrip.h"],
+    srcs = ["unilib/unistrip.cpp"],
+    hdrs = ["unilib/unistrip.h"],
 )
 
 
 cc_library(
     name = "utf16",
-    srcs = ["utf16.cc"],
-    hdrs = ["utf16.h"],
+    srcs = ["unilib/utf16.cpp"],
+    hdrs = ["unilib/utf16.h"],
 )
 
 
 cc_library(
     name = "utf8",
-    srcs = ["utf8.cc"],
-    hdrs = ["utf8.h"],
+    srcs = ["unilib/utf8.cpp"],
+    hdrs = ["unilib/utf8.h"],
 )
 
 
 cc_library(
     name = "version",
-    srcs = ["version.cc"],
-    hdrs = ["version.h"],
+    srcs = ["unilib/version.cpp"],
+    hdrs = ["unilib/version.h"],
 )
