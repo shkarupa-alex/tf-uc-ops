@@ -1,4 +1,5 @@
 #include "tfunicode/cc/lib/expand_base.h"
+#include "tfunicode/cc/lib/word_break.h"
 
 using namespace std;
 
@@ -8,26 +9,24 @@ class ExpandSplitWordsOp : public ExpandBaseOp {
   explicit ExpandSplitWordsOp(OpKernelConstruction* ctx) : ExpandBaseOp(ctx) {}
 
  private:
+  static const set<char32_t> extended_pictographic;
+
   void expand(const u32string &source, std::vector<u32string> &target) {
     if (source.length() < 2) {
       target.push_back(source);
       return;
     }
 
-    // Split words by Unicode rules
-//    BreakIterator *wordIterator = _wordIterator->clone();
-//    wordIterator->setText(source);
-//    int32_t prev = wordIterator->first();
-//    for (int32_t pos = wordIterator->first(); pos != BreakIterator::DONE; pos = wordIterator->next()) {
-//      if (prev == pos) {
-//        continue;
-//      }
-//
-//      UnicodeString word = UnicodeString(source, prev, pos - prev);
-//      target.push_back(word);
-//
-//      prev = pos;
-//    }
+    int prev = 0;
+    for (int pos = 1; pos <= (int)source.length(); pos++) {
+      if (!WordBreak::IsBreak(source, pos)) {
+        continue;
+      }
+
+      u32string word = u32string(source, prev, pos - prev);
+      target.push_back(word);
+      prev = pos;
+    }
   }
 };
 

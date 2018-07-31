@@ -32,8 +32,7 @@ class ExpandCharNgramsOp : public ExpandBaseOp {
   NgramItself itself;
 
   void expand(const u32string &source, std::vector<u32string> &target) {
-    // Convert length to signed int. Required for correct comparison with pos below
-    int length = (int)source.length();
+    int length = (int)source.length();  // Convert length to signed int. Required to allow negative values.
 
     // Split ngrams
     for (int n = minn; n <= maxn; n++) {
