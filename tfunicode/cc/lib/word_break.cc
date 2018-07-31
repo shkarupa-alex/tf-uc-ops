@@ -10,19 +10,20 @@ using namespace std;
 // Returns true if character at position pos is a border of the word
 bool WordBreak::IsBreak(const u32string &source, const int position) {
   const char32_t right_curr = CharAt(source, position);
-
-  const int left_curr_pos = Skip_EFZ(source, position, -1, false);
-  const char32_t left_curr = CharAt(source, left_curr_pos);
+  const char32_t left_curr = CharAt(source, position - 1);
 
   // According to https://github.com/unicode-org/icu/blob/master/icu4c/source/data/brkitr/rules/word.txt
   // right after WB4 we should skip not only (Format | Extend) but also ZWJ.
   // As equivalent we use ZWJ for most left and right characters.
 
-  const int left_left_pos = Skip_EFZ(source, left_curr_pos, -1, true);
-  const char32_t left_left = CharAt(source, left_left_pos);
+  const int left_curr_pos_efz = Skip_EFZ(source, position, -1, true);
+  const char32_t left_curr_efz = CharAt(source, left_curr_pos_efz);
 
-  const int right_right_pos = Skip_EFZ(source, position, +1, true);
-  const char32_t right_right = CharAt(source, right_right_pos);
+  const int left_left_pos_efz = Skip_EFZ(source, left_curr_pos_efz, -1, true);
+  const char32_t left_left_efz = CharAt(source, left_left_pos_efz);
+
+  const int right_right_pos_efz = Skip_EFZ(source, position, +1, true);
+  const char32_t right_right_efz = CharAt(source, right_right_pos_efz);
 
   // WB1
   if (1 > position) {
@@ -64,111 +65,109 @@ bool WordBreak::IsBreak(const u32string &source, const int position) {
 
   // WB4
   if (
-  !(1 > position || Newline(left_curr) || CR(left_curr) || LF(left_curr)) &&
+  !(Newline(left_curr) || CR(left_curr) || LF(left_curr)) &&
   (Format(right_curr) || Extend(right_curr) || ZWJ(right_curr))) {
     return false;
   }
 
   // WB5
-  if (AHLetter(left_curr)
+  if (AHLetter(left_curr_efz)
     && AHLetter(right_curr)) {
     return false;
   }
 
   // WB6
-  if (AHLetter(left_curr)
+  if (AHLetter(left_curr_efz)
     && (MidLetter(right_curr) || MidNumLetQ(right_curr))
-    && AHLetter(right_right)) {
+    && AHLetter(right_right_efz)) {
     return false;
   }
 
   // WB7
-  if (AHLetter(left_left)
-    && (MidLetter(left_curr) || MidNumLetQ(left_curr))
+  if (AHLetter(left_left_efz)
+    && (MidLetter(left_curr_efz) || MidNumLetQ(left_curr_efz))
     && AHLetter(right_curr)) {
     return false;
   }
 
   // WB7a
-  if (Hebrew_Letter(left_curr)
+  if (Hebrew_Letter(left_curr_efz)
     && Single_Quote(right_curr)) {
     return false;
   }
 
   // WB7b
-  if (Hebrew_Letter(left_curr)
+  if (Hebrew_Letter(left_curr_efz)
     && Double_Quote(right_curr)
-    && Hebrew_Letter(right_right)) {
+    && Hebrew_Letter(right_right_efz)) {
     return false;
   }
 
   // WB7c
-  if (Hebrew_Letter(left_left)
-    && Double_Quote(left_curr)
+  if (Hebrew_Letter(left_left_efz)
+    && Double_Quote(left_curr_efz)
     && Hebrew_Letter(right_curr)) {
     return false;
   }
 
   // WB8
-  if (Numeric(left_curr)
+  if (Numeric(left_curr_efz)
     && Numeric(right_curr)) {
     return false;
   }
 
   // WB9
-  if (AHLetter(left_curr)
+  if (AHLetter(left_curr_efz)
     && Numeric(right_curr)) {
     return false;
   }
 
   // WB10
-  if (Numeric(left_curr)
+  if (Numeric(left_curr_efz)
     && AHLetter(right_curr)) {
     return false;
   }
 
   // WB11
-  if (Numeric(left_left) &&
-      (MidNum(left_curr) || MidNumLetQ(left_curr))
+  if (Numeric(left_left_efz) &&
+      (MidNum(left_curr_efz) || MidNumLetQ(left_curr_efz))
       && Numeric(right_curr)) {
     return false;
   }
 
   // WB12
-  if (Numeric(left_curr) &&
+  if (Numeric(left_curr_efz) &&
       (MidNum(right_curr) || MidNumLetQ(right_curr))
-      && Numeric(right_right)) {
+      && Numeric(right_right_efz)) {
     return false;
   }
 
   // WB13
-  if (Katakana(left_curr) &&
+  if (Katakana(left_curr_efz) &&
       Katakana(right_curr)) {
     return false;
     }
 
   // WB13a
-  if ((AHLetter(left_curr) || Numeric(left_curr) || Katakana(left_curr) || ExtendNumLet(left_curr))
+  if ((AHLetter(left_curr_efz) || Numeric(left_curr_efz) || Katakana(left_curr_efz) || ExtendNumLet(left_curr_efz))
     && ExtendNumLet(right_curr)) {
     return false;
   }
 
   // WB13b
-  if (ExtendNumLet(left_curr) &&
+  if (ExtendNumLet(left_curr_efz) &&
       (AHLetter(right_curr) || Numeric(right_curr) || Katakana(right_curr))) {
     return false;
   }
 
 
   // WB15, WB16
-  const int ri_left_curr_pos = Skip_EFZ(source, position, -1, true);
-  const char32_t ri_left_curr = CharAt(source, ri_left_curr_pos);
-  if (Regional_Indicator(ri_left_curr) && Regional_Indicator(right_curr)) {
+  if (Regional_Indicator(left_curr_efz) && Regional_Indicator(right_curr)) {
     if (position <= 1) {
       return false;
     }
 
-    int ri_before_pos = Skip_EFZ(source, ri_left_curr_pos, -1, true);
+    int ri_before_pos = Skip_EFZ(source, left_curr_pos_efz, -1, true);
     int ri_before_count = 0;
     while (Regional_Indicator(source[ri_before_pos])) {
       ri_before_count++;

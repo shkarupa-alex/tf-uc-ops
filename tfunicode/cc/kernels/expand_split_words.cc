@@ -11,7 +11,7 @@ class ExpandSplitWordsOp : public ExpandBaseOp {
  private:
   static const set<char32_t> extended_pictographic;
 
-  void expand(const u32string &source, std::vector<u32string> &target) {
+  inline void expand(const u32string &source, std::vector<u32string> &target) {
     if (source.length() < 2) {
       target.push_back(source);
       return;

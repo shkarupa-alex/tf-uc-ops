@@ -17,7 +17,7 @@ class TransformNormalizeUnicodeOp : public TransformBaseOp {
     string form_value;
 
  protected:
-  void transform(u32string &item) {
+  inline void transform(u32string &item) {
     if("NFC" == form_value) {
       uninorms::nfc(item);
     } else if ("NFD" == form_value) {

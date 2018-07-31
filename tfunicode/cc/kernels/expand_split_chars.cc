@@ -8,7 +8,7 @@ class ExpandSplitCharsOp : public ExpandBaseOp {
   explicit ExpandSplitCharsOp(OpKernelConstruction* ctx) : ExpandBaseOp(ctx) {}
 
  private:
-  void expand(const u32string &source, std::vector<u32string> &target) {
+  inline void expand(const u32string &source, std::vector<u32string> &target) {
     if (source.length() == 0) {
       return;
     }

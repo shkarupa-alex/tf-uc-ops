@@ -31,7 +31,7 @@ class ExpandCharNgramsOp : public ExpandBaseOp {
   int maxn;
   NgramItself itself;
 
-  void expand(const u32string &source, std::vector<u32string> &target) {
+  inline void expand(const u32string &source, std::vector<u32string> &target) {
     int length = (int)source.length();  // Convert length to signed int. Required to allow negative values.
 
     // Split ngrams

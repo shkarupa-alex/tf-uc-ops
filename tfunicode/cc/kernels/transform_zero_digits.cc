@@ -13,7 +13,7 @@ class TransformZeroDigitsOp : public TransformBaseOp {
   const char32_t zero = 48; // Unicode 0
 
  protected:
-  void transform(u32string &item) {
+  inline void transform(u32string &item) {
     for(char32_t& c : item) {
       if (unicode::category(c) & unicode::N) {
         c = zero;

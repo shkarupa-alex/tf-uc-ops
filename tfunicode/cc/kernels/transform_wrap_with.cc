@@ -23,7 +23,7 @@ class TransformWrapWithOp : public TransformBaseOp {
   u32string right;
 
  protected:
-  void transform(u32string &item) {
+  inline void transform(u32string &item) {
     item = left + item + right;
   }
 };

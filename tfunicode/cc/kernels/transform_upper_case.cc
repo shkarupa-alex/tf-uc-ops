@@ -10,7 +10,7 @@ class TransformUpperCaseOp : public TransformBaseOp {
   explicit TransformUpperCaseOp(OpKernelConstruction* ctx) : TransformBaseOp(ctx) {}
 
  protected:
-  void transform(u32string &item) {
+  inline void transform(u32string &item) {
     for(char32_t& c : item) {
       c = unicode::uppercase(c);
     }

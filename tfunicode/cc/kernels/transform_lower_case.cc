@@ -10,7 +10,7 @@ class TransformLowerCaseOp : public TransformBaseOp {
   explicit TransformLowerCaseOp(OpKernelConstruction* ctx) : TransformBaseOp(ctx) {}
 
  protected:
-  void transform(u32string &item) {
+  inline void transform(u32string &item) {
     for(char32_t& c : item) {
       c = unicode::lowercase(c);
     }
