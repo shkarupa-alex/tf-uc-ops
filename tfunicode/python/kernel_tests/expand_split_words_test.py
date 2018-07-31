@@ -3,27 +3,24 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from builtins import chr
-# from future.standard_library import install_aliases
-#
-# install_aliases()
+from future.standard_library import install_aliases
+
+install_aliases()
 from tfunicode.python.ops import expand_split_words
-# from urllib.request import urlopen
-import numpy as np
+from urllib.request import urlopen
 import tensorflow as tf
 import re
 
 
 class ExpandSplitWordsTest(tf.test.TestCase):
     def testWork(self):
-        expected = tf.convert_to_tensor([u'\u0001', u'\u0061' ,u'\u003A'], dtype=tf.string)
-        result = expand_split_words(u'\u0001\u0061\u003A')
+        expected = tf.convert_to_tensor([u'\u0061\u003A\u0041'], dtype=tf.string)
+        result = expand_split_words(u'\u0061\u003A\u0041')
         result = tf.sparse_tensor_to_dense(result, default_value='')
 
         with self.test_session():
             expected, result = expected.eval(), result.eval()
-            # print(result)
-            print([r.decode('utf-8') for r in result])
+            print(result)
             self.assertAllEqual(expected, result)
 
     # def testInferenceShape(self):
@@ -199,21 +196,17 @@ class ExpandSplitWordsTest(tf.test.TestCase):
     #     with self.test_session():
     #         expected, result = expected.eval(), result.eval()
     #         self.assertAllEqual(expected, result)
-
+    #
     def testIcuWordBreak(self):
-
-        ICU_TEST_URL = 'https://www.unicode.org/Public/UCD/latest/ucd/auxiliary/WordBreakTest.txt'
+        WORD_BREAK_TEST_URL = 'https://www.unicode.org/Public/UCD/latest/ucd/auxiliary/WordBreakTest.txt'
 
         with open('/Users/alex/HDD/Develop/semtech/tfunicode/WordBreakTest.txt', 'rb') as ft:
             test_data = ft.read().decode('utf-8').strip().split('\n')
-        # for line in urlopen(ICU_TEST_URL).readlines():
+        # test_data = urlopen(WORD_BREAK_TEST_URL).read().decode('utf-8').strip().split('\n')
 
         expected, source, description = [], [], []
         for row, line in enumerate(test_data):
             if line.startswith('#'):
-                continue
-
-            if ' 0308 ' in line:
                 continue
 
             example, rule = line.split('#')
@@ -244,13 +237,13 @@ class ExpandSplitWordsTest(tf.test.TestCase):
                 exp = [_ for _ in exp if len(_)]
                 res = [_ for _ in res if len(_)]
                 if exp != res:
-                    desc = desc.split('. ')[1].replace('[0.2]', '').replace('[0.3]', '')
+                    desc = desc.replace('[0.2]', '').replace('[0.3]', '')
                     desc = re.sub('[^\d\.\[\]]', '', desc)
                     debug.append(desc)
                     # print(expected_value, result_value)
-                    # self.assertAllEqual(expected_value.tolist(), result_value.tolist(), desc)
+                    # self.assertAllEqual(exp, res, desc)
         print('\n'.join(debug))
-        # self.assertTrue(False)
+        self.assertTrue(False)
 
 
 if __name__ == "__main__":

@@ -3,6 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 from future.standard_library import install_aliases
+
 install_aliases()
 from urllib.request import urlopen
 
@@ -12,10 +13,7 @@ SCRIPT_DATA_URL = 'https://www.unicode.org/Public/UCD/latest/ucd/Scripts.txt'
 PROPSLIST_DATA_URL = 'https://www.unicode.org/Public/UCD/latest/ucd/PropList.txt'
 EASTASIAN_DATA_URL = 'https://www.unicode.org/Public/UCD/latest/ucd/EastAsianWidth.txt'
 
-GEN_TEMPLATE = """
-  bool _gen_is_{}(char32_t c) {{
-    return {};
-  }}"""
+GEN_TEMPLATE = 'bool WordBreak::_gen_is_{}(char32_t c) {{ return {}; }}'
 
 
 def gen_func(data_url, block_name, func_title, skip=None):
