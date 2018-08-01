@@ -7,17 +7,17 @@ load("@org_tensorflow//tensorflow:tensorflow.bzl", "tf_custom_op_library")
 cc_library(
     name = "cc",
     deps = [
-        "combine_sparse_successor_op_lib",
+        ":combine_sparse_successor_op_lib",
         "expand_char_ngrams_op_lib",
         "expand_split_chars_op_lib",
         "expand_split_words_op_lib",
         "transform_lower_case_op_lib",
         "transform_normalize_unicode_op_lib",
+        "transform_title_case_op_lib",
         "transform_upper_case_op_lib",
         "transform_wrap_with_op_lib",
         "transform_zero_digits_op_lib",
     ],
-    # alwayslink = 1,
 )
 
 tf_gen_op_libs(
@@ -28,15 +28,15 @@ tf_gen_op_libs(
         "expand_split_words",
         "transform_lower_case",
         "transform_normalize_unicode",
+        "transform_title_case",
         "transform_upper_case",
         "transform_wrap_with",
         "transform_zero_digits",
     ],
     deps = [
-        "@org_tensorflow//tensorflow/core:lib",
-        "//tfunicode/cc/kernels",
         "//tfunicode/cc/lib:expand_shape",
         "//tfunicode/cc/lib:transform_shape",
+        "//tfunicode/cc/kernels",
     ],
 )
 
@@ -49,6 +49,7 @@ tf_custom_op_library(
         ":ops/expand_split_words.cc",
         ":ops/transform_lower_case.cc",
         ":ops/transform_normalize_unicode.cc",
+        ":ops/transform_title_case.cc",
         ":ops/transform_upper_case.cc",
         ":ops/transform_wrap_with.cc",
         ":ops/transform_zero_digits.cc",

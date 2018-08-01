@@ -11,15 +11,15 @@ import tensorflow as tf
 _ops_lib = load_library.load_op_library(resource_loader.get_path_to_datafile(
     os.path.join('..', 'cc', 'ops', '_tfunicode.so')))
 
+ops.NotDifferentiable("CobineSparseSuccessor")
+ops.NotDifferentiable("ExpandCharNgrams")
+ops.NotDifferentiable("ExpandSplitChars")
+ops.NotDifferentiable("ExpandSplitWords")
 ops.NotDifferentiable("TransformNormalizeUnicode")
 ops.NotDifferentiable("TransformLowerCase")
 ops.NotDifferentiable("TransformUpperCase")
-ops.NotDifferentiable("TransformZeroDigits")
 ops.NotDifferentiable("TransformWrapWith")
-ops.NotDifferentiable("ExpandSplitWords")
-ops.NotDifferentiable("ExpandSplitChars")
-ops.NotDifferentiable("ExpandCharNgrams")
-ops.NotDifferentiable("CobineSparseSuccessor")
+ops.NotDifferentiable("TransformZeroDigits")
 
 
 def transform_normalize_unicode(source, form):
@@ -64,6 +64,28 @@ def transform_lower_case(source):
         )
     else:
         result = ops_gen.transform_lower_case(source)
+
+    return result
+
+
+def transform_title_case(source):
+    """Titlecase strings tensor.
+
+    Args:
+        source: `Tensor` or `SparseTensor` of any shape, strings to make title.
+    Returns:
+        `Tensor` or `SparseTensor` of same shape and size as input.
+    """
+
+    source = tf.convert_to_tensor_or_sparse_tensor(source, dtype=tf.string)
+    if isinstance(source, tf.SparseTensor):
+        result = tf.SparseTensor(
+            indices=source.indices,
+            values=ops_gen.transform_title_case(source.values),
+            dense_shape=source.dense_shape
+        )
+    else:
+        result = ops_gen.transform_title_case(source)
 
     return result
 

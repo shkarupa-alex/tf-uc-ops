@@ -40,7 +40,7 @@ function main() {
   pushd ${TMPDIR}
 
   echo $(date) : "=== Building wheel"
-  PY_BIN=${PYTHON_BIN:-python}
+  PY_BIN=${PYTHON_BIN_PATH:-python}
   $PY_BIN setup.py bdist_wheel
   cp dist/* ${DEST}
 

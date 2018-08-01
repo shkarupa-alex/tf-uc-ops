@@ -1,8 +1,6 @@
-#include "tensorflow/core/framework/op.h"
 #include "tfunicode/cc/lib/expand_base.h"
-#include <unicode/unistr.h>
 
-using icu::UnicodeString;
+using namespace std;
 
 
 class ExpandCharNgramsOp : public ExpandBaseOp {
@@ -12,42 +10,43 @@ class ExpandCharNgramsOp : public ExpandBaseOp {
     OP_REQUIRES_OK(ctx, ctx->GetAttr("minn", &minn));
     OP_REQUIRES_OK(ctx, ctx->GetAttr("maxn", &maxn));
     OP_REQUIRES(ctx, minn > 0, errors::InvalidArgument("minn should be above 0"));
-    OP_REQUIRES(ctx, maxn > 0, errors::InvalidArgument("maxn should be above 0"));
     OP_REQUIRES(ctx, maxn >= minn, errors::InvalidArgument("maxn should be above or equal minn"));
 
     string itself_value;
     OP_REQUIRES_OK(ctx, ctx->GetAttr("itself", &itself_value));
     std::transform(itself_value.begin(), itself_value.end(), itself_value.begin(), ::toupper);
-    if("ASIS" == itself_value) {
-      itself = 0;
-    } else if ("NEVER" == itself_value) {
-      itself = -1;
+    if ("NEVER" == itself_value) {
+      itself = NgramItself::NEVER;
     } else if ("ALWAYS" == itself_value) {
-      itself = 1;
+      itself = NgramItself::ALWAYS;
     } else {
-      OP_REQUIRES(ctx, false, errors::InvalidArgument("unknown itself value"));
+      itself = NgramItself::ASIS;
     }
-}
+  }
 
  private:
+  enum class NgramItself { ASIS, NEVER, ALWAYS };
+
   int minn;
   int maxn;
-  int itself;
+  NgramItself itself;
 
-  void expand(const UnicodeString &source, std::vector<UnicodeString> &target, UErrorCode &error) {
+  inline void expand(const u32string &source, std::vector<u32string> &target) {
+    int length = (int)source.length();  // Convert length to signed int. Required to allow negative values.
+
     // Split ngrams
-    for (int32_t n = minn; n <= maxn; n++) {
-      if (-1 == itself && source.length() == n)
+    for (int n = minn; n <= maxn; n++) {
+      if (NgramItself::NEVER == itself && length == n)
         continue;
 
-      for (int32_t pos = 0; pos <= source.length() - n; pos++) {
-        UnicodeString ngram = UnicodeString(source, pos, n);
+      for (int pos = 0; pos <= length - n; pos++) {
+        u32string ngram = u32string(source, pos, n);
 
         target.push_back(ngram);
       }
     }
 
-    if (1 == itself && (source.length() < minn || source.length() > maxn)) {
+    if (NgramItself::ALWAYS == itself && (length < minn || length > maxn)) {
       target.push_back(source);
     }
   }

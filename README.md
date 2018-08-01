@@ -1,6 +1,7 @@
 # tfunicode
 
-Demo repository with infrastructure to build wheel for [Tensorflow custom op](https://www.tensorflow.org/extend/adding_an_op)
+Infrastructure to build TensorFlow custom ops wheel for unicode string preprocessing.
+For more info about provided ops see package [README](https://github.com/shkarupa-alex/tfunicode/blob/master/pip_package/README.md)
 
 ## Develop commands
 
@@ -14,12 +15,11 @@ bazel test //tfunicode/...
 ```bash
 bazel clean --expunge
 bazel build //pip_package
-bazel-bin/pip_package/pip_package ~/wheels
+bazel run bazel-bin/pip_package/pip_package ./wheels
 ```
 
-To build with Python3 support:
+To build Python3-package run before normal build:
 
 ```bash
-export PYTHON_BIN=python3
-bazel-bin/pip_package/pip_package ~/wheels
+export PYTHON_BIN_PATH=python3
 ```

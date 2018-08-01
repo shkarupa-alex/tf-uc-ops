@@ -93,8 +93,8 @@ class TransformNormalizeUnicodeTest(tf.test.TestCase):
             self.assertAllEqual(expected, result)
 
     def testNFKC(self):
-        expected = tf.convert_to_tensor(u'\u00E7', dtype=tf.string)
-        result = transform_normalize_unicode(u'\u00E7', 'NFKC')
+        expected = tf.convert_to_tensor(u'\u1E69', dtype=tf.string)
+        result = transform_normalize_unicode(u'\u1E9B\u0323', 'NFKC')
 
         with self.test_session():
             expected, result = expected.eval(), result.eval()

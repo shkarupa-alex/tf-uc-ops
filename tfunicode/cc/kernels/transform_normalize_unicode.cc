@@ -1,44 +1,32 @@
-#include "tensorflow/core/framework/op.h"
 #include "tfunicode/cc/lib/transform_base.h"
-#include <unicode/unistr.h>
-#include <unicode/normalizer2.h>
+#include "unilib/uninorms.h"
 
-using icu::Normalizer2;
-using icu::UnicodeString;
+using namespace ufal::unilib;
+using namespace std;
 
 
 class TransformNormalizeUnicodeOp : public TransformBaseOp {
  public:
   explicit TransformNormalizeUnicodeOp(OpKernelConstruction* ctx) : TransformBaseOp(ctx) {
     // Prepare attr
-    string form_value;
     OP_REQUIRES_OK(ctx, ctx->GetAttr("form", &form_value));
     std::transform(form_value.begin(), form_value.end(), form_value.begin(), ::toupper);
-
-
-    // Create Normalizer2 instance
-    UErrorCode instanceError = U_ZERO_ERROR;
-    if("NFC" == form_value) {
-      normalizerInstance = Normalizer2::getNFCInstance(instanceError);
-    } else if ("NFD" == form_value) {
-      normalizerInstance = Normalizer2::getNFDInstance(instanceError);
-    } else if ("NFKC" == form_value) {
-      normalizerInstance = Normalizer2::getNFKCInstance(instanceError);
-    } else if ("NFKD" == form_value) {
-      normalizerInstance = Normalizer2::getNFKDInstance(instanceError);
-    } else {
-      OP_REQUIRES(ctx, false, errors::InvalidArgument("unknown normalization form"));
-    }
-    OP_REQUIRES(ctx, U_SUCCESS(instanceError), errors::Internal("Normalizer2 instantiation failed"));
   }
 
  private:
-    mutex normalizerMutex;
-    const Normalizer2 *normalizerInstance GUARDED_BY(normalizerMutex);
+    string form_value;
 
  protected:
-  void transform(UnicodeString &item, UErrorCode &error) {
-    item = normalizerInstance->normalize(item, error);
+  inline void transform(u32string &item) {
+    if("NFC" == form_value) {
+      uninorms::nfc(item);
+    } else if ("NFD" == form_value) {
+      uninorms::nfd(item);
+    } else if ("NFKC" == form_value) {
+      uninorms::nfkc(item);
+    } else if ("NFKD" == form_value) {
+      uninorms::nfkd(item);
+    }
   }
 };
 

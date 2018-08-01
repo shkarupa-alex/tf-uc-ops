@@ -3,8 +3,14 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+from future.standard_library import install_aliases
+
+install_aliases()
 from tfunicode.python.ops import expand_split_words
+from urllib.request import urlopen
+import os
 import tensorflow as tf
+
 
 
 class ExpandSplitWordsTest(tf.test.TestCase):
@@ -181,6 +187,44 @@ class ExpandSplitWordsTest(tf.test.TestCase):
         with self.test_session():
             expected, result = expected.eval(), result.eval()
             self.assertAllEqual(expected, result)
+
+    def testIcuWordBreak(self):
+        # WORD_BREAK_TEST_URL = 'https://www.unicode.org/Public/UCD/latest/ucd/auxiliary/WordBreakTest.txt'
+        # test_data = urlopen(WORD_BREAK_TEST_URL).read().decode('utf-8').strip().split('\n')
+
+        WORD_BREAK_TEST_FILE = os.path.join(os.path.dirname(__file__), 'WordBreakTest.txt')
+        with open(WORD_BREAK_TEST_FILE, 'rb') as ft:
+            test_data = ft.read().decode('utf-8').strip().split('\n')
+
+        expected, source, description = [], [], []
+        for row, line in enumerate(test_data):
+            if line.startswith('#'):
+                continue
+
+            example, rule = line.split('#')
+            example = example.strip().strip(u'÷').strip().replace(u'÷', '00F7').replace(u'×', '00D7').split(' ')
+            example = [code.zfill(8) if len(code) > 4 else code.zfill(4) for code in example]
+            example = [u'\\U{}'.format(code) if len(code) > 4 else u'\\u{}'.format(code) for code in example]
+            example = [code.decode('unicode-escape') for code in example]
+            example = u''.join(example).replace(u'×', '')
+
+            expected.append(example.split(u'÷'))
+            source.append(example.replace(u'÷', ''))
+
+            rule = rule.strip().strip(u'÷').strip()
+            description.append(u'Row #{}. {}'.format(row + 1, rule))
+
+        max_len = len(sorted(expected, key=len, reverse=True)[0])
+        expected = [e + ['']*(max_len - len(e)) for e in expected]
+
+        expected_tensor = tf.convert_to_tensor(expected, dtype=tf.string)
+        result_tensor = tf.sparse_tensor_to_dense(expand_split_words(source), default_value='')
+
+        with self.test_session():
+            expected_value, result_value = expected_tensor.eval(), result_tensor.eval()
+
+        for exp, res, desc in zip(expected_value, result_value, description):
+            self.assertAllEqual(exp, res, desc)
 
 
 if __name__ == "__main__":

@@ -1,45 +1,30 @@
-#include "tensorflow/core/framework/op.h"
 #include "tfunicode/cc/lib/expand_base.h"
-#include <unicode/brkiter.h>
-#include <unicode/locid.h>
-#include <unicode/unistr.h>
+#include "tfunicode/cc/lib/word_break.h"
 
-using icu::BreakIterator;
-using icu::Locale;
-using icu::UnicodeString;
+using namespace std;
 
 
 class ExpandSplitWordsOp : public ExpandBaseOp {
  public:
-  explicit ExpandSplitWordsOp(OpKernelConstruction* ctx) : ExpandBaseOp(ctx) {
-    // Create word-level BreakIterator instance
-    UErrorCode wordError = U_ZERO_ERROR;
-    _wordIterator = BreakIterator::createWordInstance(Locale::getRoot(), wordError);
-    OP_REQUIRES(ctx, U_SUCCESS(wordError), errors::InvalidArgument("BreakIterator instantiation failed"));
-  }
+  explicit ExpandSplitWordsOp(OpKernelConstruction* ctx) : ExpandBaseOp(ctx) {}
 
  private:
-  mutex wordMutex;
-  BreakIterator *_wordIterator GUARDED_BY(wordMutex);
+  static const set<char32_t> extended_pictographic;
 
-  void expand(const UnicodeString &source, std::vector<UnicodeString> &target, UErrorCode &error) {
+  inline void expand(const u32string &source, std::vector<u32string> &target) {
     if (source.length() < 2) {
       target.push_back(source);
       return;
     }
 
-    // Split words by Unicode rules
-    BreakIterator *wordIterator = _wordIterator->clone();
-    wordIterator->setText(source);
-    int32_t prev = wordIterator->first();
-    for (int32_t pos = wordIterator->first(); pos != BreakIterator::DONE; pos = wordIterator->next()) {
-      if (prev == pos) {
+    int prev = 0;
+    for (int pos = 1; pos <= (int)source.length(); pos++) {
+      if (!WordBreak::IsBreak(source, pos)) {
         continue;
       }
 
-      UnicodeString word = UnicodeString(source, prev, pos - prev);
+      u32string word = u32string(source, prev, pos - prev);
       target.push_back(word);
-
       prev = pos;
     }
   }

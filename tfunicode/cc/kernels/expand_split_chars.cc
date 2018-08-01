@@ -1,8 +1,6 @@
-#include "tensorflow/core/framework/op.h"
 #include "tfunicode/cc/lib/expand_base.h"
-#include <unicode/unistr.h>
 
-using icu::UnicodeString;
+using namespace std;
 
 
 class ExpandSplitCharsOp : public ExpandBaseOp {
@@ -10,7 +8,7 @@ class ExpandSplitCharsOp : public ExpandBaseOp {
   explicit ExpandSplitCharsOp(OpKernelConstruction* ctx) : ExpandBaseOp(ctx) {}
 
  private:
-  void expand(const UnicodeString &source, std::vector<UnicodeString> &target, UErrorCode &error) {
+  inline void expand(const u32string &source, std::vector<u32string> &target) {
     if (source.length() == 0) {
       return;
     }
@@ -22,7 +20,7 @@ class ExpandSplitCharsOp : public ExpandBaseOp {
 
     // Split chars
     for (int32_t pos = 0; pos < source.length(); pos++) {
-      UnicodeString word = UnicodeString(source, pos, 1);
+      u32string word = u32string(source, pos, 1);
 
       target.push_back(word);
     }
