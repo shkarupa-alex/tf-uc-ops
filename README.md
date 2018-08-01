@@ -15,7 +15,7 @@ bazel test //tfunicode/...
 ```bash
 bazel clean --expunge
 bazel build //pip_package
-bazel run bazel-bin/pip_package/pip_package ./wheels
+bazel-bin/pip_package/pip_package ./wheels
 ```
 
 To build Python3-package run before normal build:
