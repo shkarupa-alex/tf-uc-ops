@@ -14,7 +14,7 @@ bazel test //tfunicode/...
 
 ```bash
 bazel clean --expunge
-bazel build //pip_package
+bazel build --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=0" //pip_package
 bazel-bin/pip_package/pip_package ./wheels
 ```
 

@@ -45,13 +45,14 @@ function main() {
   $PY_BIN setup.py bdist_wheel
 
   if [[ $(uname) == "Linux" ]]; then
+    mkdir repaired
     for WHL in dist/*.whl
     do
-      auditwheel repair $WHL
+      auditwheel repair -w repaired $WHL
     done
 
     rm dist/*
-    mv wheelhouse/* dist/
+    mv repaired/* dist/
   fi
 
   cp dist/* ${DEST}
