@@ -69,6 +69,17 @@ py_test(
 
 
 py_test(
+    name = "transform_title_case_test",
+    srcs = ["transform_title_case_test.py"],
+    srcs_version = "PY2AND3",
+    deps = [
+        "@org_tensorflow//tensorflow:tensorflow_py",
+        "//tfunicode/python",
+    ],
+)
+
+
+py_test(
     name = "transform_upper_case_test",
     srcs = ["transform_upper_case_test.py"],
     srcs_version = "PY2AND3",

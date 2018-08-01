@@ -13,6 +13,7 @@ cc_library(
         ":expand_split_words",
         ":transform_lower_case",
         ":transform_normalize_unicode",
+        ":transform_title_case",
         ":transform_upper_case",
         ":transform_wrap_with",
         ":transform_zero_digits",
@@ -66,6 +67,16 @@ tf_kernel_library(
     srcs = ["transform_normalize_unicode.cc"],
     deps = [
         "@unilib//:uninorms",
+        "//tfunicode/cc/lib:transform_base",
+    ] + tf_custom_op_library_additional_deps(),
+)
+
+
+tf_kernel_library(
+    name = "transform_title_case",
+    srcs = ["transform_title_case.cc"],
+    deps = [
+        "@unilib//:unicode",
         "//tfunicode/cc/lib:transform_base",
     ] + tf_custom_op_library_additional_deps(),
 )

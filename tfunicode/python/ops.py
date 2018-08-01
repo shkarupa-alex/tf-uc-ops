@@ -68,6 +68,28 @@ def transform_lower_case(source):
     return result
 
 
+def transform_title_case(source):
+    """Titlecase strings tensor.
+
+    Args:
+        source: `Tensor` or `SparseTensor` of any shape, strings to make title.
+    Returns:
+        `Tensor` or `SparseTensor` of same shape and size as input.
+    """
+
+    source = tf.convert_to_tensor_or_sparse_tensor(source, dtype=tf.string)
+    if isinstance(source, tf.SparseTensor):
+        result = tf.SparseTensor(
+            indices=source.indices,
+            values=ops_gen.transform_title_case(source.values),
+            dense_shape=source.dense_shape
+        )
+    else:
+        result = ops_gen.transform_title_case(source)
+
+    return result
+
+
 def transform_upper_case(source):
     """Uppercase strings tensor.
 
