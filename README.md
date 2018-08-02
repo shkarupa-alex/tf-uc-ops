@@ -13,13 +13,8 @@ bazel test //tfunicode/...
 ## Build commands
 
 ```bash
+export PYTHON_BIN_PATH=python3
 bazel clean --expunge
 bazel build --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=0" //pip_package
 bazel-bin/pip_package/pip_package ./wheels
-```
-
-To build Python3-package run before normal build:
-
-```bash
-export PYTHON_BIN_PATH=python3
 ```

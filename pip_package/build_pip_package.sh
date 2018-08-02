@@ -35,7 +35,6 @@ function main() {
   cp pip_package/LICENSE ${TMPDIR}
   cp pip_package/MANIFEST.in ${TMPDIR}
   cp pip_package/README.md ${TMPDIR}
-  cp pip_package/setup.cfg ${TMPDIR}
   cp pip_package/setup.py ${TMPDIR}
 
   pushd ${TMPDIR}
@@ -46,6 +45,7 @@ function main() {
 
   if [[ $(uname) == "Linux" ]]; then
     mkdir repaired
+
     for WHL in dist/*.whl
     do
       auditwheel repair -w repaired $WHL

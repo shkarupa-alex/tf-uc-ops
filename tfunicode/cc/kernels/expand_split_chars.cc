@@ -19,7 +19,7 @@ class ExpandSplitCharsOp : public ExpandBaseOp {
     }
 
     // Split chars
-    for (int32_t pos = 0; pos < source.length(); pos++) {
+    for (int32_t pos = 0; pos < (int)source.length(); pos++) {
       u32string word = u32string(source, pos, 1);
 
       target.push_back(word);

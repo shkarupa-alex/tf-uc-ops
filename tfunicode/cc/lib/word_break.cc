@@ -31,7 +31,7 @@ bool WordBreak::IsBreak(const u32string &source, const int position) {
   }
 
   // WB2
-  if (source.length() <= position) {
+  if ((int)source.length() <= position) {
     return true;
   }
 
@@ -184,7 +184,7 @@ bool WordBreak::IsBreak(const u32string &source, const int position) {
 
 // Returns character at position or 0 if position invalid.
 char32_t WordBreak::CharAt(const u32string &source, const int position) {
-  if (0 > position || source.length() <= position) {
+  if (0 > position || (int)source.length() <= position) {
     return 0;
   }
 
@@ -202,7 +202,7 @@ int WordBreak::Skip_EFZ(const u32string &source, const int start, const int dire
   const int step = direction < 0 ? -1 : 1;
   int stop = start + step;
 
-  while (-1 < stop && source.length() > stop
+  while (-1 < stop && (int)source.length() > stop
     && (Extend(source[stop]) || Format(source[stop]) || (zwj && ZWJ(source[stop])))) {
     stop += step;
   }

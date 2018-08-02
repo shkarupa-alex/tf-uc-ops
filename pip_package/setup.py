@@ -18,10 +18,15 @@ class BinaryDistribution(Distribution):
 print('tfunicode will fail when building from a source distribution (sdist). Please follow instructions in '
       '(https://github.com/shkarupa-alex/tfunicode/README.md) to build this from the source.')
 
+with open('README.md', 'r') as fh:
+    long_description = fh.read()
+
 setup(
     name='tfunicode',
     version=__VERSION__,
     description='Unicode string ops for TensorFlow',
+    long_description=long_description,
+    long_description_content_type="text/markdown",
     url='https://github.com/shkarupa-alex/tfunicode',
     author='Shkarupa Alex',
     author_email='shkarupa.alex@gmail.com',
