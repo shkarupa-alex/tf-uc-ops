@@ -15,7 +15,6 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
 lib64/
 parts/
 sdist/
@@ -101,6 +100,15 @@ ENV/
 .mypy_cache/
 
 # this package
+/tools/*bazel.rc
+!/tools/
 .DS_Store
 .idea/
-*.so
+/bazel-*
+/bazel_pip
+/pip_test
+/_python_build
+*.pyc
+*.swp
+.vscode/
+*.whl

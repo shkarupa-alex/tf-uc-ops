@@ -1,0 +1,15 @@
+build --action_env PYTHON_BIN_PATH=/usr/bin/python
+build --define PYTHON_BIN_PATH=/usr/bin/python
+
+# build --define framework_shared_object=true
+
+# build --define=use_fast_cpp_protos=true
+# build --define=allow_oversize_protos=true
+build --define=grpc_no_ares=true
+
+build --spawn_strategy=standalone
+build --genrule_strategy=standalone
+# build -c opt
+
+test --spawn_strategy=standalone
+test --genrule_strategy=standalone
