@@ -15,11 +15,11 @@ bazel test //tfunicode/...
 ```bash
 bazel clean --expunge
 
-export PYTHON_BIN_PATH=python
+export PYTHON_BIN_PATH=python2.7
 bazel build --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=0" //pip_package
 bazel-bin/pip_package/pip_package ./wheels
 
-export PYTHON_BIN_PATH=python3
+export PYTHON_BIN_PATH=python3.6
 bazel build --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=0" //pip_package
 bazel-bin/pip_package/pip_package ./wheels
 ```
