@@ -16,18 +16,17 @@ bazel test //tfunicode/...
 bazel clean --expunge
 
 export PYTHON_BIN_PATH=python2.7
-bazel build --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=0" //pip_package
+bazel build --copt="-D_GLIBCXX_USE_CXX11_ABI=0" //pip_package
 bazel-bin/pip_package/pip_package ./wheels
 
 export PYTHON_BIN_PATH=python3.6
-bazel build --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=0" //pip_package
+bazel build --copt="-D_GLIBCXX_USE_CXX11_ABI=0" //pip_package
 bazel-bin/pip_package/pip_package ./wheels
 ```
 
 ## Build release within local MacOS X
 
 ```bash
-mkdir -p ./wheels
-docker run -it -v `pwd`/wheels:/wheels tensorflow/tensorflow:1.8.0-devel build_linux_release.sh /wheels
+docker run -it -v `pwd`:/tfunicode tensorflow/tensorflow:1.8.0-devel /tfunicode/pip_package/build_linux_release.sh
 ```
 
