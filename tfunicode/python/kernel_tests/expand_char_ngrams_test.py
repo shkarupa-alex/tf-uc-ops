@@ -170,6 +170,29 @@ class ExpandCharNgramsTest(tf.test.TestCase):
             result = result.eval()
             self.assertAllEqual([b'123'], result.tolist())
 
+    def testAloneBelow(self):
+        result = expand_char_ngrams('1234', 2, 3, itself='ALONE')
+        result = tf.sparse_tensor_to_dense(result, default_value='')
+
+        with self.test_session():
+            result = result.eval()
+            self.assertAllEqual([b'12', b'23', b'34', b'123', b'234'], result.tolist())
+
+    def testAloneInside(self):
+        result = expand_char_ngrams('123', 2, 3, itself='ALONE')
+        result = tf.sparse_tensor_to_dense(result, default_value='')
+
+        with self.test_session():
+            result = result.eval()
+            self.assertAllEqual([b'12', b'23'], result.tolist())
+
+    def testAloneAbove(self):
+        result = expand_char_ngrams('123', 4, 5, itself='ALONE')
+        result = tf.sparse_tensor_to_dense(result, default_value='')
+
+        with self.test_session():
+            result = result.eval()
+            self.assertAllEqual([b'123'], result.tolist())
 
 if __name__ == "__main__":
     tf.test.main()
