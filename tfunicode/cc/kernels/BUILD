@@ -13,6 +13,8 @@ cc_library(
         ":expand_split_words",
         ":transform_lower_case",
         ":transform_normalize_unicode",
+        ":transform_regex_replace",
+        ":transform_string_replace",
         ":transform_title_case",
         ":transform_upper_case",
         ":transform_wrap_with",
@@ -71,6 +73,23 @@ tf_kernel_library(
     ],
 )
 
+tf_kernel_library(
+    name = "transform_regex_replace",
+    srcs = ["transform_regex_replace.cc"],
+    deps = tf_custom_op_library_additional_deps() + [
+        "@unilib//:utf8",
+        "@com_googlesource_code_re2//:re2",
+    ],
+)
+
+tf_kernel_library(
+    name = "transform_string_replace",
+    srcs = ["transform_string_replace.cc"],
+    deps = tf_custom_op_library_additional_deps() + [
+        "@unilib//:unicode",
+        "//tfunicode/cc/lib:transform_base",
+    ],
+)
 
 tf_kernel_library(
     name = "transform_title_case",

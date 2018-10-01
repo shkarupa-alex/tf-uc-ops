@@ -4,8 +4,8 @@
 
 REGISTER_OP("TransformStringReplace")
   .Input("source: string")
-  .Attr("old: list(string)")
-  .Attr("new: list(string)")
+  .Attr("needle: list(string) >= 1")
+  .Attr("haystack: list(string) >= 1")
   .Output("result: string")
   .SetShapeFn(TransformBaseShape)
   .SetIsStateful();

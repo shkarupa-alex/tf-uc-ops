@@ -6,10 +6,14 @@ using namespace std;
 
 class ExpandSplitWordsOp : public ExpandBaseOp {
  public:
-  explicit ExpandSplitWordsOp(OpKernelConstruction* ctx) : ExpandBaseOp(ctx) {}
+  explicit ExpandSplitWordsOp(OpKernelConstruction* ctx) : ExpandBaseOp(ctx) {
+    // Prepare attrs
+    OP_REQUIRES_OK(ctx, ctx->GetAttr("extended", &extended));
+  }
 
- private:
+ protected:
   static const set<char32_t> extended_pictographic;
+  bool extended;
 
   inline void expand(const u32string &source, std::vector<u32string> &target) {
     if (source.length() < 2) {
@@ -19,7 +23,7 @@ class ExpandSplitWordsOp : public ExpandBaseOp {
 
     int prev = 0;
     for (int pos = 1; pos <= (int)source.length(); pos++) {
-      if (!WordBreak::IsBreak(source, pos)) {
+      if (!WordBreak::IsBreak(source, pos, extended)) {
         continue;
       }
 

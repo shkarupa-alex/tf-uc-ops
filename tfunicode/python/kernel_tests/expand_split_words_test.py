@@ -3,14 +3,9 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from future.standard_library import install_aliases
-
-install_aliases()
 from tfunicode.python.ops import expand_split_words
-from urllib.request import urlopen
 import os
 import tensorflow as tf
-
 
 
 class ExpandSplitWordsTest(tf.test.TestCase):
@@ -226,63 +221,33 @@ class ExpandSplitWordsTest(tf.test.TestCase):
         for exp, res, desc in zip(expected_value, result_value, description):
             self.assertAllEqual(exp, res, desc)
 
-    # def testAdditionalSplit(self):
-    #     expected = [
-    #         # [' ', 'test', '@', 'test.com', ' ', '', '', '', ''],
-    #         # [' ', 'www.test.com', ' ', '', '', '', '', '', ''],
-    #         # [' ', 'word', '.', '.', 'word', ' ', '', '', ''],
-    #         # [' ', 'word', '+', 'word', '-', 'word', ' ', '', ''],
-    #         # [' ', 'word', '\\', 'word', '/', 'word', '#', 'word', ' '],
-    #     ]
-    #     expected = tf.convert_to_tensor(expected, dtype=tf.string)
-    #     result = expand_split_words([
-    #         # 46
-    #         u' 29.03.2009. ',
-    #         u' U.S. ',
-    #         u' Яндекс.Диск ',
-    #         u' 12.Main ',
-    #         u' kw.9 ',
-    #
-    #         u' https://wikidata.org/wiki/Track:Q256507 ',
-    #         u' 1,5 ',
-    #         u' Категория:Родившиеся ',
-    #         u' поселе́ние ',
-    #         u' Don’t ',
-    #         u' Don\'t ',
-    #         u' кВт·ч ',
-    #         u' 1⁄3 ',
-    #         u' ар\u00ADтель ',
-    #         u' минэ̀м ',
-    #         u' Rock‘s ',
-    #         u' o̯a ',
-    #         u' D̲h̲u ',
-    #         u' d͡ʒ ',
-    #         u' са̄мь ',
-    #         u' t͜s ',
-    #         u' 23;0 ',
-    #         u' Sofii︠a︡ ',
-    #         u' издательс︣тво ',
-    #         u' kn̡iga ',
-    #         u' sɐ̃ũ ',
-    #         u' kʰa̰ɴ ',
-    #         u' є҆ди́но ',
-    #         u' side： ',
-    #         u' zir̂ks ',
-    #         u' бж҃е ',
-    #         u' црⷭ҇тва ',
-    #         u' гдⷭ҇и ',
-    #         u'  ',
-    #         u'  ',
-    #         u'  ',
-    #         u'  ',
-    #         u'  ',
-    #         u'  ',
-    #     ])
-    #     result = tf.sparse_tensor_to_dense(result, default_value='')
-    #
-    #     with self.test_session():
-    #         expected, result = expected.eval(), result.eval()
-    #         self.assertAllEqual(expected, result)
+    def testSplitExtended(self):
+        expected = [
+            [' ', 'word', '.', 'word', ' '],
+            [' ', 'word', u'․', 'word', ' '],
+            [' ', 'word', u'﹒', 'word', ' '],
+            [' ', 'word', u'．', 'word', ' '],
+        ]
+        expected = tf.convert_to_tensor(expected, dtype=tf.string)
+        result = expand_split_words([
+            # \u002E
+            ' word.word ',
+
+            # \u2024
+            u' word․word ',
+
+            # \uFE52
+            u' word﹒word ',
+
+            # \uFF0E
+            u' word．word ',
+        ], True)
+        result = tf.sparse_tensor_to_dense(result, default_value='')
+
+        with self.test_session():
+            expected, result = expected.eval(), result.eval()
+            self.assertAllEqual(expected, result)
+
 
 if __name__ == "__main__":
     tf.test.main()

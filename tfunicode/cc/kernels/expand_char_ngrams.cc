@@ -26,7 +26,7 @@ class ExpandCharNgramsOp : public ExpandBaseOp {
     }
   }
 
- private:
+ protected:
   enum class NgramItself { ASIS, NEVER, ALWAYS, ALONE };
 
   int minn;

@@ -4,9 +4,8 @@
 
 REGISTER_OP("TransformRegexReplace")
   .Input("source: string")
-  .Attr("pattern: list(string)")
-  .Attr("rewrite: list(string)")
-  .Attr("global: bool = true")
+  .Attr("pattern: list(string) >= 1")
+  .Attr("rewrite: list(string) >= 1")
   .Output("result: string")
   .SetShapeFn(TransformBaseShape)
   .SetIsStateful();

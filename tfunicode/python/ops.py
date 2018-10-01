@@ -15,8 +15,11 @@ ops.NotDifferentiable("CobineSparseSuccessor")
 ops.NotDifferentiable("ExpandCharNgrams")
 ops.NotDifferentiable("ExpandSplitChars")
 ops.NotDifferentiable("ExpandSplitWords")
-ops.NotDifferentiable("TransformNormalizeUnicode")
 ops.NotDifferentiable("TransformLowerCase")
+ops.NotDifferentiable("TransformNormalizeUnicode")
+ops.NotDifferentiable("TransformRegexReplace")
+ops.NotDifferentiable("TransformStringReplace")
+ops.NotDifferentiable("TransformTitleCase")
 ops.NotDifferentiable("TransformUpperCase")
 ops.NotDifferentiable("TransformWrapWith")
 ops.NotDifferentiable("TransformZeroDigits")
@@ -64,6 +67,54 @@ def transform_lower_case(source):
         )
     else:
         result = ops_gen.transform_lower_case(source)
+
+    return result
+
+
+def transform_regex_replace(source, pattern, rewrite):
+    """Replace all substrings from `needle` to corresponding strings in `haystack` with source.
+
+    Args:
+        source: `Tensor` or `SparseTensor` of any shape, source strings for replacing.
+        pattern: List of RE2 patterns to search in source
+        rewrite: List of strings to replace with. Should have same length as `needle`.
+    Returns:
+        `Tensor` or `SparseTensor` of same shape and size as input.
+    """
+
+    source = tf.convert_to_tensor_or_sparse_tensor(source, dtype=tf.string)
+    if isinstance(source, tf.SparseTensor):
+        result = tf.SparseTensor(
+            indices=source.indices,
+            values=ops_gen.transform_regex_replace(source.values, pattern, rewrite),
+            dense_shape=source.dense_shape
+        )
+    else:
+        result = ops_gen.transform_regex_replace(source, pattern, rewrite)
+
+    return result
+
+
+def transform_string_replace(source, needle, haystack):
+    """Replace all substrings from `needle` to corresponding strings in `haystack` with source.
+
+    Args:
+        source: `Tensor` or `SparseTensor` of any shape, source strings for replacing.
+        needle: List of strings to search in source
+        haystack: List of strings to replace with. Should have same length as `needle`.
+    Returns:
+        `Tensor` or `SparseTensor` of same shape and size as input.
+    """
+
+    source = tf.convert_to_tensor_or_sparse_tensor(source, dtype=tf.string)
+    if isinstance(source, tf.SparseTensor):
+        result = tf.SparseTensor(
+            indices=source.indices,
+            values=ops_gen.transform_string_replace(source.values, needle, haystack),
+            dense_shape=source.dense_shape
+        )
+    else:
+        result = ops_gen.transform_string_replace(source, needle, haystack)
 
     return result
 
@@ -158,22 +209,23 @@ def transform_wrap_with(source, left, right):
     return result
 
 
-def expand_split_words(source):
+def expand_split_words(source, extended=False):
     """Split unicode strings into words.
     Result tokens could be simply joined with empty separator to obtain original strings.
 
     Args:
         source: `Tensor` or `SparseTensor` of any shape, strings to split
+        source: Boolean flag, should rules WB6 and WB7 break on "stop" marks
     Returns:
         `SparseTensor` with an additional dimension of size 1 added.
     """
 
     source = tf.convert_to_tensor_or_sparse_tensor(source, dtype=tf.string)
     if isinstance(source, tf.SparseTensor):
-        child_indices, child_values, child_shape = ops_gen.expand_split_words(source.values)
+        child_indices, child_values, child_shape = ops_gen.expand_split_words(source.values, extended)
         result = _combine_sparse_successor(source.indices, source.dense_shape, child_indices, child_values, child_shape)
     else:
-        indices, values, shape = ops_gen.expand_split_words(source)
+        indices, values, shape = ops_gen.expand_split_words(source, extended)
         result = tf.SparseTensor(indices=indices, values=values, dense_shape=shape)
 
     return result
@@ -209,7 +261,7 @@ def expand_char_ngrams(source, minn, maxn, itself='ASIS'):
         minn: Minimum length of char ngram
         minn: Maximum length of char ngram
         itself: Scalar value, strategy for source word preserving.
-            One of `"ASIS"`, `"NEVER"`, `"ALWAYS"`.
+            One of `"ASIS"`, `"NEVER"`, `"ALWAYS"`, `"ALONE"`.
     Returns:
         `SparseTensor` with an additional dimension of size 1 added.
     """
