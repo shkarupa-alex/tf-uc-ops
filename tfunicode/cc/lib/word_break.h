@@ -6,7 +6,7 @@ using namespace std;
 
 class WordBreak {
  public:
-  static bool IsBreak(const u32string &source, const int position);
+  static bool IsBreak(const u32string &source, const int position, const bool extended);
 
  protected:
   static inline char32_t CharAt(const u32string &source, const int position);
@@ -42,6 +42,7 @@ class WordBreak {
   static inline bool Extended_Pictographic(char32_t c);
   static inline bool Linebreak_InfixNumeric(char32_t c);
   static inline bool Linebreak_Numeric(char32_t c);
+  static inline bool MidNumLetQExt(char32_t c);
 
  private:
   // Methods below generated with tools/word_break_groups.py

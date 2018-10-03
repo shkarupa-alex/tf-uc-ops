@@ -19,13 +19,15 @@ class ExpandCharNgramsOp : public ExpandBaseOp {
       itself = NgramItself::NEVER;
     } else if ("ALWAYS" == itself_value) {
       itself = NgramItself::ALWAYS;
+    } else if ("ALONE" == itself_value) {
+      itself = NgramItself::ALONE;
     } else {
       itself = NgramItself::ASIS;
     }
   }
 
- private:
-  enum class NgramItself { ASIS, NEVER, ALWAYS };
+ protected:
+  enum class NgramItself { ASIS, NEVER, ALWAYS, ALONE };
 
   int minn;
   int maxn;
@@ -36,7 +38,7 @@ class ExpandCharNgramsOp : public ExpandBaseOp {
 
     // Split ngrams
     for (int n = minn; n <= maxn; n++) {
-      if (NgramItself::NEVER == itself && length == n)
+      if ((NgramItself::NEVER == itself || NgramItself::ALONE == itself) && length == n)
         continue;
 
       for (int pos = 0; pos <= length - n; pos++) {
@@ -47,6 +49,10 @@ class ExpandCharNgramsOp : public ExpandBaseOp {
     }
 
     if (NgramItself::ALWAYS == itself && (length < minn || length > maxn)) {
+      target.push_back(source);
+    }
+
+    if (NgramItself::ALONE == itself && 0 == target.size()) {
       target.push_back(source);
     }
   }

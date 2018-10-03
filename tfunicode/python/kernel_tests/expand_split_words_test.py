@@ -3,14 +3,9 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from future.standard_library import install_aliases
-
-install_aliases()
 from tfunicode.python.ops import expand_split_words
-from urllib.request import urlopen
 import os
 import tensorflow as tf
-
 
 
 class ExpandSplitWordsTest(tf.test.TestCase):
@@ -225,6 +220,33 @@ class ExpandSplitWordsTest(tf.test.TestCase):
 
         for exp, res, desc in zip(expected_value, result_value, description):
             self.assertAllEqual(exp, res, desc)
+
+    def testSplitExtended(self):
+        expected = [
+            [' ', 'word', '.', 'word', ' '],
+            [' ', 'word', u'․', 'word', ' '],
+            [' ', 'word', u'﹒', 'word', ' '],
+            [' ', 'word', u'．', 'word', ' '],
+        ]
+        expected = tf.convert_to_tensor(expected, dtype=tf.string)
+        result = expand_split_words([
+            # \u002E
+            ' word.word ',
+
+            # \u2024
+            u' word․word ',
+
+            # \uFE52
+            u' word﹒word ',
+
+            # \uFF0E
+            u' word．word ',
+        ], True)
+        result = tf.sparse_tensor_to_dense(result, default_value='')
+
+        with self.test_session():
+            expected, result = expected.eval(), result.eval()
+            self.assertAllEqual(expected, result)
 
 
 if __name__ == "__main__":

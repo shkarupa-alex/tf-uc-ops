@@ -4,6 +4,7 @@
 
 REGISTER_OP("ExpandSplitWords")
   .Input("source: string")
+  .Attr("extended: bool = false")
   .Output("indices: int64")
   .Output("values: string")
   .Output("shape: int64")

@@ -8,7 +8,7 @@ using namespace std;
 // Break string into words with Unicode rules http://unicode.org/Public/UNIDATA/auxiliary/WordBreakTest.html#rules
 // and their notations http://www.unicode.org/reports/tr29/#Word_Boundaries
 // Returns true if character at position pos is a border of the word
-bool WordBreak::IsBreak(const u32string &source, const int position) {
+bool WordBreak::IsBreak(const u32string &source, const int position, const bool extended) {
   const char32_t right_curr = CharAt(source, position);
   const char32_t left_curr = CharAt(source, position - 1);
 
@@ -76,18 +76,34 @@ bool WordBreak::IsBreak(const u32string &source, const int position) {
     return false;
   }
 
-  // WB6
-  if (AHLetter(left_curr_efz)
-    && (MidLetter(right_curr) || MidNumLetQ(right_curr))
-    && AHLetter(right_right_efz)) {
-    return false;
-  }
+  if (!extended) { // Original implementation
+    // WB6
+    if (AHLetter(left_curr_efz)
+      && (MidLetter(right_curr) || MidNumLetQ(right_curr))
+      && AHLetter(right_right_efz)) {
+      return false;
+    }
 
-  // WB7
-  if (AHLetter(left_left_efz)
-    && (MidLetter(left_curr_efz) || MidNumLetQ(left_curr_efz))
-    && AHLetter(right_curr)) {
-    return false;
+    // WB7
+    if (AHLetter(left_left_efz)
+      && (MidLetter(left_curr_efz) || MidNumLetQ(left_curr_efz))
+      && AHLetter(right_curr)) {
+      return false;
+    }
+  } else {
+    // WB6
+    if (AHLetter(left_curr_efz)
+      && (MidLetter(right_curr) || MidNumLetQExt(right_curr))
+      && AHLetter(right_right_efz)) {
+      return false;
+    }
+
+    // WB7
+    if (AHLetter(left_left_efz)
+      && (MidLetter(left_curr_efz) || MidNumLetQExt(left_curr_efz))
+      && AHLetter(right_curr)) {
+      return false;
+    }
   }
 
   // WB7a
@@ -387,6 +403,10 @@ bool WordBreak::Linebreak_Numeric(char32_t c) {
   return (unicode::category(c) & unicode::Nd)
     && !_gen_is_east_asian_width_full(c)
     && U'\u066B' != c && U'\u066C' != c;
+}
+
+bool WordBreak::MidNumLetQExt(char32_t c) {
+  return !(U'\u002E' == c || U'\u2024' == c || U'\uFE52' == c  || U'\uFF0E' == c) && (MidNumLet(c) || Single_Quote(c));
 }
 
 // Methods below generated with tools/unicode_word_rules.py

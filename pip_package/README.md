@@ -8,6 +8,8 @@ Custom ops for TensorFlow to deal with unicode strings:
 * transform_normalize_unicode
 * transform_title_case
 * transform_lower_case
+* transform_string_replace
+* transform_regex_replace
 * transform_upper_case
 * transform_zero_digits
 * transform_wrap_with
