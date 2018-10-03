@@ -5,5 +5,3 @@ build --spawn_strategy=standalone
 build --genrule_strategy=standalone
 
 build --define=grpc_no_ares=true
-
-build -c opt
