@@ -22,11 +22,11 @@ bazel test --test_output=errors //tfunicode/...
 
 ```bash
 export PYTHON_BIN_PATH=python2.7
-bazel build --copt="-D_GLIBCXX_USE_CXX11_ABI=0" //pip_package
+bazel build -c opt --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=0" //pip_package
 bazel-bin/pip_package/pip_package ./wheels
 
 export PYTHON_BIN_PATH=python3.6
-bazel build --copt="-D_GLIBCXX_USE_CXX11_ABI=0" //pip_package
+bazel build -c opt --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=0" //pip_package
 bazel-bin/pip_package/pip_package ./wheels
 
 ...

@@ -1,7 +1,15 @@
 build --action_env PYTHON_BIN_PATH=/usr/bin/python
 build --define PYTHON_BIN_PATH=/usr/bin/python
 
+# For projects which use TensorFlow as part of a Bazel build process, putting
+# nothing in a bazelrc will default to a monolithic build. The following line
+# opts in to modular op registration support by default.
+build --define framework_shared_object=true
+
+build --define=use_fast_cpp_protos=true
+build --define=allow_oversize_protos=true
+build --define=grpc_no_ares=true
+
 build --spawn_strategy=standalone
 build --genrule_strategy=standalone
-
-build --define=grpc_no_ares=true
+build -c opt

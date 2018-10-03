@@ -5,7 +5,7 @@ from __future__ import print_function
 from setuptools import setup, find_packages
 from setuptools.dist import Distribution
 
-__VERSION__ = '2.1.3'
+__VERSION__ = '2.1.5'
 
 
 class BinaryDistribution(Distribution):
