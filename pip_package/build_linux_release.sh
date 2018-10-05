@@ -21,13 +21,13 @@ cp -R /tfunicode ~/tfunicode
 cd ~/tfunicode
 
 export PYTHON_BIN_PATH=python
-bazel build -c opt --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=0" //pip_package
+bazel build --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=0" //pip_package
 bazel-bin/pip_package/pip_package /tfunicode/wheels
 
 export PYTHON_BIN_PATH=python3
-bazel build -c opt --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=0" //pip_package
+bazel build --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=0" //pip_package
 bazel-bin/pip_package/pip_package /tfunicode/wheels
 
 export PYTHON_BIN_PATH=python3.6
-bazel build -c opt --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=0" //pip_package
+bazel build --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=0" //pip_package
 bazel-bin/pip_package/pip_package /tfunicode/wheels

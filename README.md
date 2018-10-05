@@ -13,6 +13,7 @@ Do not use pyenv, otherwise tests mostly likely will fail.
 ## Develop commands
 
 ```bash
+export PYTHON_BIN_PATH=`which python2.7`
 bazel clean --expunge
 bazel build //tfunicode
 bazel test --test_output=errors //tfunicode/...
@@ -21,12 +22,12 @@ bazel test --test_output=errors //tfunicode/...
 ## Build release within local MacOS X
 
 ```bash
-export PYTHON_BIN_PATH=python2.7
-bazel build -c opt --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=0" //pip_package
+export PYTHON_BIN_PATH=`which python2.7`
+bazel build --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=0" //pip_package
 bazel-bin/pip_package/pip_package ./wheels
 
-export PYTHON_BIN_PATH=python3.6
-bazel build -c opt --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=0" //pip_package
+export PYTHON_BIN_PATH=`which python3.6`
+bazel build --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=0" //pip_package
 bazel-bin/pip_package/pip_package ./wheels
 
 ...
