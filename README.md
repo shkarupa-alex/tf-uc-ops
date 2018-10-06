@@ -36,6 +36,6 @@ bazel-bin/pip_package/pip_package ./wheels
 ## Build release with Linux docker container
 
 ```bash
-docker run -it -v `pwd`:/tfunicode tensorflow/tensorflow:1.8.0-devel /tfunicode/pip_package/build_linux_release.sh
+docker run -it -v `pwd`:/tfunicode library/ubuntu:xenial /tfunicode/pip_package/build_linux_release.sh
 ```
 

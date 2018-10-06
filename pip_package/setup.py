@@ -5,7 +5,7 @@ from __future__ import print_function
 from setuptools import setup, find_packages
 from setuptools.dist import Distribution
 
-__VERSION__ = '2.1.5'
+__VERSION__ = '2.1.6'
 
 
 class BinaryDistribution(Distribution):
@@ -34,7 +34,7 @@ setup(
     keywords='tensorflow unicode string op',
     packages=find_packages(),
     install_requires=[
-        'tensorflow>=1.8.0',
+        'tensorflow>=1.11.0',
     ],
     include_package_data=True,
     package_data={'': ['*.so']},

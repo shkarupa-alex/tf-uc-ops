@@ -10,8 +10,8 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 #    and update the TENSORFLOW_SHA_256 with the result.
 # 3. Check if http_archive "io_bazel_rules_closure" below is the same as in your TensorFlow commit
 
-TENSORFLOW_GIT_COMMIT = "93bc2e2072e0daccbcff7a90d397b704a9e8f778" # v1.8.0
-TENSORFLOW_SHA_256 = "21445b2a7e0c4f0ba24e80425a26e1f59c98f818bdebe89b9274e73eff52b12d"
+TENSORFLOW_GIT_COMMIT = "c19e29306ce1777456b2dbb3a14f511edf7883a8" # v1.11.0
+TENSORFLOW_SHA_256 = "025b47263af34475dc75da40c76a87934a70f69611e9b0b88445d65730f0fc73"
 
 http_archive(
     name = "org_tensorflow",
@@ -40,7 +40,7 @@ http_archive(
 # Specify the minimum required bazel version.
 load("@org_tensorflow//tensorflow:version_check.bzl", "check_bazel_version_at_least")
 
-check_bazel_version_at_least("0.11.0")
+check_bazel_version_at_least("0.15.0")
 
 
 # Add all new dependencies in workspace.bzl.
