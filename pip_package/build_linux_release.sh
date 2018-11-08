@@ -8,9 +8,12 @@ apt-get update
 
 
 # Python
-apt-get install -y python-dev python-pip python-numpy python3-dev python3-pip python3-numpy python3.6-dev
-python3.6 -m pip install -U numpy wheel==0.31.1 auditwheel==1.5.0
+apt-get install -y python-dev python-pip python-numpy python3-dev python3-pip python3.6-dev
+python3.6 -m pip install -U wheel==0.31.1 auditwheel==1.5.0
 
+#apt-get install -y python3-numpy
+python3.5 -m pip install -U --force-reinstall numpy
+python3.6 -m pip install -U --force-reinstall numpy
 
 # Build tools
 apt-get install -y unzip wget g++ gcc g++-4.8 gcc-4.8 patchelf
