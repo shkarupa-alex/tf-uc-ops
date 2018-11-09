@@ -5,7 +5,7 @@ from __future__ import print_function
 from setuptools import setup, find_packages
 from setuptools.dist import Distribution
 
-__VERSION__ = '2.1.7'
+__VERSION__ = '2.1.9'
 
 
 class BinaryDistribution(Distribution):
@@ -30,15 +30,11 @@ setup(
     url='https://github.com/shkarupa-alex/tfunicode',
     author='Shkarupa Alex',
     author_email='shkarupa.alex@gmail.com',
-    license='MIT',
-    keywords='tensorflow unicode string op',
     packages=find_packages(),
     install_requires=[
         'tensorflow>=1.12.0',
     ],
     include_package_data=True,
-    package_data={'': ['*.so']},
-    exclude_package_data={'': ['BUILD', '*.h', '*.cc']},
     zip_safe=False,
     distclass=BinaryDistribution,
     classifiers=[
@@ -55,4 +51,6 @@ setup(
         'Topic :: Software Development :: Libraries',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
+    license='MIT',
+    keywords='tensorflow unicode string op',
 )

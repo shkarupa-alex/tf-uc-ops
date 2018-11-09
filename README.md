@@ -4,38 +4,37 @@ Infrastructure to build TensorFlow custom ops wheel for unicode string preproces
 For more info about provided ops see package [README](https://github.com/shkarupa-alex/tfunicode/blob/master/pip_package/README.md)
 
 ## Develop environment
-1. Install all [dependencies including python headers](https://www.tensorflow.org/install/install_sources).
-2. Update python paths in tools/bazel.rc (one version for all builds).
+Install all [dependencies including python headers](https://www.tensorflow.org/install/install_sources).
+Do not use pyenv in MacOS X, otherwise tests mostly likely will fail.
 
-P.S.
-Do not use pyenv, otherwise tests mostly likely will fail.
-
-## Develop commands
-
+## Build PIP package
+You can build the pip package with Bazel:
 ```bash
 export PYTHON_BIN_PATH=`which python2.7`
+./configure.sh
 bazel clean --expunge
-bazel build //tfunicode
 bazel test --test_output=errors //tfunicode/...
+bazel build build_pip_pkg
+bazel-bin/build_pip_pkg wheels
 ```
 
-## Build release within local MacOS X
-
+## Install and test PIP package
+Once the pip package has been built, you can install it with,
 ```bash
-export PYTHON_BIN_PATH=`which python2.7`
-bazel build --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=0" //pip_package
-bazel-bin/pip_package/pip_package ./wheels
-
-export PYTHON_BIN_PATH=`which python3.6`
-bazel build --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=0" //pip_package
-bazel-bin/pip_package/pip_package ./wheels
-
-...
+pip install wheels/*.whl
+```
+Then test out the pip package
+```bash
+cd /
+python -c "import tensorflow as tf;import tfunicode as tfu;print(tfu.transform_zero_digits('123').eval(session=tf.Session()))"
+```
+And you should see the op zeroed out all nonzero digits in string "123":
+```bash
+000
 ```
 
 ## Build release with Linux docker container
-
 ```bash
-docker run -it -v `pwd`:/tfunicode library/ubuntu:xenial /tfunicode/pip_package/build_linux_release.sh
+docker run -it -v `pwd`:/tfunicode library/ubuntu:xenial /tfunicode/build_linux_release.sh
 ```
 

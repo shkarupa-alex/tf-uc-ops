@@ -2,27 +2,24 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from tfunicode.python import ops_gen
+import tensorflow as tf
 from tensorflow.python.framework import load_library, ops
 from tensorflow.python.platform import resource_loader
-import os
-import tensorflow as tf
 
-_ops_lib = load_library.load_op_library(resource_loader.get_path_to_datafile(
-    os.path.join('..', 'cc', 'ops', '_tfunicode.so')))
+ops_module = load_library.load_op_library(resource_loader.get_path_to_datafile('_tfunicode_ops.so'))
 
-ops.NotDifferentiable("CobineSparseSuccessor")
-ops.NotDifferentiable("ExpandCharNgrams")
-ops.NotDifferentiable("ExpandSplitChars")
-ops.NotDifferentiable("ExpandSplitWords")
-ops.NotDifferentiable("TransformLowerCase")
-ops.NotDifferentiable("TransformNormalizeUnicode")
-ops.NotDifferentiable("TransformRegexReplace")
-ops.NotDifferentiable("TransformStringReplace")
-ops.NotDifferentiable("TransformTitleCase")
-ops.NotDifferentiable("TransformUpperCase")
-ops.NotDifferentiable("TransformWrapWith")
-ops.NotDifferentiable("TransformZeroDigits")
+ops.NotDifferentiable('CobineSparseSuccessor')
+ops.NotDifferentiable('ExpandCharNgrams')
+ops.NotDifferentiable('ExpandSplitChars')
+ops.NotDifferentiable('ExpandSplitWords')
+ops.NotDifferentiable('TransformLowerCase')
+ops.NotDifferentiable('TransformNormalizeUnicode')
+ops.NotDifferentiable('TransformRegexReplace')
+ops.NotDifferentiable('TransformStringReplace')
+ops.NotDifferentiable('TransformTitleCase')
+ops.NotDifferentiable('TransformUpperCase')
+ops.NotDifferentiable('TransformWrapWith')
+ops.NotDifferentiable('TransformZeroDigits')
 
 
 def transform_normalize_unicode(source, form):
@@ -40,11 +37,11 @@ def transform_normalize_unicode(source, form):
     if isinstance(source, tf.SparseTensor):
         result = tf.SparseTensor(
             indices=source.indices,
-            values=ops_gen.transform_normalize_unicode(source.values, form),
+            values=ops_module.transform_normalize_unicode(source.values, form),
             dense_shape=source.dense_shape
         )
     else:
-        result = ops_gen.transform_normalize_unicode(source, form)
+        result = ops_module.transform_normalize_unicode(source, form)
 
     return result
 
@@ -62,11 +59,11 @@ def transform_lower_case(source):
     if isinstance(source, tf.SparseTensor):
         result = tf.SparseTensor(
             indices=source.indices,
-            values=ops_gen.transform_lower_case(source.values),
+            values=ops_module.transform_lower_case(source.values),
             dense_shape=source.dense_shape
         )
     else:
-        result = ops_gen.transform_lower_case(source)
+        result = ops_module.transform_lower_case(source)
 
     return result
 
@@ -86,11 +83,11 @@ def transform_regex_replace(source, pattern, rewrite):
     if isinstance(source, tf.SparseTensor):
         result = tf.SparseTensor(
             indices=source.indices,
-            values=ops_gen.transform_regex_replace(source.values, pattern, rewrite),
+            values=ops_module.transform_regex_replace(source.values, pattern, rewrite),
             dense_shape=source.dense_shape
         )
     else:
-        result = ops_gen.transform_regex_replace(source, pattern, rewrite)
+        result = ops_module.transform_regex_replace(source, pattern, rewrite)
 
     return result
 
@@ -110,11 +107,11 @@ def transform_string_replace(source, needle, haystack):
     if isinstance(source, tf.SparseTensor):
         result = tf.SparseTensor(
             indices=source.indices,
-            values=ops_gen.transform_string_replace(source.values, needle, haystack),
+            values=ops_module.transform_string_replace(source.values, needle, haystack),
             dense_shape=source.dense_shape
         )
     else:
-        result = ops_gen.transform_string_replace(source, needle, haystack)
+        result = ops_module.transform_string_replace(source, needle, haystack)
 
     return result
 
@@ -132,11 +129,11 @@ def transform_title_case(source):
     if isinstance(source, tf.SparseTensor):
         result = tf.SparseTensor(
             indices=source.indices,
-            values=ops_gen.transform_title_case(source.values),
+            values=ops_module.transform_title_case(source.values),
             dense_shape=source.dense_shape
         )
     else:
-        result = ops_gen.transform_title_case(source)
+        result = ops_module.transform_title_case(source)
 
     return result
 
@@ -154,11 +151,11 @@ def transform_upper_case(source):
     if isinstance(source, tf.SparseTensor):
         result = tf.SparseTensor(
             indices=source.indices,
-            values=ops_gen.transform_upper_case(source.values),
+            values=ops_module.transform_upper_case(source.values),
             dense_shape=source.dense_shape
         )
     else:
-        result = ops_gen.transform_upper_case(source)
+        result = ops_module.transform_upper_case(source)
 
     return result
 
@@ -176,11 +173,11 @@ def transform_zero_digits(source):
     if isinstance(source, tf.SparseTensor):
         result = tf.SparseTensor(
             indices=source.indices,
-            values=ops_gen.transform_zero_digits(source.values),
+            values=ops_module.transform_zero_digits(source.values),
             dense_shape=source.dense_shape
         )
     else:
-        result = ops_gen.transform_zero_digits(source)
+        result = ops_module.transform_zero_digits(source)
 
     return result
 
@@ -200,11 +197,11 @@ def transform_wrap_with(source, left, right):
     if isinstance(source, tf.SparseTensor):
         result = tf.SparseTensor(
             indices=source.indices,
-            values=ops_gen.transform_wrap_with(source.values, left, right),
+            values=ops_module.transform_wrap_with(source.values, left, right),
             dense_shape=source.dense_shape
         )
     else:
-        result = ops_gen.transform_wrap_with(source, left, right)
+        result = ops_module.transform_wrap_with(source, left, right)
 
     return result
 
@@ -222,10 +219,10 @@ def expand_split_words(source, extended=False):
 
     source = tf.convert_to_tensor_or_sparse_tensor(source, dtype=tf.string)
     if isinstance(source, tf.SparseTensor):
-        child_indices, child_values, child_shape = ops_gen.expand_split_words(source.values, extended)
+        child_indices, child_values, child_shape = ops_module.expand_split_words(source.values, extended)
         result = _combine_sparse_successor(source.indices, source.dense_shape, child_indices, child_values, child_shape)
     else:
-        indices, values, shape = ops_gen.expand_split_words(source, extended)
+        indices, values, shape = ops_module.expand_split_words(source, extended)
         result = tf.SparseTensor(indices=indices, values=values, dense_shape=shape)
 
     return result
@@ -243,10 +240,10 @@ def expand_split_chars(source):
 
     source = tf.convert_to_tensor_or_sparse_tensor(source, dtype=tf.string)
     if isinstance(source, tf.SparseTensor):
-        child_indices, child_values, child_shape = ops_gen.expand_split_chars(source.values)
+        child_indices, child_values, child_shape = ops_module.expand_split_chars(source.values)
         result = _combine_sparse_successor(source.indices, source.dense_shape, child_indices, child_values, child_shape)
     else:
-        indices, values, shape = ops_gen.expand_split_chars(source)
+        indices, values, shape = ops_module.expand_split_chars(source)
         result = tf.SparseTensor(indices=indices, values=values, dense_shape=shape)
 
     return result
@@ -268,10 +265,10 @@ def expand_char_ngrams(source, minn, maxn, itself='ASIS'):
 
     source = tf.convert_to_tensor_or_sparse_tensor(source, dtype=tf.string)
     if isinstance(source, tf.SparseTensor):
-        child_indices, child_values, child_shape = ops_gen.expand_char_ngrams(source.values, minn, maxn, itself)
+        child_indices, child_values, child_shape = ops_module.expand_char_ngrams(source.values, minn, maxn, itself)
         result = _combine_sparse_successor(source.indices, source.dense_shape, child_indices, child_values, child_shape)
     else:
-        indices, values, shape = ops_gen.expand_char_ngrams(source, minn, maxn, itself)
+        indices, values, shape = ops_module.expand_char_ngrams(source, minn, maxn, itself)
         result = tf.SparseTensor(indices=indices, values=values, dense_shape=shape)
 
     return result
@@ -291,7 +288,7 @@ def _combine_sparse_successor(parent_indices, parent_shape, child_indices, child
         `SparseTensor` with an additional dimension of size 1 added.
     """
 
-    indices, values, shape = ops_gen.cobine_sparse_successor(
+    indices, values, shape = ops_module.cobine_sparse_successor(
         parent_indices,
         parent_shape,
         child_indices,

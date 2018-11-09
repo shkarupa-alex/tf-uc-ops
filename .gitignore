@@ -100,6 +100,7 @@ ENV/
 .mypy_cache/
 
 # this package
+.bazelrc
 .DS_Store
 .idea/
 /bazel-*
