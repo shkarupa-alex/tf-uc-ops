@@ -21,13 +21,12 @@ function write_action_env_to_bazelrc() {
   write_to_bazelrc "build --action_env $1=\"$2\""
 }
 
-PY_BIN=${PYTHON_BIN_PATH:-python}
+PY_BIN=${PYTHON_BIN_PATH:-`which python`}
 
 rm .bazelrc
-if $PY_BIN -c "import tensorflow" &> /dev/null; then
-    echo 'using installed tensorflow'
-else
-    $PY_BIN -m pip install tensorflow
+if ! $PY_BIN -c "import tensorflow" &> /dev/null; then
+    echo 'Install TensorFlow before continuing'
+    exit 1
 fi
 
 TF_CFLAGS=( $($PY_BIN -c 'import tensorflow as tf; print(" ".join(tf.sysconfig.get_compile_flags()))') )
@@ -35,3 +34,12 @@ TF_LFLAGS=( $($PY_BIN -c 'import tensorflow as tf; print(" ".join(tf.sysconfig.g
 
 write_action_env_to_bazelrc "TF_HEADER_DIR" ${TF_CFLAGS:2}
 write_action_env_to_bazelrc "TF_SHARED_LIBRARY_DIR" ${TF_LFLAGS:2}
+
+
+_TF_CFLAGS=$($PY_BIN -c 'import tensorflow as tf; print(" ".join(tf.sysconfig.get_compile_flags()))')
+if [[ $_TF_CFLAGS == *"-D_GLIBCXX_USE_CXX11_ABI=0"* ]]; then
+  write_to_bazelrc 'build --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=0"'
+  write_to_bazelrc 'test --cxxopt="-D_GLIBCXX_USE_CXX11_ABI=0"'
+fi
+
+write_to_bazelrc "build -c opt"
