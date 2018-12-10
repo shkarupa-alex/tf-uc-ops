@@ -45,7 +45,7 @@ cc_binary(
         "@re2//:re2",
         "@unilib//:unilib",
     ],
-    copts = ["-pthread", "-std=c++11", "-D_GLIBCXX_USE_CXX11_ABI=0"]
+    copts = ["-pthread", "-std=c++11"]
 )
 
 py_library(

@@ -32,6 +32,7 @@ cp -R /tfunicode ~/tfunicode
 cd ~/tfunicode
 
 export PYTHON_BIN_PATH=`which python`
+$PYTHON_BIN_PATH -m pip install -U tensorflow
 ./configure.sh
 bazel clean --expunge
 bazel test --test_output=errors //tfunicode/...
@@ -39,6 +40,7 @@ bazel build build_pip_pkg
 bazel-bin/build_pip_pkg /tfunicode/wheels
 
 export PYTHON_BIN_PATH=`which python3`
+$PYTHON_BIN_PATH -m pip install -U tensorflow
 ./configure.sh
 bazel clean --expunge
 bazel test --test_output=errors //tfunicode/...
@@ -46,6 +48,8 @@ bazel build build_pip_pkg
 bazel-bin/build_pip_pkg /tfunicode/wheels
 
 export PYTHON_BIN_PATH=`which python3.6`
+$PYTHON_BIN_PATH -m pip install -U tensorflow
+python3.6 -m pip install -U wheel==0.31.1 auditwheel==1.5.0  # Required due to TensorFlow installation will update wheel
 ./configure.sh
 bazel clean --expunge
 bazel test --test_output=errors //tfunicode/...

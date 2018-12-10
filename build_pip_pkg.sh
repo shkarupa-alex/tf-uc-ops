@@ -17,20 +17,10 @@ set -e
 set -x
 
 PLATFORM="$(uname -s | tr 'A-Z' 'a-z')"
-
 PIP_FILE_PREFIX="bazel-bin/build_pip_pkg.runfiles/__main__/"
 
 function main() {
-  while [[ ! -z "${1}" ]]; do
-    if [[ ${1} == "make" ]]; then
-      echo "Using Makefile to build pip package."
-      PIP_FILE_PREFIX=""
-    else
-      DEST=${1}
-    fi
-    shift
-  done
-
+  DEST=${1}
   if [[ -z ${DEST} ]]; then
     echo "No destination dir provided"
     exit 1
@@ -58,7 +48,7 @@ function main() {
   pushd ${TMPDIR}
   echo $(date) : "=== Building wheel"
 
-  PY_BIN=${PYTHON_BIN_PATH:-python}
+  PY_BIN=${PYTHON_BIN_PATH:-`which python`}
   $PY_BIN setup.py bdist_wheel > /dev/null
 
   if [[ $(uname) == "Linux" ]]; then

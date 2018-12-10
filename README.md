@@ -11,6 +11,7 @@ Do not use pyenv in MacOS X, otherwise tests mostly likely will fail.
 You can build the pip package with Bazel:
 ```bash
 export PYTHON_BIN_PATH=`which python2.7`
+$PYTHON_BIN_PATH -m pip install -U tensorflow  # Only if you did not install it yet
 ./configure.sh
 bazel clean --expunge
 bazel test --test_output=errors //tfunicode/...
