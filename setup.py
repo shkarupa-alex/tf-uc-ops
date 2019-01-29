@@ -5,7 +5,7 @@ from __future__ import print_function
 from setuptools import setup, find_packages
 from setuptools.dist import Distribution
 
-__VERSION__ = '2.1.10'
+__VERSION__ = '2.1.11'
 
 
 class BinaryDistribution(Distribution):
@@ -32,9 +32,13 @@ setup(
     author_email='shkarupa.alex@gmail.com',
     packages=find_packages(),
     install_requires=[
-        # TensorFlow should be installed manually due to conflict with "tensorflow-gpu"
+        # https://github.com/tensorflow/tensorflow/issues/7166
         # 'tensorflow>=1.12.0',
     ],
+    extras_require={
+        'tf_cpu': ['tensorflow>=1.12.0'],
+        'tf_gpu': ['tensorflow-gpu>=1.12.0'],
+    },
     include_package_data=True,
     zip_safe=False,
     distclass=BinaryDistribution,

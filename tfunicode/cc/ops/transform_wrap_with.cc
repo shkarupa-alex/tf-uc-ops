@@ -7,5 +7,5 @@ REGISTER_OP("TransformWrapWith")
   .Attr("left: string")
   .Attr("right: string")
   .Output("result: string")
-  .SetShapeFn(TransformBaseShape)
-  .SetIsStateful();
+  .SetShapeFn(TransformBaseShape);
+//  .SetIsStateful();

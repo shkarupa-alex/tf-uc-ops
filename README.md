@@ -7,7 +7,7 @@ For more info about provided ops see package [README](https://github.com/shkarup
 Install all [dependencies including python headers](https://www.tensorflow.org/install/install_sources).
 Do not use pyenv in MacOS X, otherwise tests mostly likely will fail.
 
-## Build PIP package
+## Build PIP package manually
 You can build the pip package with Bazel:
 ```bash
 export PYTHON_BIN_PATH=`which python2.7`
@@ -19,23 +19,26 @@ bazel build build_pip_pkg
 bazel-bin/build_pip_pkg wheels
 ```
 
-## Install and test PIP package
-Once the pip package has been built, you can install it with,
-```bash
-pip install wheels/*.whl
-```
-Then test out the pip package
-```bash
-cd /
-python -c "import tensorflow as tf;import tfunicode as tfu;print(tfu.transform_zero_digits('123').eval(session=tf.Session()))"
-```
-And you should see the op zeroed out all nonzero digits in string "123":
-```bash
-000
-```
-
 ## Build release with Linux docker container
 ```bash
 docker run -it -v `pwd`:/tfunicode library/ubuntu:xenial /tfunicode/build_linux_release.sh
 ```
+
+## Install and test PIP package
+Once the pip package has been built, you can install it with:
+```bash
+pip install wheels/*.whl
+```
+
+Now you can test out the pip package:
+```bash
+cd /
+python -c "import tensorflow as tf;import tfunicode as tfu;print(tfu.transform_zero_digits('123').eval(session=tf.Session()))"
+```
+
+You should see the op zeroed out all nonzero digits in string "123":
+```bash
+000
+```
+
 

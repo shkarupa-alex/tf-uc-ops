@@ -7,5 +7,5 @@ REGISTER_OP("ExpandSplitChars")
   .Output("indices: int64")
   .Output("values: string")
   .Output("shape: int64")
-  .SetShapeFn(ExpandBaseShape)
-  .SetIsStateful();
+  .SetShapeFn(ExpandBaseShape);
+//  .SetIsStateful();

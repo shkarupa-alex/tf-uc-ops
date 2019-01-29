@@ -7,5 +7,5 @@ REGISTER_OP("TransformStringReplace")
   .Attr("needle: list(string) >= 1")
   .Attr("haystack: list(string) >= 1")
   .Output("result: string")
-  .SetShapeFn(TransformBaseShape)
-  .SetIsStateful();
+  .SetShapeFn(TransformBaseShape);
+//  .SetIsStateful();
