@@ -31,5 +31,5 @@ REGISTER_OP("CobineSparseSuccessor")
     c->set_output(2, c->Vector(c->Value(c->NumElements(c->input(1))) + 1));
 
     return Status::OK();
-  })
-  .SetIsStateful();
+  });
+//  .SetIsStateful();

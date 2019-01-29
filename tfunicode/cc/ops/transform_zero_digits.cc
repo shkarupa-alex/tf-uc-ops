@@ -5,5 +5,5 @@
 REGISTER_OP("TransformZeroDigits")
   .Input("source: string")
   .Output("result: string")
-  .SetShapeFn(TransformBaseShape)
-  .SetIsStateful();
+  .SetShapeFn(TransformBaseShape);
+//  .SetIsStateful();

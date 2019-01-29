@@ -7,5 +7,5 @@ REGISTER_OP("TransformRegexReplace")
   .Attr("pattern: list(string) >= 1")
   .Attr("rewrite: list(string) >= 1")
   .Output("result: string")
-  .SetShapeFn(TransformBaseShape)
-  .SetIsStateful();
+  .SetShapeFn(TransformBaseShape);
+//  .SetIsStateful();

@@ -6,5 +6,5 @@ REGISTER_OP("TransformNormalizeUnicode")
   .Input("source: string")
   .Attr("form: {'NFC', 'NFD', 'NFKC', 'NFKD'}")
   .Output("result: string")
-  .SetShapeFn(TransformBaseShape)
-  .SetIsStateful();
+  .SetShapeFn(TransformBaseShape);
+//  .SetIsStateful();

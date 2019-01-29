@@ -10,5 +10,5 @@ REGISTER_OP("ExpandCharNgrams")
   .Output("indices: int64")
   .Output("values: string")
   .Output("shape: int64")
-  .SetShapeFn(ExpandBaseShape)
-  .SetIsStateful();
+  .SetShapeFn(ExpandBaseShape);
+//  .SetIsStateful();

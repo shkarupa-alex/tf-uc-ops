@@ -5,5 +5,5 @@
 REGISTER_OP("TransformTitleCase")
   .Input("source: string")
   .Output("result: string")
-  .SetShapeFn(TransformBaseShape)
-  .SetIsStateful();
+  .SetShapeFn(TransformBaseShape);
+//  .SetIsStateful();
