@@ -5,6 +5,7 @@ from __future__ import print_function
 import tensorflow as tf
 from tensorflow.python.framework import load_library, ops
 from tensorflow.python.platform import resource_loader
+from tensorflow.python.framework.sparse_tensor import convert_to_tensor_or_sparse_tensor
 
 ops_module = load_library.load_op_library(resource_loader.get_path_to_datafile('_tfunicode_ops.so'))
 
@@ -33,7 +34,7 @@ def transform_normalize_unicode(source, form):
         `Tensor` or `SparseTensor` of same shape and size as input.
     """
 
-    source = tf.convert_to_tensor_or_sparse_tensor(source, dtype=tf.string)
+    source = convert_to_tensor_or_sparse_tensor(source, dtype=tf.string)
     if isinstance(source, tf.SparseTensor):
         result = tf.SparseTensor(
             indices=source.indices,
@@ -55,7 +56,7 @@ def transform_lower_case(source):
         `Tensor` or `SparseTensor` of same shape and size as input.
     """
 
-    source = tf.convert_to_tensor_or_sparse_tensor(source, dtype=tf.string)
+    source = convert_to_tensor_or_sparse_tensor(source, dtype=tf.string)
     if isinstance(source, tf.SparseTensor):
         result = tf.SparseTensor(
             indices=source.indices,
@@ -79,7 +80,7 @@ def transform_regex_replace(source, pattern, rewrite):
         `Tensor` or `SparseTensor` of same shape and size as input.
     """
 
-    source = tf.convert_to_tensor_or_sparse_tensor(source, dtype=tf.string)
+    source = convert_to_tensor_or_sparse_tensor(source, dtype=tf.string)
     if isinstance(source, tf.SparseTensor):
         result = tf.SparseTensor(
             indices=source.indices,
@@ -103,7 +104,7 @@ def transform_string_replace(source, needle, haystack):
         `Tensor` or `SparseTensor` of same shape and size as input.
     """
 
-    source = tf.convert_to_tensor_or_sparse_tensor(source, dtype=tf.string)
+    source = convert_to_tensor_or_sparse_tensor(source, dtype=tf.string)
     if isinstance(source, tf.SparseTensor):
         result = tf.SparseTensor(
             indices=source.indices,
@@ -125,7 +126,7 @@ def transform_title_case(source):
         `Tensor` or `SparseTensor` of same shape and size as input.
     """
 
-    source = tf.convert_to_tensor_or_sparse_tensor(source, dtype=tf.string)
+    source = convert_to_tensor_or_sparse_tensor(source, dtype=tf.string)
     if isinstance(source, tf.SparseTensor):
         result = tf.SparseTensor(
             indices=source.indices,
@@ -147,7 +148,7 @@ def transform_upper_case(source):
         `Tensor` or `SparseTensor` of same shape and size as input.
     """
 
-    source = tf.convert_to_tensor_or_sparse_tensor(source, dtype=tf.string)
+    source = convert_to_tensor_or_sparse_tensor(source, dtype=tf.string)
     if isinstance(source, tf.SparseTensor):
         result = tf.SparseTensor(
             indices=source.indices,
@@ -169,7 +170,7 @@ def transform_zero_digits(source):
         `Tensor` or `SparseTensor` of same shape and size as input.
     """
 
-    source = tf.convert_to_tensor_or_sparse_tensor(source, dtype=tf.string)
+    source = convert_to_tensor_or_sparse_tensor(source, dtype=tf.string)
     if isinstance(source, tf.SparseTensor):
         result = tf.SparseTensor(
             indices=source.indices,
@@ -193,7 +194,7 @@ def transform_wrap_with(source, left, right):
         `SparseTensor` of same shape and size as input.
     """
 
-    source = tf.convert_to_tensor_or_sparse_tensor(source, dtype=tf.string)
+    source = convert_to_tensor_or_sparse_tensor(source, dtype=tf.string)
     if isinstance(source, tf.SparseTensor):
         result = tf.SparseTensor(
             indices=source.indices,
@@ -217,7 +218,7 @@ def expand_split_words(source, extended=False):
         `SparseTensor` with an additional dimension of size 1 added.
     """
 
-    source = tf.convert_to_tensor_or_sparse_tensor(source, dtype=tf.string)
+    source = convert_to_tensor_or_sparse_tensor(source, dtype=tf.string)
     if isinstance(source, tf.SparseTensor):
         child_indices, child_values, child_shape = ops_module.expand_split_words(source.values, extended)
         result = _combine_sparse_successor(source.indices, source.dense_shape, child_indices, child_values, child_shape)
@@ -238,7 +239,7 @@ def expand_split_chars(source):
         `SparseTensor` with an additional dimension of size 1 added.
     """
 
-    source = tf.convert_to_tensor_or_sparse_tensor(source, dtype=tf.string)
+    source = convert_to_tensor_or_sparse_tensor(source, dtype=tf.string)
     if isinstance(source, tf.SparseTensor):
         child_indices, child_values, child_shape = ops_module.expand_split_chars(source.values)
         result = _combine_sparse_successor(source.indices, source.dense_shape, child_indices, child_values, child_shape)
@@ -263,7 +264,7 @@ def expand_char_ngrams(source, minn, maxn, itself='ASIS'):
         `SparseTensor` with an additional dimension of size 1 added.
     """
 
-    source = tf.convert_to_tensor_or_sparse_tensor(source, dtype=tf.string)
+    source = convert_to_tensor_or_sparse_tensor(source, dtype=tf.string)
     if isinstance(source, tf.SparseTensor):
         child_indices, child_values, child_shape = ops_module.expand_char_ngrams(source.values, minn, maxn, itself)
         result = _combine_sparse_successor(source.indices, source.dense_shape, child_indices, child_values, child_shape)
