@@ -4,7 +4,7 @@
 using namespace tensorflow;
 
 
-REGISTER_OP("CobineSparseSuccessor")
+REGISTER_OP("CombineSparseSuccessor")
   .Input("parent_indices: int64")
   .Input("parent_shape: int64")
   .Input("child_indices: int64")

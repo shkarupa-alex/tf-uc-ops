@@ -4,9 +4,9 @@
 using namespace tensorflow;
 
 
-class CobineSparseSuccessorOp : public OpKernel {
+class CombineSparseSuccessorOp : public OpKernel {
  public:
-  explicit CobineSparseSuccessorOp(OpKernelConstruction* ctx) : OpKernel(ctx) {}
+  explicit CombineSparseSuccessorOp(OpKernelConstruction* ctx) : OpKernel(ctx) {}
 
   void Compute(OpKernelContext* ctx) override {
     // Prepare source
@@ -91,4 +91,4 @@ class CobineSparseSuccessorOp : public OpKernel {
   }
 };
 
-REGISTER_KERNEL_BUILDER(Name("CobineSparseSuccessor").Device(DEVICE_CPU), CobineSparseSuccessorOp);
+REGISTER_KERNEL_BUILDER(Name("CombineSparseSuccessor").Device(DEVICE_CPU), CombineSparseSuccessorOp);
